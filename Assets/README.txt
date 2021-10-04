@@ -17,4 +17,5 @@ NOTES:
 -Project split into two main folders as of writing. Please use 'Project' to store game content!
 
 TODO:
--Assign tasks soon
+-Team: Assign tasks soon
+-Jon: Work on mouse controlled aiming
