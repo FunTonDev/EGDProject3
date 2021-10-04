@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Movement and jumping physics based changes
+        //Movement/jumping are physics based changes
         CharMovementUpdate();
     }
 
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
 
     private void MouseMoveUpdate()
     {
-        //Should update regardless of buttons pressed
+        
     }
 
     private void FireUpdate()
