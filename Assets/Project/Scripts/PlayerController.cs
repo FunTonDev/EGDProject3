@@ -8,8 +8,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigB;
     [SerializeField] private CapsuleCollider playerCapC;
     [SerializeField] private AudioSource playerAudS;
+    [SerializeField] private RectTransform cursorRecT;
     public List<AudioClip> playerClips;
-
+    
     [Header("Variables")]
     public float xForce;
     public float yForce;
@@ -21,7 +22,6 @@ public class PlayerController : MonoBehaviour
     public float maxFallVelocity;
     
     public bool grounded;
-    public bool jumped;
     public bool floorContact;
     public bool canClimb;
 
@@ -36,17 +36,14 @@ public class PlayerController : MonoBehaviour
         playerRigB = GetComponent<Rigidbody>();
         playerCapC = GetComponent<CapsuleCollider>();
         playerAudS = GetComponent<AudioSource>();
-        jumped = false;
+        cursorRecT = GameObject.Find("Canvas/Cursor").GetComponent<RectTransform>();
         //Cursor.visible = false;   //Uncomment when mouse move/aim implemented
     }
 
     private void Update()
     {
-        grounded = !jumped && floorContact;
         InputUpdate("Horizontal", ref inputX);
         InputUpdate("Vertical", ref inputY);
-        InputUpdate("MouseX", ref inputMX);
-        InputUpdate("MouseY", ref inputMY);
         InputUpdate("Jump", ref inputJump);
         InputUpdate("Fire1", ref inputLMB);
         InputUpdate("Fire2", ref inputRMB);
@@ -56,18 +53,19 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Movement/jumping are physics based changes
-        CharMovementUpdate();
+        CharMovementUpdate();   //Movement/jumping are physics based changes
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         floorContact = true;
+        GroundCheck();
     }
 
     private void OnCollisionExit(Collision collision)
     {
         floorContact = false;
+        GroundCheck();
     }
 
     /*============================================================================
@@ -129,7 +127,16 @@ public class PlayerController : MonoBehaviour
 
     private void MouseMoveUpdate()
     {
-        
+        if (Input.mousePresent)
+        {
+            Vector3 tempPos = Input.mousePosition;
+            inputMX = tempPos.x/Screen.width - 0.5f;
+            inputMY = tempPos.y/Screen.height - 0.5f;
+            inputMX = tempPos.x;
+            inputMY = tempPos.y;
+            Debug.Log(inputMX + " " + inputMY);
+            cursorRecT.position = new Vector3(inputMX, inputMY, 0);
+        }
     }
 
     private void FireUpdate()
@@ -160,8 +167,12 @@ public class PlayerController : MonoBehaviour
         maxFallVelocity = -12.0f;
         
         grounded = false;
-        jumped = false;
         floorContact = false;
         canClimb = false;
+    }
+
+    private void GroundCheck()
+    {
+        grounded = floorContact;
     }
 }
