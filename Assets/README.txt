@@ -19,3 +19,4 @@ NOTES:
 TODO:
 -Team: Assign tasks soon
 -Jon: Work on mouse controlled aiming
+-Ryan: Menus/Transitions
