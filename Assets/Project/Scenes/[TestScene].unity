@@ -610,7 +610,7 @@ MonoBehaviour:
   wallNorm: {x: 0, y: 0, z: 0}
   dashCount: 0
   maxDashes: 1
-  shootDelayTime: 0.5
+  shootDelayTime: 0.2
   jumped: 0
   grounded: 0
   walled: 0
