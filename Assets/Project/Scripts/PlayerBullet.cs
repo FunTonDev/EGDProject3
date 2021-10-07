@@ -9,23 +9,26 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField] private SphereCollider bulletSphereC;
 
     [Header("Variables")]
-    public Vector3 direction;
-    public float speed;
+    public float bulletForce;
+    public Quaternion direction;
 
     void Start()
     {
+        bulletForce = 25.0f;
+        direction = transform.rotation;
         bulletRigB = GetComponent<Rigidbody>();
         bulletSphereC = GetComponent<SphereCollider>();
+        bulletRigB.AddForce(transform.right * bulletForce, ForceMode.VelocityChange);
         Invoke("SelfDestruct", 3.0f);
-    }
-
-    void FixedUpdate()
-    {
-        bulletRigB.AddForce(transform.right, ForceMode.Force);
     }
 
     private void SelfDestruct()
     {
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        SelfDestruct();
     }
 }

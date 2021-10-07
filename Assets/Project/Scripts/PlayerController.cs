@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigB;
     [SerializeField] private BoxCollider playerBoxC;
     [SerializeField] private AudioSource playerAudS;
+    [SerializeField] private Camera playerCam;
     public GameObject bulletPrefab;
     public List<AudioClip> playerClips;
 
@@ -32,12 +33,14 @@ public class PlayerController : MonoBehaviour
     public Vector3 wallNorm;
     public int dashCount;
     public int maxDashes;
+    public float shootDelayTime;
 
     public bool jumped;
     public bool grounded;
     public bool walled;
     public bool wallJumped;
-    public bool canClimb;
+    public bool canClimb; 
+    public bool shot;
 
     LayerMask groundMask;
 
@@ -48,6 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         cursorRecT = GameObject.Find("Canvas/Cursor").GetComponent<RectTransform>();
+        playerCam = GameObject.Find("Main Camera").GetComponent<Camera>();
         playerRigB = GetComponent<Rigidbody>();
         playerBoxC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
@@ -128,7 +132,15 @@ public class PlayerController : MonoBehaviour
 
     private void FireUpdate()
     {
-        Instantiate(bulletPrefab, transform.position, transform.rotation);
+        if (inputMan.inputFire1 == 1 && !shot)
+        {
+            Vector3 playerScreenPos = playerCam.WorldToScreenPoint(transform.position);
+            Vector3 mouseScreenPos = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
+            Vector3 aimDir = new Vector3(mouseScreenPos.x - playerScreenPos.x, mouseScreenPos.y - playerScreenPos.y, 0).normalized;
+            Quaternion aimQ = Quaternion.FromToRotation(Vector3.right, aimDir);
+            Instantiate(bulletPrefab, transform.position, aimQ);
+            StartCoroutine(ShootDelay(shootDelayTime));
+        }
     }
 
     /*============================================================================
@@ -146,7 +158,12 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(time);
         wallJumped = false;
     }
-
+    private IEnumerator ShootDelay(float time)
+    {
+        shot = true;
+        yield return new WaitForSeconds(time);
+        shot = false;
+    }
     /*============================================================================
      * COLLISION CHECK METHODS
      ============================================================================*/
@@ -163,18 +180,31 @@ public class PlayerController : MonoBehaviour
 
     private bool WallCheck()
     {
-        Vector3 upPos = transform.position + new Vector3(0, 0.275f, 0);
-        Vector3 downPos = transform.position + new Vector3(0, -0.275f, 0);
-
+        wallNorm = Vector3.zero;
+        float closestDist = 100.0f;
+        Vector3[] sides = { transform.position + new Vector3(0, 0.275f, 0), transform.position + new Vector3(0, -0.275f, 0) };
         RaycastHit hit;
 
-        bool castContact = false;
-        castContact = castContact | Physics.Raycast(upPos, transform.right, out hit, 0.4f, groundMask);
-        castContact = castContact | Physics.Raycast(upPos, -transform.right, out hit, 0.4f, groundMask);
-        castContact = castContact | Physics.Raycast(downPos, transform.right, out hit, 0.4f, groundMask);
-        castContact = castContact | Physics.Raycast(downPos, -transform.right, out hit, 0.4f, groundMask);
-        wallNorm = hit.normal;
-        return castContact;
+        foreach (Vector3 v in sides)
+        {
+            if (Physics.Raycast(v, transform.right, out hit, 0.4f, groundMask))
+            {
+                if (hit.distance < closestDist)
+                {
+                    closestDist = hit.distance;
+                    wallNorm = hit.normal;
+                }
+            }
+            if (Physics.Raycast(v, -transform.right, out hit, 0.4f, groundMask))
+            {
+                if (hit.distance < closestDist)
+                {
+                    closestDist = hit.distance;
+                    wallNorm = hit.normal;
+                }
+            }
+        }
+        return wallNorm != Vector3.zero;
     }
 
     /*============================================================================
@@ -201,12 +231,14 @@ public class PlayerController : MonoBehaviour
         wallNorm = new Vector3(0, 0, 0);
         dashCount = 0;
         maxDashes = 1;
+        shootDelayTime = 0.5f;
 
         jumped = false;
         grounded = false;
         walled = false;
         wallJumped = false;
         canClimb = false;
+        shot = false;
 }
 
     [ContextMenu("Set to Platformer")]
