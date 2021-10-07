@@ -18,5 +18,5 @@ NOTES:
 
 TODO:
 -Team: Assign tasks soon
--Jon: Work on mouse controlled aiming
+-Jon: Work on mouse control focused camera, look into wall jumping behavior, start basic shooting
 -Ryan: Menus/Transitions

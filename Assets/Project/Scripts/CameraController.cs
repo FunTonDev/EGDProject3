@@ -22,9 +22,10 @@ public class CameraController : MonoBehaviour
         float xDiff = 0.0f, yDiff = 0.0f, scale = 2.0f;
         if (isTrackingMovement)
         {
+            
             Vector3 currVel = playerPrefab.GetComponent<Rigidbody>().velocity;
-            xDiff = currVel.x == 0 ? 0 : currVel.x / Mathf.Abs(currVel.x);
-            yDiff = currVel.y == 0 ? 0 : currVel.y / Mathf.Abs(currVel.y);
+            xDiff = currVel.x == 0 ? 0 : Mathf.Round(currVel.x / Mathf.Abs(currVel.x) * 0.1f);
+            yDiff = currVel.y == 0 ? 0 : Mathf.Round(currVel.y / Mathf.Abs(currVel.y) * 0.1f);
         }
         targetPos = cameraTarget.position;
         Vector3 newPos = new Vector3(targetPos.x, targetPos.y, -8.0f) + new Vector3(xDiff, yDiff, 0) * scale;
