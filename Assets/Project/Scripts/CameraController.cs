@@ -5,21 +5,42 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private GameObject playerGamO;
+    [SerializeField] private Transform cameraTarget;
+    [SerializeField] private GameObject playerPrefab;
 
     [Header("Variables")]
-    public Vector3 playerPos;
-    public bool isFollowingPlayer;
+    public Vector3 targetPos;
+    public bool isTrackingMovement;
 
     private void Start()
     {
-        playerGamO = gameObject;
-        playerPos = playerGamO.transform.position;
-        isFollowingPlayer = true;
+        
     }
 
     private void FixedUpdate()
     {
-        transform.position = new Vector3(playerPos.x, playerPos.y + 1, -8.0f);
+        float xDiff = 0.0f, yDiff = 0.0f, scale = 2.0f;
+        if (isTrackingMovement)
+        {
+            Vector3 currVel = playerPrefab.GetComponent<Rigidbody>().velocity;
+            xDiff = currVel.x == 0 ? 0 : currVel.x / Mathf.Abs(currVel.x);
+            yDiff = currVel.y == 0 ? 0 : currVel.y / Mathf.Abs(currVel.y);
+        }
+        targetPos = cameraTarget.position;
+        Vector3 newPos = new Vector3(targetPos.x, targetPos.y, -8.0f) + new Vector3(xDiff, yDiff, 0) * scale;
+        transform.position = newPos;
+    }
+
+    [ContextMenu("Reset to Default")]
+    private void SetDefaultValues()
+    {
+        playerPrefab = GameObject.Find("PlayerPrefab");
+        SetCameraTarget("PlayerPrefab");
+    }
+
+    private void SetCameraTarget(string targetStr)
+    {
+        cameraTarget = GameObject.Find(targetStr).transform;
+        isTrackingMovement = targetStr == "PlayerPrefab";
     }
 }

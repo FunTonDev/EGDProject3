@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class CharacterController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private Rigidbody playerRigB;
-    [SerializeField] private CapsuleCollider playerCapC;
-    [SerializeField] private AudioSource playerAudS;
+    [SerializeField] private InputManager inputMan;
     [SerializeField] private RectTransform cursorRecT;
+
+    [SerializeField] private Rigidbody playerRigB;
+    [SerializeField] private BoxCollider playerCapC;
+    [SerializeField] private AudioSource playerAudS;
     public List<AudioClip> playerClips;
     
     [Header("Variables")]
@@ -20,35 +22,34 @@ public class PlayerController : MonoBehaviour
     public float maxYVelocity;
     public float maxJumpVelocity;
     public float maxFallVelocity;
-    
+
+    public int jumpCount;
+    public int maxJumps;
+    public int wallJumpCount;
+    public int maxWallJumps;
+    public int dashCount;
+    public int maxDashes;
+
     public bool grounded;
     public bool floorContact;
     public bool canClimb;
-
-    //Input values: moveX, moveY, jump, mouseX, mouseY, leftMouseButton, rightMouseButton
-    private float inputX, inputY, inputJump, inputMX, inputMY, inputLMB, inputRMB;
 
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
     private void Start()
     {
+        inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         playerRigB = GetComponent<Rigidbody>();
-        playerCapC = GetComponent<CapsuleCollider>();
+        playerCapC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
         cursorRecT = GameObject.Find("Canvas/Cursor").GetComponent<RectTransform>();
-        //Cursor.visible = false;   //Uncomment when mouse move/aim implemented
+        Cursor.visible = false;   //Uncomment when mouse move/aim implemented
     }
 
     private void Update()
     {
-        InputUpdate("Horizontal", ref inputX);
-        InputUpdate("Vertical", ref inputY);
-        InputUpdate("Jump", ref inputJump);
-        InputUpdate("Fire1", ref inputLMB);
-        InputUpdate("Fire2", ref inputRMB);
         MouseMoveUpdate();
-        //FireUpdate();
     }
 
     private void FixedUpdate()
@@ -71,12 +72,11 @@ public class PlayerController : MonoBehaviour
     /*============================================================================
      * INPUT METHOD(S)
      ============================================================================*/
-    private void InputUpdate(string InputAxis, ref float inputVar)
+    private void PlayInputClip(float inputVar)
     {
-        inputVar = Input.GetAxisRaw(InputAxis);
         if (inputVar != 0)
         {
-            switch (InputAxis)
+            /*switch (InputAxis)
             {
                 case "Horizontal":
                     playerAudS.PlayOneShot(playerClips[0]);
@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
                 case "Fire2":
                     playerAudS.PlayOneShot(playerClips[5]);
                     break;
-            }
+            }*/
         }
     }
 
@@ -108,7 +108,6 @@ public class PlayerController : MonoBehaviour
             if (playerRigB.velocity.y < maxFallVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxFallVelocity, playerRigB.velocity.z); }
             else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
         }
-
         if (grounded)   //IF IS/BECOMES GROUNDED, y movement velocity must be capped
         {
            /* if (canClimb)   //Temporary but other confirmed gameplay functionality could be WIP(entering doorways, climbing ladders, looking up, crouch, etc)
@@ -117,38 +116,26 @@ public class PlayerController : MonoBehaviour
                 float yClampVel = inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
                 playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
             }*/
-
-            playerRigB.AddForce(new Vector3(0, inputJump * jumpForce, 0), ForceMode.Impulse);   //DONT MOVE THIS LINE
         }
-        playerRigB.AddForce(new Vector3(inputX * xForce, 0, 0), ForceMode.VelocityChange);
-        float xClampVel = (inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
-        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
+        //float jumpCalculated = Utils.NormalizeNum(jumpCount) * inputMan.inputAlt1 * jumpForce;
+        if (jumpCount > maxJumps)
+        {
+            playerRigB.AddForce(new Vector3(0, inputMan.inputAlt1 * jumpForce, 0), ForceMode.Impulse);
+        }
+        
+        //playerRigB.AddForce(new Vector3(inputX * xForce, 0, 0), ForceMode.VelocityChange);
+        //float xClampVel = (inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
+        //playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
     }
 
     private void MouseMoveUpdate()
     {
-        if (Input.mousePresent)
-        {
-            Vector3 tempPos = Input.mousePosition;
-            inputMX = tempPos.x/Screen.width - 0.5f;
-            inputMY = tempPos.y/Screen.height - 0.5f;
-            inputMX = tempPos.x;
-            inputMY = tempPos.y;
-            Debug.Log(inputMX + " " + inputMY);
-            cursorRecT.position = new Vector3(inputMX, inputMY, 0);
-        }
+        cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
     }
 
     private void FireUpdate()
     {
-        if (inputLMB != 0)
-        {
-
-        }
-        if (inputRMB != 0)
-        {
-
-        }
+        
     }
 
     /*============================================================================
@@ -165,10 +152,29 @@ public class PlayerController : MonoBehaviour
         maxYVelocity = 6.0f;
         maxJumpVelocity = 6.0f;
         maxFallVelocity = -12.0f;
-        
+
+        jumpCount = 0;
+        maxJumps = 2;
+        wallJumpCount = 0;
+        maxWallJumps = 1;
+        dashCount = 0;
+        maxDashes = 1;
+
         grounded = false;
         floorContact = false;
         canClimb = false;
+    }
+
+    [ContextMenu("Set to Platformer")]
+    private void SetPlatformerValues()
+    {
+
+    }
+
+    [ContextMenu("Set to Shooter")]
+    private void SetShooterValues()
+    {
+
     }
 
     private void GroundCheck()
