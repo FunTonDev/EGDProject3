@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera playerCam;
     public GameObject bulletPrefab;
     public List<AudioClip> playerClips;
+    public List<GameObject> pauseElements;
 
     [Header("Variables")]
     public float xForce;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
     public bool wallJumped;
     public bool canClimb; 
     public bool shot;
+    public bool paused;
 
     LayerMask groundMask;
 
@@ -61,6 +63,22 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (inputMan.inputCancel != 0)
+        {
+            paused = !paused;
+            foreach (GameObject i in pauseElements)
+            {
+                i.SetActive(paused);
+            }
+            if (paused)
+            {
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
+        }
         CursorMoveUpdate();
         FireUpdate();
     }
@@ -92,43 +110,46 @@ public class PlayerController : MonoBehaviour
      ============================================================================*/
     private void CharMovementUpdate()
     {
-        if (!grounded)  //IF IS/BECOMES AIRBORNE, y jump and fall velocity must be capped
+        if (!paused)
         {
-            playerRigB.AddForce(Physics.gravity, ForceMode.Force);
-            if (playerRigB.velocity.y < maxFallVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxFallVelocity, playerRigB.velocity.z); }
-            else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
-        }
-        else            //IF IS/BECOMES GROUNDED, y movement velocity must be capped
-        {
-            jumpCount = 0;
-            /* if (canClimb)   //Temporary but other confirmed gameplay functionality could be WIP(entering doorways, climbing ladders, looking up, crouch, etc)
-             {
-                 playerRigB.AddForce(new Vector3(0, inputY * yForce, 0), ForceMode.VelocityChange);
-                 float yClampVel = inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
-                 playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
-             }*/
-        }
-
-        if (jumpCount < maxJumps && !jumped && inputMan.inputAlt1 == 1)
-        {
-            jumpCount++;
-            if(walled)
+            if (!grounded)  //IF IS/BECOMES AIRBORNE, y jump and fall velocity must be capped
             {
-                jumpCount--;
-                Vector3 jumpDir = (wallNorm + transform.up).normalized;
-                playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
-                StartCoroutine(WallJumpDelay(wallJumpDelayTime));
+                playerRigB.AddForce(Physics.gravity, ForceMode.Force);
+                if (playerRigB.velocity.y < maxFallVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxFallVelocity, playerRigB.velocity.z); }
+                else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
             }
-            else { playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse); }
-            StartCoroutine(JumpDelay(jumpDelayTime));
-        }
+            else            //IF IS/BECOMES GROUNDED, y movement velocity must be capped
+            {
+                jumpCount = 0;
+                /* if (canClimb)   //Temporary but other confirmed gameplay functionality could be WIP(entering doorways, climbing ladders, looking up, crouch, etc)
+                 {
+                     playerRigB.AddForce(new Vector3(0, inputY * yForce, 0), ForceMode.VelocityChange);
+                     float yClampVel = inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
+                     playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
+                 }*/
+            }
 
-        if (!wallJumped)
-        {
-            playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
-        }       
-        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
-        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
+            if (jumpCount < maxJumps && !jumped && inputMan.inputAlt1 == 1)
+            {
+                jumpCount++;
+                if (walled)
+                {
+                    jumpCount--;
+                    Vector3 jumpDir = (wallNorm + transform.up).normalized;
+                    playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
+                    StartCoroutine(WallJumpDelay(wallJumpDelayTime));
+                }
+                else { playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse); }
+                StartCoroutine(JumpDelay(jumpDelayTime));
+            }
+
+            if (!wallJumped)
+            {
+                playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
+            }
+            float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
+            playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
+        }
     }
 
     private void CursorMoveUpdate()
