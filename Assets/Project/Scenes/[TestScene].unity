@@ -437,7 +437,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283945066}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -30, y: 1.3333334, z: -32}
   m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 4}
   m_Children: []
@@ -489,9 +489,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputMan: {fileID: 0}
-  playerCam: {fileID: 0}
   playerPrefab: {fileID: 796991366}
   cameraTarget: {fileID: 796991371}
+  cam: {fileID: 0}
   mouseLeftBound: 447
   mouseRightBound: 223
   mouseUpBound: 773
@@ -503,6 +503,7 @@ MonoBehaviour:
   camVelX: 0.1
   camVelY: 0.1
   isTrackingMovement: 1
+  currMode: 0
 --- !u!1 &418830986
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,11 +1423,11 @@ MonoBehaviour:
   inputMan: {fileID: 0}
   gameMMan: {fileID: 0}
   tranMan: {fileID: 0}
+  camCont: {fileID: 0}
   cursorRecT: {fileID: 0}
   playerRigB: {fileID: 0}
   playerBoxC: {fileID: 0}
   playerAudS: {fileID: 0}
-  playerCam: {fileID: 0}
   bulletPrefab: {fileID: 8752199938233944868, guid: 771dca5dd3ded244ea1a616ae56e838f, type: 3}
   playerClips:
   - {fileID: 8300000, guid: 94ef65e9b2e04244ba95dfbb0a175362, type: 3}
@@ -1460,6 +1461,7 @@ MonoBehaviour:
   canClimb: 0
   shot: 0
   justPaused: 0
+  toggled: 0
 --- !u!212 &796991370
 SpriteRenderer:
   m_ObjectHideFlags: 0

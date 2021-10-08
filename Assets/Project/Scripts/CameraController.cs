@@ -6,9 +6,10 @@ public class CameraController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private InputManager inputMan;
-    [SerializeField] private Camera playerCam;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform cameraTarget;
+
+    public Camera cam;
 
     [Header("Variables")]
     public float mouseLeftBound;
@@ -23,6 +24,7 @@ public class CameraController : MonoBehaviour
     public float camVelY;
 
     public bool isTrackingMovement;
+    public States.CameraMode currMode;
 
     private Vector3 mousePos;
     private Vector3 targetPos;
@@ -33,7 +35,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
-        playerCam = GetComponent<Camera>();
+        cam = GetComponent<Camera>();
         playerPrefab = GameObject.Find("PlayerPrefab");
         SetCameraTarget("PlayerPrefab");
         SyncScreen();
@@ -47,7 +49,18 @@ public class CameraController : MonoBehaviour
         if (cameraTarget.CompareTag("Player"))
         {
             //CharMoveBiasUpdate()
-            transform.position = new Vector3(targetPos.x, targetPos.y, -8.0f) + new Vector3(xChange, yChange, 0);
+            
+            switch (currMode)
+            {
+                case (States.CameraMode.Platformer):
+                    transform.position = new Vector3(targetPos.x, targetPos.y, -8.0f) + new Vector3(xChange, yChange, 0);
+                    break;
+                case (States.CameraMode.Shooter):
+                    transform.position = new Vector3(targetPos.x, 10.0f, targetPos.z);
+                    break;
+                case (States.CameraMode.RPG):
+                    break;
+            }
         }
 
         //Incorporate averageing of mouse position, movement, character position later
@@ -59,7 +72,7 @@ public class CameraController : MonoBehaviour
      ============================================================================*/
     private void CursorBiasUpdate()
     {
-        Vector3 playerScreenPos = playerCam.WorldToScreenPoint(playerPrefab.transform.position);
+        Vector3 playerScreenPos = cam.WorldToScreenPoint(playerPrefab.transform.position);
         playerScreenPos = new Vector3(playerScreenPos.x, playerScreenPos.y, 0);
         Vector3 cursorScreenPos = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
         Vector3 dirVec = cursorScreenPos - playerScreenPos;
@@ -69,15 +82,6 @@ public class CameraController : MonoBehaviour
 
         Debug.DrawLine(playerPrefab.transform.position, playerPrefab.transform.position + res, Color.red);
     }
-
-
-
-
-
-
-
-
-
 
     private void CharMoveBiasUpdate()
     {
@@ -97,6 +101,32 @@ public class CameraController : MonoBehaviour
     }
 
     /*============================================================================
+     * CAMERA METHODS
+     ============================================================================*/
+    private void SetCameraTarget(string targetStr)
+    {
+        cameraTarget = GameObject.Find(targetStr).transform;
+        isTrackingMovement = targetStr == "PlayerPrefab";
+    }
+
+    public void SetCameraMode(States.CameraMode mode)
+    {
+        currMode = mode;
+        switch (currMode)
+        {
+            case (States.CameraMode.Platformer):
+                cam.orthographic = true;
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case (States.CameraMode.Shooter):
+                cam.orthographic = false;
+                transform.rotation = Quaternion.Euler(90, 0, 0);
+                break;
+
+        }
+    }
+
+    /*============================================================================
      * MISC METHODS
      ============================================================================*/
     [ContextMenu("Reset to Default")]
@@ -110,6 +140,7 @@ public class CameraController : MonoBehaviour
         camVelY = 0.1f;
 
         isTrackingMovement = true;
+        currMode = States.CameraMode.Platformer;
     }
 
     private void SyncScreen()
@@ -119,11 +150,5 @@ public class CameraController : MonoBehaviour
         mouseRightBound = Screen.width/2 + xShift;
         mouseUpBound = Screen.height/2 + yShift;
         mouseDownBound = Screen.height/2 - yShift;
-    }
-
-    private void SetCameraTarget(string targetStr)
-    {
-        cameraTarget = GameObject.Find(targetStr).transform;
-        isTrackingMovement = targetStr == "PlayerPrefab";
     }
 }

@@ -9,11 +9,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputManager inputMan;
     [SerializeField] private GameMenuManager gameMMan;
     [SerializeField] private TransitionManager tranMan;
+    [SerializeField] private CameraController camCont;
     [SerializeField] private RectTransform cursorRecT;
     [SerializeField] private Rigidbody playerRigB;
     [SerializeField] private BoxCollider playerBoxC;
     [SerializeField] private AudioSource playerAudS;
-    [SerializeField] private Camera playerCam;
     public GameObject bulletPrefab;
     public List<AudioClip> playerClips;
 
@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     public bool canClimb; 
     public bool shot;
     public bool justPaused;
+    public bool toggled;
 
     LayerMask groundMask;
 
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
         gameMMan = GameObject.Find("[MANAGER]").GetComponent<GameMenuManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
         cursorRecT = GameObject.Find("Canvas/Cursor").GetComponent<RectTransform>();
-        playerCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        camCont = GameObject.Find("Main Camera").GetComponent<CameraController>();
         playerRigB = GetComponent<Rigidbody>();
         playerBoxC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour
             FireUpdate();
         }
         PauseUpdate();
+        DebugUpdate();
     }
 
     private void FixedUpdate()
@@ -158,7 +160,7 @@ public class PlayerController : MonoBehaviour
     {
         if (inputMan.inputFire1 == 1 && !shot)
         {
-            Vector3 playerScreenPos = playerCam.WorldToScreenPoint(transform.position);
+            Vector3 playerScreenPos = camCont.cam.WorldToScreenPoint(transform.position);
             Vector3 mouseScreenPos = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
             Vector3 aimDir = new Vector3(mouseScreenPos.x - playerScreenPos.x, mouseScreenPos.y - playerScreenPos.y, 0).normalized;
             Quaternion aimQ = Quaternion.FromToRotation(Vector3.right, aimDir);
@@ -280,6 +282,7 @@ public class PlayerController : MonoBehaviour
         canClimb = false;
         shot = false;
         justPaused = false;
+        toggled = false;
 }
 
     [ContextMenu("Set to Platformer")]
@@ -292,5 +295,28 @@ public class PlayerController : MonoBehaviour
     private void SetShooterValues()
     {
 
+    }
+
+
+    private void DebugUpdate()
+    {
+        if (inputMan.inputAlt3 == 1 && !toggled)
+        {
+            if (camCont.currMode == States.CameraMode.Platformer)
+            {
+                camCont.SetCameraMode(States.CameraMode.Shooter);
+            }
+            else
+            {
+                camCont.SetCameraMode(States.CameraMode.Platformer);
+            }
+            StartCoroutine(ToggleDelay(1.0f));
+        }
+    }
+    private IEnumerator ToggleDelay(float time)
+    {
+        toggled = true;
+        yield return new WaitForSeconds(time);
+        toggled = false;
     }
 }
