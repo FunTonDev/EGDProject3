@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameManager gameMan;
     [SerializeField] private InputManager inputMan;
     [SerializeField] private GameMenuManager gameMMan;
+    [SerializeField] private TransitionManager tranMan;
     [SerializeField] private RectTransform cursorRecT;
     [SerializeField] private Rigidbody playerRigB;
     [SerializeField] private BoxCollider playerBoxC;
@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         gameMMan = GameObject.Find("[MANAGER]").GetComponent<GameMenuManager>();
+        tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
         cursorRecT = GameObject.Find("Canvas/Cursor").GetComponent<RectTransform>();
         playerCam = GameObject.Find("Main Camera").GetComponent<Camera>();
         playerRigB = GetComponent<Rigidbody>();
@@ -86,11 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         grounded = GroundCheck();
         walled = WallCheck();
-        if (collision.gameObject.tag == "TransitionArea")
-        {
-            Debug.Log("Go to next scene");
-            SceneManager.LoadScene(collision.gameObject.GetComponent<TransitionBlock>().goToName);
-        }
+        TransitionCheck(collision);
     }
 
     private void OnCollisionExit(Collision collision)
@@ -147,7 +144,7 @@ public class PlayerController : MonoBehaviour
     {
         if (inputMan.inputCancel == 1 && !justPaused)
         {
-            gameMMan.ToggleMainMenu();
+            gameMMan.TogglePauseMenu();
             StartCoroutine(PauseDelay(1.0f));
         }
     }
@@ -240,6 +237,14 @@ public class PlayerController : MonoBehaviour
             }
         }
         return wallNorm != Vector3.zero;
+    }
+
+    private void TransitionCheck(Collision coll)
+    {
+        if (coll.gameObject.tag == "TransitionArea")
+        {
+            tranMan.SceneSwitch(coll.gameObject.GetComponent<TransitionBlock>().goToName);
+        }
     }
 
     /*============================================================================

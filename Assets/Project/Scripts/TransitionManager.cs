@@ -18,7 +18,7 @@ public class TransitionManager : MonoBehaviour
         navSource.PlayOneShot(tClip);
     }
 
-    public void sceneSwitch(int index)
+    public void SceneSwitch(int index)
     {
         switch (index)
         {
@@ -34,15 +34,9 @@ public class TransitionManager : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void SceneSwitch(string sceneStr)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("Go to next scene");
+        SceneManager.LoadScene(sceneStr);
     }
 }
