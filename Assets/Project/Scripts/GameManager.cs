@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Menu Variables")]
+    public int backgroundIndex;
 
-    // Update is called once per frame
-    void Update()
+    [Header("Game Variables")]
+    public bool paused;
+
+    [Header("Cinematic Variables")]
+    public float duration;
+
+    private void Start()
     {
-        
-    }
+        backgroundIndex = 0;
+        paused = false;
+        duration = 0.0f;
+}
 }

@@ -35,11 +35,6 @@ public class InputManager : MonoBehaviour
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
-    private void Start()
-    {
-        Cursor.visible = false;   //Uncomment when mouse move/aim implemented
-    }
-
     private void Update()
     {
         ButtonUpdate();

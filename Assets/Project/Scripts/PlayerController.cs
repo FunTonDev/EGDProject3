@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
+    [SerializeField] private GameManager gameMan;
     [SerializeField] private InputManager inputMan;
+    [SerializeField] private GameMenuManager gameMMan;
     [SerializeField] private RectTransform cursorRecT;
     [SerializeField] private Rigidbody playerRigB;
     [SerializeField] private BoxCollider playerBoxC;
@@ -14,7 +16,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera playerCam;
     public GameObject bulletPrefab;
     public List<AudioClip> playerClips;
-    public List<GameObject> pauseElements;
 
     [Header("Variables")]
     public float xForce;
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public bool wallJumped;
     public bool canClimb; 
     public bool shot;
-    public bool paused;
+    public bool justPaused;
 
     LayerMask groundMask;
 
@@ -52,7 +53,9 @@ public class PlayerController : MonoBehaviour
      ============================================================================*/
     private void Start()
     {
+        gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
+        gameMMan = GameObject.Find("[MANAGER]").GetComponent<GameMenuManager>();
         cursorRecT = GameObject.Find("Canvas/Cursor").GetComponent<RectTransform>();
         playerCam = GameObject.Find("Main Camera").GetComponent<Camera>();
         playerRigB = GetComponent<Rigidbody>();
@@ -63,29 +66,20 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (inputMan.inputCancel != 0)
+        if (!gameMan.paused)
         {
-            paused = !paused;
-            foreach (GameObject i in pauseElements)
-            {
-                i.SetActive(paused);
-            }
-            if (paused)
-            {
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Time.timeScale = 1;
-            }
+            CursorMoveUpdate();
+            FireUpdate();
         }
-        CursorMoveUpdate();
-        FireUpdate();
+        PauseUpdate();
     }
 
     private void FixedUpdate()
     {
-        CharMovementUpdate();   //Movement/jumping are physics based changes
+        if (!gameMan.paused)
+        {
+            CharMovementUpdate();   //Movement/jumping are physics based changes
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -110,45 +104,51 @@ public class PlayerController : MonoBehaviour
      ============================================================================*/
     private void CharMovementUpdate()
     {
-        if (!paused)
+        if (!grounded)  //IF IS/BECOMES AIRBORNE, y jump and fall velocity must be capped
         {
-            if (!grounded)  //IF IS/BECOMES AIRBORNE, y jump and fall velocity must be capped
-            {
-                playerRigB.AddForce(Physics.gravity, ForceMode.Force);
-                if (playerRigB.velocity.y < maxFallVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxFallVelocity, playerRigB.velocity.z); }
-                else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
-            }
-            else            //IF IS/BECOMES GROUNDED, y movement velocity must be capped
-            {
-                jumpCount = 0;
+            playerRigB.AddForce(Physics.gravity, ForceMode.Force);
+            if (playerRigB.velocity.y < maxFallVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxFallVelocity, playerRigB.velocity.z); }
+            else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
+        }
+        else            //IF IS/BECOMES GROUNDED, y movement velocity must be capped
+        {
+            jumpCount = 0;
                 /* if (canClimb)   //Temporary but other confirmed gameplay functionality could be WIP(entering doorways, climbing ladders, looking up, crouch, etc)
                  {
                      playerRigB.AddForce(new Vector3(0, inputY * yForce, 0), ForceMode.VelocityChange);
                      float yClampVel = inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
                      playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
                  }*/
-            }
+        }
 
-            if (jumpCount < maxJumps && !jumped && inputMan.inputAlt1 == 1)
+        if (jumpCount < maxJumps && !jumped && inputMan.inputAlt1 == 1)
+        {
+            jumpCount++;
+            if (walled)
             {
-                jumpCount++;
-                if (walled)
-                {
-                    jumpCount--;
-                    Vector3 jumpDir = (wallNorm + transform.up).normalized;
-                    playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
-                    StartCoroutine(WallJumpDelay(wallJumpDelayTime));
-                }
-                else { playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse); }
-                StartCoroutine(JumpDelay(jumpDelayTime));
+                jumpCount--;
+                Vector3 jumpDir = (wallNorm + transform.up).normalized;
+                playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
+                StartCoroutine(WallJumpDelay(wallJumpDelayTime));
             }
+            else { playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse); }
+            StartCoroutine(JumpDelay(jumpDelayTime));
+        }
 
-            if (!wallJumped)
-            {
-                playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
-            }
-            float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
-            playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
+        if (!wallJumped)
+        {
+            playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
+        }
+        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
+        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
+    }
+
+    private void PauseUpdate()
+    {
+        if (inputMan.inputCancel == 1 && !justPaused)
+        {
+            gameMMan.ToggleMainMenu();
+            StartCoroutine(PauseDelay(1.0f));
         }
     }
 
@@ -192,6 +192,13 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(time);
         shot = false;
     }
+    private IEnumerator PauseDelay(float time)
+    {
+        justPaused = true;
+        yield return new WaitForSeconds(time);
+        justPaused = false;
+    }
+
     /*============================================================================
      * COLLISION CHECK METHODS
      ============================================================================*/
@@ -267,6 +274,7 @@ public class PlayerController : MonoBehaviour
         wallJumped = false;
         canClimb = false;
         shot = false;
+        justPaused = false;
 }
 
     [ContextMenu("Set to Platformer")]
