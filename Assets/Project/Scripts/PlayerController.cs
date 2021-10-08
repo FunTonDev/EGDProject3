@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -73,6 +74,11 @@ public class PlayerController : MonoBehaviour
     {
         grounded = GroundCheck();
         walled = WallCheck();
+        if (collision.gameObject.tag == "TransitionArea")
+        {
+            Debug.Log("Go to next scene");
+            SceneManager.LoadScene(collision.gameObject.GetComponent<TransitionBlock>().goToName);
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -141,6 +147,7 @@ public class PlayerController : MonoBehaviour
             Instantiate(bulletPrefab, transform.position, aimQ);
             StartCoroutine(ShootDelay(shootDelayTime));
         }
+        //Instantiate(bulletPrefab, transform.position, transform.rotation);
     }
 
     /*============================================================================
