@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,6 +38,11 @@ public class PlayerController : MonoBehaviour
     public int dashCount;
     public int maxDashes;
     public float shootDelayTime;
+
+    public float maxHP;
+    public float currentHP;
+    public Image healthBar;
+
 
     public bool jumped;
     public bool grounded;
@@ -153,6 +159,7 @@ public class PlayerController : MonoBehaviour
 
     private void CursorMoveUpdate()
     {
+        healthBar.fillAmount = currentHP / maxHP;
         cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
     }
 
