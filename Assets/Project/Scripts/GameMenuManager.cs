@@ -12,7 +12,7 @@ public class GameMenuManager : MonoBehaviour
     [Header("Variables")]
     public int pauseIndex;
     public int optionsIndex;
-    public int currentSection;
+    public States.MenuSection currentSection;
 
     private GameObject[] menuSections;
 
@@ -37,11 +37,11 @@ public class GameMenuManager : MonoBehaviour
         Cursor.visible = gameMan.paused;
     }
 
-    public void SwitchMenuSection(int i)
+    public void SwitchMenuSection(States.MenuSection i)
     {
-        menuSections[currentSection].SetActive(false);
+        menuSections[(int)currentSection].SetActive(false);
         currentSection = i;
-        menuSections[currentSection].SetActive(true);
+        menuSections[(int)currentSection].SetActive(true);
     }
 
     /*============================================================================

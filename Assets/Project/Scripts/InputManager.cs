@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum InputType { MouseKey, Controller };
-
 public class InputManager : MonoBehaviour
 {
     /*Input values: 
