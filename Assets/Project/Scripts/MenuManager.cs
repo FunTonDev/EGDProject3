@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;  //Remove later, reserve scene changes for TRANSITIONMANAGER
 
 public class MenuManager : MonoBehaviour
 {
@@ -28,15 +28,16 @@ public class MenuManager : MonoBehaviour
         SetActiveMenuPanel(States.MenuSection.Main);
     }
 
-    public void AudioTrigger(AudioClip tClip)
-    {
-        menuSource.PlayOneShot(tClip);
-    }
-
+    /*============================================================================
+     * MENU METHODS
+     ============================================================================*/
     public void MenuChoice(int index)
     {
         switch (index)
         {
+            case -2:
+                SceneManager.LoadScene("[TestScene]");
+                break;
             case -1:
                 Application.Quit();
                 break;
@@ -44,21 +45,44 @@ public class MenuManager : MonoBehaviour
                 SetActiveMenuPanel(States.MenuSection.Main);
                 break;
             case 1:
-                SetActiveMenuPanel(States.MenuSection.Help);
+                SetActiveMenuPanel(States.MenuSection.Play);
                 break;
             case 2:
+                SetActiveMenuPanel(States.MenuSection.Options);
+                break;
+            case 3:
+                SetActiveMenuPanel(States.MenuSection.Help);
+                break;
+            case 4:
+                SetActiveMenuPanel(States.MenuSection.Credits);
+                break;
+            case 5:
                 SetActiveMenuPanel(States.MenuSection.Quit);
                 break;
         }
     }
-
-    public void SetActiveMenuPanel(States.MenuSection tSection)
+    
+    private void SetActiveMenuPanel(States.MenuSection section)
     {
-        foreach (GameObject p in panels)
-        {
-            p.SetActive(false);
-        }
-        panels[(int)tSection].SetActive(true);
+        panels[(int)currentSection].SetActive(false);
+        currentSection = (States.MenuSection)section;
+        panels[(int)currentSection].SetActive(true);
+    }
+
+    /*============================================================================
+     * MISC METHODS
+     ============================================================================*/
+    [ContextMenu("Reset to Default")]
+    private void SetDefaultValues()
+    {
+        mainIndex = 0;
+        optionsIndex = 0;
+        currentSection = States.MenuSection.Main;
+    }
+
+    public void AudioTrigger(AudioClip tClip)
+    {
+        menuSource.PlayOneShot(tClip);
     }
 }
 
