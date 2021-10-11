@@ -17,11 +17,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource playerAudS;
     public GameObject bulletPrefab;
     public List<AudioClip> playerClips;
+    public Mesh SpriteMesh;
+    public Mesh ModelMesh;
 
     [Header("Variables")]
     public float xForce;
     public float yForce;
     public float jumpForce;
+    public float dashForce;
 
     public float maxXVelocity;
     public float maxYVelocity;
@@ -43,17 +46,20 @@ public class PlayerController : MonoBehaviour
     public float currentHP;
     public Image healthBar;
 
-
-    public bool jumped;
     public bool grounded;
+    public bool jumped;
     public bool walled;
     public bool wallJumped;
-    public bool canClimb; 
+    public bool canClimb;
+    public bool climbing;
     public bool shot;
     public bool justPaused;
     public bool toggled;
 
-    LayerMask groundMask;
+    public LayerMask groundingMask;
+
+    private delegate void ControlDelegate();
+    ControlDelegate controlDel;
 
     /*============================================================================
      * DEFAULT UNITY METHODS
@@ -64,12 +70,12 @@ public class PlayerController : MonoBehaviour
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         gameMMan = GameObject.Find("[MANAGER]").GetComponent<GameMenuManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
-        cursorRecT = GameObject.Find("Canvas/Cursor").GetComponent<RectTransform>();
+        cursorRecT = GameObject.Find("Canvas/GamePanel/Cursor").GetComponent<RectTransform>();
         camCont = GameObject.Find("Main Camera").GetComponent<CameraController>();
         playerRigB = GetComponent<Rigidbody>();
         playerBoxC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
-        groundMask = LayerMask.GetMask("Ground");
+        controlDel += PlatformerMoveUpdate;
     }
 
     private void Update()
@@ -87,7 +93,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!gameMan.paused)
         {
-            CharMovementUpdate();   //Movement/jumping are physics based changes
+            controlDel();   //Delegate uses current genre control schema
         }
     }
 
@@ -95,7 +101,8 @@ public class PlayerController : MonoBehaviour
     {
         grounded = GroundCheck();
         walled = WallCheck();
-        TransitionCheck(collision);
+        jumpCount = grounded ? 0 : jumpCount;
+        wallJumpCount = grounded ? 0 : wallJumpCount;
     }
 
     private void OnCollisionExit(Collision collision)
@@ -104,45 +111,57 @@ public class PlayerController : MonoBehaviour
         walled = WallCheck();
     }
 
+    private void OnTriggerEnter(Collider trigger)
+    {
+        TriggerCheck(trigger, true);
+    }
+
+    private void OnTriggerExit(Collider trigger)
+    {
+        TriggerCheck(trigger, false);
+    }
+
     /*============================================================================
      * GAMEPLAY UPDATE METHODS
      ============================================================================*/
-    private void CharMovementUpdate()
+    private void PlatformerMoveUpdate()
     {
-        if (!grounded)  //IF IS/BECOMES AIRBORNE, y jump and fall velocity must be capped
+        if (!grounded && !climbing)  //Airborne check
         {
             playerRigB.AddForce(Physics.gravity, ForceMode.Force);
             if (playerRigB.velocity.y < maxFallVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxFallVelocity, playerRigB.velocity.z); }
             else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
         }
-        else            //IF IS/BECOMES GROUNDED, y movement velocity must be capped
-        {
-            jumpCount = 0;
-                /* if (canClimb)   //Temporary but other confirmed gameplay functionality could be WIP(entering doorways, climbing ladders, looking up, crouch, etc)
-                 {
-                     playerRigB.AddForce(new Vector3(0, inputY * yForce, 0), ForceMode.VelocityChange);
-                     float yClampVel = inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
-                     playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
-                 }*/
-        }
 
-        if (jumpCount < maxJumps && !jumped && inputMan.inputAlt1 == 1)
+        if (inputMan.inputAlt1 == 1 && !jumped) //Jump check
         {
-            jumpCount++;
-            if (walled)
+            if (walled && !grounded && wallJumpCount < maxWallJumps)
             {
-                jumpCount--;
+                wallJumpCount++;
                 Vector3 jumpDir = (wallNorm + transform.up).normalized;
                 playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
                 StartCoroutine(WallJumpDelay(wallJumpDelayTime));
+                StartCoroutine(JumpDelay(jumpDelayTime));
             }
-            else { playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse); }
-            StartCoroutine(JumpDelay(jumpDelayTime));
+            else if (jumpCount < maxJumps)
+            {
+                jumpCount++;
+                playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse);
+                StartCoroutine(JumpDelay(jumpDelayTime));
+            }
         }
 
-        if (!wallJumped)
+        if (!wallJumped)    //X move check
         {
             playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
+            
+        }
+        if (canClimb)       //Y move check
+        {
+            //WORK ON LATER
+            //playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce, 0), ForceMode.VelocityChange);
+            //float yClampVel = inputMan.inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
+            //playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
         }
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
@@ -214,8 +233,8 @@ public class PlayerController : MonoBehaviour
         Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
 
         bool castContact = false;
-        castContact = castContact | Physics.Raycast(rightPos, -transform.up, 0.4f, groundMask);  //RIGHT CAST
-        castContact = castContact | Physics.Raycast(leftPos, -transform.up, 0.4f, groundMask);   //LEFT CAST
+        castContact = castContact | Physics.Raycast(rightPos, -transform.up, 0.4f, groundingMask);  //RIGHT CAST
+        castContact = castContact | Physics.Raycast(leftPos, -transform.up, 0.4f, groundingMask);   //LEFT CAST
         return castContact;
     }
 
@@ -228,7 +247,7 @@ public class PlayerController : MonoBehaviour
 
         foreach (Vector3 v in sides)
         {
-            if (Physics.Raycast(v, transform.right, out hit, 0.4f, groundMask))
+            if (Physics.Raycast(v, transform.right, out hit, 0.4f, groundingMask))
             {
                 if (hit.distance < closestDist)
                 {
@@ -236,7 +255,7 @@ public class PlayerController : MonoBehaviour
                     wallNorm = hit.normal;
                 }
             }
-            if (Physics.Raycast(v, -transform.right, out hit, 0.4f, groundMask))
+            if (Physics.Raycast(v, -transform.right, out hit, 0.4f, groundingMask))
             {
                 if (hit.distance < closestDist)
                 {
@@ -248,11 +267,16 @@ public class PlayerController : MonoBehaviour
         return wallNorm != Vector3.zero;
     }
 
-    private void TransitionCheck(Collision coll)
+    private void TriggerCheck(Collider trigger, bool entered)
     {
-        if (coll.gameObject.tag == "TransitionArea")
+        switch (trigger.gameObject.tag)
         {
-            tranMan.SceneSwitch(coll.gameObject.GetComponent<TransitionBlock>().goToName);
+            case "TransitionArea":
+                tranMan.SceneSwitch(trigger.gameObject.GetComponent<TransitionBlock>().goToName);
+                break;
+            case "Climbable":
+                canClimb = entered;
+                break;
         }
     }
 
@@ -275,18 +299,19 @@ public class PlayerController : MonoBehaviour
         maxJumps = 2;
         jumpDelayTime = 0.5f;
         wallJumpCount = 0;
-        maxWallJumps = 1;
+        maxWallJumps = 6;
         wallJumpDelayTime = 0.2f;
         wallNorm = new Vector3(0, 0, 0);
         dashCount = 0;
         maxDashes = 1;
         shootDelayTime = 0.5f;
 
-        jumped = false;
         grounded = false;
+        jumped = false;
         walled = false;
         wallJumped = false;
         canClimb = false;
+        climbing = false;
         shot = false;
         justPaused = false;
         toggled = false;

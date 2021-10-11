@@ -6,15 +6,13 @@ public class GameMenuManager : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private GameManager gameMan;
-    public GameObject pauseMenu;
-    public GameObject optionsMenu;
+
+    public List<GameObject> panels;
 
     [Header("Variables")]
     public int pauseIndex;
     public int optionsIndex;
     public States.MenuSection currentSection;
-
-    private GameObject[] menuSections;
 
     /*============================================================================
      * DEFAULT UNITY METHODS
@@ -22,7 +20,6 @@ public class GameMenuManager : MonoBehaviour
     private void Start()
     {
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
-        menuSections = new GameObject[] { pauseMenu, optionsMenu };
         Cursor.visible = false;
     }
 
@@ -33,15 +30,15 @@ public class GameMenuManager : MonoBehaviour
     {
         gameMan.paused = !gameMan.paused;
         Time.timeScale = gameMan.paused ? 0 : 1;
-        pauseMenu.SetActive(gameMan.paused);
+        panels[1].SetActive(gameMan.paused);
         Cursor.visible = gameMan.paused;
     }
 
     public void SwitchMenuSection(States.MenuSection i)
     {
-        menuSections[(int)currentSection].SetActive(false);
+        panels[(int)currentSection].SetActive(false);
         currentSection = i;
-        menuSections[(int)currentSection].SetActive(true);
+        panels[(int)currentSection].SetActive(true);
     }
 
     /*============================================================================

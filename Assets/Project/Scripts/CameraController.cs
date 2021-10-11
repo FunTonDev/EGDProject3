@@ -53,7 +53,7 @@ public class CameraController : MonoBehaviour
             switch (currMode)
             {
                 case (States.CameraMode.Platformer):
-                    transform.position = new Vector3(targetPos.x, targetPos.y, -8.0f) + new Vector3(xChange, yChange, 0);
+                    transform.position = targetPos + new Vector3(0, 0, -8.0f) + new Vector3(xChange, yChange, 0);
                     break;
                 case (States.CameraMode.Shooter):
                     transform.position = new Vector3(targetPos.x, 10.0f, targetPos.z);
