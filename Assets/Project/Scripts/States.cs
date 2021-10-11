@@ -5,6 +5,8 @@ using UnityEngine;
 public static class States
 {
     public enum InputType { MouseKey, Controller };
-    public enum CameraMode { Platformer, Shooter, RPG }
-    public enum MenuSection { Main, Play, Options, Help, Credits, Quit }
+    public enum MenuSection { Main, Play, Options, Help, Credits, Quit };
+    public enum PlayerMode { Game, UI, Cinematic };
+    public enum CameraMode { Platformer, Shooter, RPG };
+    public enum GameGenre { None, Platformer, Shooter, RPG };
 }

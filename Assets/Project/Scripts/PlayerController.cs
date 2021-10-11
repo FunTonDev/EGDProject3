@@ -75,7 +75,8 @@ public class PlayerController : MonoBehaviour
         playerRigB = GetComponent<Rigidbody>();
         playerBoxC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
-        controlDel += PlatformerMoveUpdate;
+        //controlDel += PlatformerMoveUpdate;
+        controlDel += ShooterMoveUpdate;
     }
 
     private void Update()
@@ -165,6 +166,18 @@ public class PlayerController : MonoBehaviour
         }
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
+    }
+
+    private void ShooterMoveUpdate()
+    {
+        Debug.Log(inputMan.inputY);
+
+        playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
+        //float yClampVel = inputMan.inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);
+        //playerRigB.velocity = new Vector3(playerRigB.velocity.x, playerRigB.velocity.y, yClampVel);
+        playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
+        //float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
+        //playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
     }
 
     private void PauseUpdate()
@@ -315,7 +328,9 @@ public class PlayerController : MonoBehaviour
         shot = false;
         justPaused = false;
         toggled = false;
-}
+
+        //playerRigB.constraints = 
+    }
 
     [ContextMenu("Set to Platformer")]
     private void SetPlatformerValues()
@@ -336,10 +351,13 @@ public class PlayerController : MonoBehaviour
         {
             if (camCont.currMode == States.CameraMode.Platformer)
             {
+
+                playerRigB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                 camCont.SetCameraMode(States.CameraMode.Shooter);
             }
             else
             {
+                playerRigB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
                 camCont.SetCameraMode(States.CameraMode.Platformer);
             }
             StartCoroutine(ToggleDelay(1.0f));

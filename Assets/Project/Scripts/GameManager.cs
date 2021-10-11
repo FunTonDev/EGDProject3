@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     [Header("Game Variables")]
     public bool paused;
     public string gameMode;
+    public States.GameGenre genreMain;
+    public States.GameGenre genreExtra1;
+    public States.GameGenre genreExtra2;
 
     [Header("Cinematic Variables")]
     public float duration;
@@ -19,8 +22,7 @@ public class GameManager : MonoBehaviour
     {
         backgroundIndex = 0;
         paused = false;
-        //Check current scene or stage manager to check for type of game stage
-        gameMode = "Platformer";
+        genreMain = States.GameGenre.Platformer;
         duration = 0.0f;
-}
+    }
 }

@@ -39,6 +39,7 @@ public class CameraController : MonoBehaviour
         playerPrefab = GameObject.Find("PlayerPrefab");
         SetCameraTarget("PlayerPrefab");
         SyncScreen();
+        SetCameraMode(States.CameraMode.Shooter);
     }
 
     private void FixedUpdate()
@@ -140,7 +141,7 @@ public class CameraController : MonoBehaviour
         camVelY = 0.1f;
 
         isTrackingMovement = true;
-        currMode = States.CameraMode.Platformer;
+        SetCameraMode(States.CameraMode.Platformer);
     }
 
     private void SyncScreen()
