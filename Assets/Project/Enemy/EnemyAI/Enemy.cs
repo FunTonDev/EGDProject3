@@ -20,21 +20,31 @@ public abstract class Enemy : MonoBehaviour
     public List<Transform> pathNodes;       
     public int currNode = 0;
 
+    public GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
         Introduction();
         rgbdy = this.GetComponent<Rigidbody>();
+
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     
     // Update is called once per frame
     void Update()
     {
-        Move();
+        ClassUpdate();
     }
-    
+
+    //An update function for each specfic class to be define behaviours specific to them
+    public virtual void ClassUpdate()
+    {
+
+    }
+
+
 
     public virtual void Introduction()
     {
@@ -65,16 +75,20 @@ public abstract class Enemy : MonoBehaviour
     }
 
 
-    public virtual void Move()
+    public virtual void Move(Vector3 Pos)
     {
-        Vector3 temp = Vector3.MoveTowards(transform.position, PathFollow(), moveSpd * Time.deltaTime);
-        if (platformer)
+        Vector3 temp = Vector3.MoveTowards(transform.position, Pos, moveSpd * Time.deltaTime);
+
+        if (shooter)
+            { temp.y = 0.5f; }
+
+        else if (platformer)
             { temp.z = -1; }
+         
 
         transform.position = temp;
         //rgbdy.AddForce(Vector3.MoveTowards(transform.position, PathFollow(), moveSpd * Time.deltaTime));
     }
-
 
     public void TakeDamage(float damage)
     {

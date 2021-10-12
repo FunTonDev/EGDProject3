@@ -5,11 +5,12 @@ using UnityEngine;
 public class PlatformerEnemy : Enemy
 {
 
-    public bool facingLeft;
+    [SerializeField] private bool facingLeft;
 
-    void Awake()
+
+    public override void ClassUpdate()
     {
-        
+        Move(Vector3.zero);
     }
 
 
@@ -20,7 +21,7 @@ public class PlatformerEnemy : Enemy
     }
     */
 
-    public override void Move()
+    public override void Move(Vector3 Pos)
     {
         
         //Enemy on a path
@@ -28,7 +29,7 @@ public class PlatformerEnemy : Enemy
         {
             //Debug.Log(this.transform.eulerAngles);
 
-            base.Move();
+            base.Move(PathFollow());
 
             //Moving Right
             if (this.transform.position.x < base.PathFollow().x)
