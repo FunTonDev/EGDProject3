@@ -2,10 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformerEnemy : Enemy
+public class PlatformerShooterEnemy : Enemy
 {
-
     [SerializeField] private bool facingLeft;
+
+    [SerializeField] private bool ranged;     //Melee or ranged attacked
+    [SerializeField] private bool follow;      //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
+
+    [SerializeField] private bool attackMode;
+
+    [SerializeField] private float AtkDist;     //Distance of their attack
+
+    [SerializeField] private float timeBtwAtk;        //Time left till next attack
+    [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
+
+    [SerializeField] private GameObject Projectile;
 
 
     public override void ClassUpdate()
@@ -23,7 +34,7 @@ public class PlatformerEnemy : Enemy
 
     public override void Move(Vector3 Pos)
     {
-        
+
         //Enemy on a path
         if (pathNodes.Count != 0)
         {
@@ -37,7 +48,7 @@ public class PlatformerEnemy : Enemy
                 //Debug.Log("Eneemy Moving right");
                 this.transform.eulerAngles = new Vector3(0, 180, 0);
                 facingLeft = false;
-            }            
+            }
 
             //Moving left
             else
@@ -54,32 +65,32 @@ public class PlatformerEnemy : Enemy
             { transform.position += new Vector3(1, 0, 0) * moveSpd * Time.deltaTime; }
 
             else
-            {transform.position += new Vector3(-1, 0, 0) * moveSpd * Time.deltaTime; }           
+            { transform.position += new Vector3(-1, 0, 0) * moveSpd * Time.deltaTime; }
 
         }
-                
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         //Checks to see if 
-        if(collision.collider.tag == "Player")
+        if (collision.collider.tag == "Player")
         {
             float xDiff = Mathf.Abs(this.transform.position.x - collision.collider.transform.position.x);
             float yDiff = collision.collider.transform.position.y - this.transform.position.y;
 
             //Player jumped on enemy
-            if((yDiff > 0.5f) && (collision.relativeVelocity.y < 0) )
+            if ((yDiff > 0.5f) && (collision.relativeVelocity.y < 0))
             {
                 Debug.Log(string.Format("Enemy {0} was jumped on by Player", type));
 
-                this.TakeDamage(health);               
+                this.TakeDamage(health);
 
                 //collision.rigidbody.AddForce(Vector3.up * 3); Give player bounce
             }
 
             //Player takes damage
-            else if(xDiff > 0.55f)
+            else if (xDiff > 0.55f)
             {
                 Debug.Log(string.Format("Enemy {0} hit Player", type));
             }
@@ -89,7 +100,7 @@ public class PlatformerEnemy : Enemy
         {
             //Flip enemy direction
             //Make sure enemy didn't hit ground
-            if(rgbdy.velocity.y == 0.0f)
+            if (rgbdy.velocity.y == 0.0f)
             {
                 Debug.Log(string.Format("Enemy {0} hit Wall", type));
                 facingLeft = !facingLeft;
@@ -98,7 +109,4 @@ public class PlatformerEnemy : Enemy
         }
 
     }
-
-
-
 }
