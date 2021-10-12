@@ -2033,6 +2033,15 @@ MonoBehaviour:
   mainIndex: 0
   optionsIndex: 0
   currentSection: 0
+  inputX: 0
+  inputY: 0
+  inputSubmit: 0
+  inputCancel: 0
+  inputAlt1: 0
+  inputAlt2: 0
+  inputAlt3: 0
+  inputAlt4: 0
+  inputButton: 0
 --- !u!1 &803833943
 GameObject:
   m_ObjectHideFlags: 0
