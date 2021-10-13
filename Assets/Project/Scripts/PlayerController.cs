@@ -46,8 +46,6 @@ public class PlayerController : MonoBehaviour
     public float currentHP;
     public Image healthBar;
 
-    public int pauseIndex;
-
     public bool grounded;
     public bool jumped;
     public bool walled;
@@ -188,6 +186,50 @@ public class PlayerController : MonoBehaviour
         {
             gameMMan.TogglePauseMenu();
             StartCoroutine(PauseDelay(1.0f));
+        }
+        //If game is paused, take in input and color selected button
+        if (gameMan.paused)
+        {
+            for (int i = 1; i < 4; i++)
+            {
+                if (i != gameMMan.pauseIndex+1)
+                {
+                    gameMMan.panels[1].transform.GetChild(i).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
+                }
+                else
+                {
+                    gameMMan.panels[1].transform.GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f);
+                }
+            }
+            if (inputMan.inputY > 0 && gameMMan.pauseIndex < 2)
+            {
+                gameMMan.pauseIndex += 1;
+            }
+            if (inputMan.inputY < 0 && gameMMan.pauseIndex > 0)
+            {
+                gameMMan.pauseIndex -= 1;
+            }
+            if (inputMan.inputSubmit != 0)
+            {
+                //Check what to do based on button pressed
+                switch (gameMMan.pauseIndex)
+                {
+                    //Quit
+                    case 0:
+                        //Go to main menu and save the game (not sure if we're gonna use savepoints)
+                        break;
+                    //Options
+                    case 1:
+                        break;
+                    //Resume
+                    case 2:
+                        gameMMan.TogglePauseMenu();
+                        StartCoroutine(PauseDelay(1.0f));
+                        break;
+
+                }
+
+            }
         }
     }
 

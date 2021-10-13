@@ -32,6 +32,7 @@ public class GameMenuManager : MonoBehaviour
         Time.timeScale = gameMan.paused ? 0 : 1;
         panels[1].SetActive(gameMan.paused);
         Cursor.visible = gameMan.paused;
+        pauseIndex = 2;
     }
 
     public void SwitchMenuSection(States.MenuSection i)
