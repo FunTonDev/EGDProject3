@@ -17,6 +17,7 @@ public class MenuManager : MonoBehaviour
 
     [Header("Variables")]
     public int mainIndex;
+    public int playIndex;
     public int optionsIndex;
     public States.MenuSection currentSection;
 
@@ -73,6 +74,7 @@ public class MenuManager : MonoBehaviour
                     MenuChoice(mainIndex);
                     inputButton = true;
                 }
+                //Esc/Cancel
                 if (inputCancel != 0.0f)
                 {
                     SetActiveMenuPanel(States.MenuSection.Main);
@@ -82,7 +84,75 @@ public class MenuManager : MonoBehaviour
         }
         else if (currentSection == States.MenuSection.Play)
         {
-
+            panels[1].transform.GetChild(playIndex).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f);
+            for (int i = 0; i < panels[1].transform.childCount - 1; i++)
+            {
+                if (i != (playIndex))
+                {
+                    if (i >= 0 || i <= 2)
+                    {
+                        panels[1].transform.GetChild(i).GetComponent<Image>().color = new Color(102/255f, 221/255f, 1.0f, 100/255f);
+                    }
+                    else
+                    {
+                        panels[1].transform.GetChild(i).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
+                    }
+                }
+            }
+            if (!inputButton)
+            {
+                //Down/S
+                if (inputY < 0.0f && playIndex < 4)
+                {
+                    if (playIndex >= 0 || playIndex <= 2)
+                    {
+                        playIndex = 4;
+                    }
+                    else
+                    {
+                        playIndex = 3;
+                    }
+                    inputButton = true;
+                }
+                //Up/W
+                else if (inputY > 0.0f && playIndex != 3)
+                {
+                    if (playIndex >= 0 || playIndex <= 2)
+                    {
+                        playIndex = 3;
+                    }
+                    else
+                    {
+                        playIndex = 0;
+                    }
+                    inputButton = true;
+                }
+                //Left/A
+                if (inputX < 0.0f && playIndex > 0)
+                {
+                    playIndex -= 1;
+                    inputButton = true;
+                }
+                //Right/D
+                else if (inputX > 0.0f && playIndex < 2)
+                {
+                    playIndex += 1;
+                    inputButton = true;
+                }
+                //Enter/Submit
+                if (inputSubmit != 0.0f)
+                {
+                    MenuChoice(mainIndex);
+                    inputButton = true;
+                }
+                //Esc/Cancel
+                if (inputCancel != 0.0f)
+                {
+                    SetActiveMenuPanel(States.MenuSection.Main);
+                    playIndex = 0;
+                    inputButton = true;
+                }
+            }
         }
         else if (currentSection == States.MenuSection.Options)
         {
@@ -123,9 +193,11 @@ public class MenuManager : MonoBehaviour
                 break;
             case 0:
                 SetActiveMenuPanel(States.MenuSection.Main);
+                mainIndex = 1;
                 break;
             case 1:
                 SetActiveMenuPanel(States.MenuSection.Play);
+                playIndex = 0;
                 break;
             case 2:
                 SetActiveMenuPanel(States.MenuSection.Options);

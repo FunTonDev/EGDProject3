@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
     public float currentHP;
     public Image healthBar;
 
+    public int pauseIndex;
+
     public bool grounded;
     public bool jumped;
     public bool walled;

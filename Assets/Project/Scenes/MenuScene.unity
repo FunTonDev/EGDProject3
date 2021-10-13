@@ -2031,6 +2031,7 @@ MonoBehaviour:
   choiceClip: {fileID: 0}
   confirmClip: {fileID: 0}
   mainIndex: 0
+  playIndex: 0
   optionsIndex: 0
   currentSection: 0
   inputX: 0
