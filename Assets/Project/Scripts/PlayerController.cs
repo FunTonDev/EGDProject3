@@ -19,8 +19,12 @@ public class PlayerController : MonoBehaviour
     public List<AudioClip> playerClips;
     public Mesh SpriteMesh;
     public Mesh ModelMesh;
+    public Image healthBar;
 
     [Header("Variables")]
+    public float currentHP;
+    public float maxHP;
+
     public float xForce;
     public float yForce;
     public float jumpForce;
@@ -33,33 +37,36 @@ public class PlayerController : MonoBehaviour
 
     public int jumpCount;
     public int maxJumps;
-    public float jumpDelayTime;
     public int wallJumpCount;
     public int maxWallJumps;
-    public float wallJumpDelayTime;
-    public Vector3 wallNorm;
     public int dashCount;
     public int maxDashes;
+    
+    public float jumpTimer;
+    public float jumpDelayTime;
+    public float wallJumpTimer;
+    public float wallJumpDelayTime;
+    public float dashTimer;
+    public float dashDelayTime;
+    public float shootTimer;
     public float shootDelayTime;
-
-    public float maxHP;
-    public float currentHP;
-    public Image healthBar;
+    public float pauseTimer;
+    public float pauseDelayTime;    //1.0
+    public float toggleTimer;
+    public float toggleDelayTime;   //1.0
+    public float rollTimer;
+    public float rollDelayTime;
 
     public bool grounded;
-    public bool jumped;
     public bool walled;
-    public bool wallJumped;
     public bool canClimb;
     public bool climbing;
-    public bool shot;
-    public bool justPaused;
-    public bool toggled;
 
+    public Vector3 wallNorm;
     public LayerMask groundingMask;
 
     private delegate void ControlDelegate();
-    ControlDelegate controlDel;
+    private ControlDelegate controlDel;
 
     /*============================================================================
      * DEFAULT UNITY METHODS
@@ -75,8 +82,7 @@ public class PlayerController : MonoBehaviour
         playerRigB = GetComponent<Rigidbody>();
         playerBoxC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
-        //controlDel += PlatformerMoveUpdate;
-        controlDel += ShooterMoveUpdate;
+        controlDel = PlatformerMoveUpdate;
     }
 
     private void Update()
@@ -85,6 +91,7 @@ public class PlayerController : MonoBehaviour
         {
             CursorMoveUpdate();
             FireUpdate();
+            TimerUpdate();
         }
         PauseUpdate();
         DebugUpdate();
@@ -92,10 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!gameMan.paused)
-        {
-            controlDel();   //Delegate uses current genre control schema
-        }
+        if (!gameMan.paused) { controlDel(); } //Delegate uses current genre control schema
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -123,7 +127,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /*============================================================================
-     * GAMEPLAY UPDATE METHODS
+     * MOVEMENT UPDATE METHODS
      ============================================================================*/
     private void PlatformerMoveUpdate()
     {
@@ -134,28 +138,27 @@ public class PlayerController : MonoBehaviour
             else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
         }
 
-        if (inputMan.inputAlt1 == 1 && !jumped) //Jump check
+        if (inputMan.inputAlt1 == 1 && jumpTimer <= 0) //Jump check
         {
             if (walled && !grounded && wallJumpCount < maxWallJumps)
             {
                 wallJumpCount++;
                 Vector3 jumpDir = (wallNorm + transform.up).normalized;
                 playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
-                StartCoroutine(WallJumpDelay(wallJumpDelayTime));
-                StartCoroutine(JumpDelay(jumpDelayTime));
+                wallJumpTimer = wallJumpDelayTime;
+                jumpTimer = jumpDelayTime;
             }
             else if (jumpCount < maxJumps)
             {
                 jumpCount++;
                 playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse);
-                StartCoroutine(JumpDelay(jumpDelayTime));
+                jumpTimer = jumpDelayTime;
             }
         }
 
-        if (!wallJumped)    //X move check
+        if (wallJumpTimer <= 0)    //X move check
         {
             playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
-            
         }
         if (canClimb)       //Y move check
         {
@@ -171,21 +174,35 @@ public class PlayerController : MonoBehaviour
     private void ShooterMoveUpdate()
     {
         Debug.Log(inputMan.inputY);
-
         playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
-        //float yClampVel = inputMan.inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);
-        //playerRigB.velocity = new Vector3(playerRigB.velocity.x, playerRigB.velocity.y, yClampVel);
         playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
+        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+        float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
+
+        if (inputMan.inputAlt2 == 1 && rollTimer <= 0) //Roll check
+        {
+            Debug.Log("ROLL");
+        }
         //float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
         //playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
     }
 
+    private void CursorMoveUpdate()
+    {
+        healthBar.fillAmount = currentHP / maxHP;
+        cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
+    }
+
+    /*============================================================================
+     * GAMEPLAY UPDATE METHODS
+     ============================================================================*/
     private void PauseUpdate()
     {
-        if (inputMan.inputCancel == 1 && !justPaused)
+        if (inputMan.inputCancel == 1 && pauseTimer <= 0)
         {
             gameMMan.TogglePauseMenu();
-            StartCoroutine(PauseDelay(1.0f));
+            pauseTimer = pauseDelayTime;
         }
         //If game is paused, take in input and color selected button
         if (gameMan.paused)
@@ -224,61 +241,42 @@ public class PlayerController : MonoBehaviour
                     //Resume
                     case 2:
                         gameMMan.TogglePauseMenu();
-                        StartCoroutine(PauseDelay(1.0f));
+                        pauseTimer = pauseDelayTime;
                         break;
-
                 }
-
             }
         }
     }
 
-    private void CursorMoveUpdate()
-    {
-        healthBar.fillAmount = currentHP / maxHP;
-        cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
-    }
-
     private void FireUpdate()
     {
-        if (inputMan.inputFire1 == 1 && !shot)
+        if (inputMan.inputFire1 == 1 && shootTimer <= 0)
         {
-            Vector3 playerScreenPos = camCont.cam.WorldToScreenPoint(transform.position);
+            Vector3 playerScreenPos = camCont.PlayerPosWorldToScreen();
             Vector3 mouseScreenPos = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
             Vector3 aimDir = new Vector3(mouseScreenPos.x - playerScreenPos.x, mouseScreenPos.y - playerScreenPos.y, 0).normalized;
-            Quaternion aimQ = Quaternion.FromToRotation(Vector3.right, aimDir);
+            Quaternion aimQ = Quaternion.FromToRotation(Vector3.up, aimDir);     //Vector3.right for platformer
             Instantiate(bulletPrefab, transform.position, aimQ);
-            StartCoroutine(ShootDelay(shootDelayTime));
+            Debug.Log(mouseScreenPos + " " + playerScreenPos);
+            shootTimer = shootDelayTime;
         }
-        //Instantiate(bulletPrefab, transform.position, transform.rotation);
     }
 
-    /*============================================================================
-     * ENUMERATOR METHODS
-     ============================================================================*/
-    private IEnumerator JumpDelay(float time)
+    private void TimerUpdate()
     {
-        jumped = true;
-        yield return new WaitForSeconds(time);
-        jumped = false;
+        jumpTimer -= jumpTimer > 0 ? Time.deltaTime : 0;
+        wallJumpTimer -= wallJumpTimer > 0 ? Time.deltaTime : 0;
+        dashTimer -= dashTimer > 0 ? Time.deltaTime : 0;
+        shootTimer -= shootTimer > 0 ? Time.deltaTime : 0;
+        rollTimer -= rollTimer > 0 ? Time.deltaTime : 0;
+        pauseTimer -= pauseTimer > 0 ? Time.deltaTime : 0;
+        toggleTimer -= toggleTimer > 0 ? Time.deltaTime : 0;
     }
-    private IEnumerator WallJumpDelay(float time)
+
+    public float ChangeHealth(float change)
     {
-        wallJumped = true;
-        yield return new WaitForSeconds(time);
-        wallJumped = false;
-    }
-    private IEnumerator ShootDelay(float time)
-    {
-        shot = true;
-        yield return new WaitForSeconds(time);
-        shot = false;
-    }
-    private IEnumerator PauseDelay(float time)
-    {
-        justPaused = true;
-        yield return new WaitForSeconds(time);
-        justPaused = false;
+        currentHP += change;
+        return currentHP;
     }
 
     /*============================================================================
@@ -343,9 +341,13 @@ public class PlayerController : MonoBehaviour
     [ContextMenu("Reset to Default")]
     private void SetDefaultValues()
     {
+        currentHP = 6.0f;
+        maxHP = 10.0f;
+
         xForce = 4.0f;
         yForce = 4.0f;
         jumpForce = 100.0f;
+        dashForce = 80.0f;
 
         maxXVelocity = 6.0f;
         maxYVelocity = 6.0f;
@@ -354,25 +356,32 @@ public class PlayerController : MonoBehaviour
 
         jumpCount = 0;
         maxJumps = 2;
-        jumpDelayTime = 0.5f;
         wallJumpCount = 0;
         maxWallJumps = 6;
-        wallJumpDelayTime = 0.2f;
-        wallNorm = new Vector3(0, 0, 0);
         dashCount = 0;
         maxDashes = 1;
+
+        jumpTimer = 0;
+        jumpDelayTime = 0.5f;
+        wallJumpTimer = 0;
+        wallJumpDelayTime = 0.2f;
+        dashTimer = 0;
+        dashDelayTime = 1.0f;
+        shootTimer = 0;        
         shootDelayTime = 0.5f;
+        pauseTimer = 0;
+        pauseDelayTime = 1.0f;
+        toggleTimer = 0;
+        toggleDelayTime = 1.0f;
+        rollTimer = 0;
+        rollDelayTime = 2.0f;
 
         grounded = false;
-        jumped = false;
         walled = false;
-        wallJumped = false;
         canClimb = false;
         climbing = false;
-        shot = false;
-        justPaused = false;
-        toggled = false;
 
+        wallNorm = new Vector3(0, 0, 0);
         //playerRigB.constraints = 
     }
 
@@ -388,29 +397,39 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void SetPlayerMode(States.GameGenre mode)
+    {
+        switch(mode)
+        {
+            case States.GameGenre.Platformer:
+                controlDel = PlatformerMoveUpdate;
+                playerRigB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+                camCont.SetCameraMode(States.GameGenre.Platformer);
+                break;
+            case States.GameGenre.Shooter:
+                controlDel = ShooterMoveUpdate;
+                playerRigB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                
+                break;
+            case States.GameGenre.RPG:
+                break;
+        }
+        camCont.SetCameraMode(mode);
+    }
 
     private void DebugUpdate()
     {
-        if (inputMan.inputAlt3 == 1 && !toggled)
+        if (inputMan.inputAlt3 == 1 && toggleTimer <= 0)
         {
-            if (camCont.currMode == States.CameraMode.Platformer)
+            if (camCont.currMode == States.GameGenre.Platformer)
             {
-
-                playerRigB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-                camCont.SetCameraMode(States.CameraMode.Shooter);
+                SetPlayerMode(States.GameGenre.Shooter);
             }
             else
             {
-                playerRigB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
-                camCont.SetCameraMode(States.CameraMode.Platformer);
+                SetPlayerMode(States.GameGenre.Platformer);
             }
-            StartCoroutine(ToggleDelay(1.0f));
+            toggleTimer = toggleDelayTime;
         }
-    }
-    private IEnumerator ToggleDelay(float time)
-    {
-        toggled = true;
-        yield return new WaitForSeconds(time);
-        toggled = false;
     }
 }

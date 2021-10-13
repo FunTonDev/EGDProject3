@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
     public float camVelY;
 
     public bool isTrackingMovement;
-    public States.CameraMode currMode;
+    public States.GameGenre currMode;
 
     private Vector3 mousePos;
     private Vector3 targetPos;
@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
         playerPrefab = GameObject.Find("PlayerPrefab");
         SetCameraTarget("PlayerPrefab");
         SyncScreen();
-        SetCameraMode(States.CameraMode.Shooter);
+        SetCameraMode(States.GameGenre.Platformer);
     }
 
     private void FixedUpdate()
@@ -53,19 +53,18 @@ public class CameraController : MonoBehaviour
             
             switch (currMode)
             {
-                case (States.CameraMode.Platformer):
+                case (States.GameGenre.Platformer):
                     transform.position = targetPos + new Vector3(0, 0, -8.0f) + new Vector3(xChange, yChange, 0);
                     break;
-                case (States.CameraMode.Shooter):
+                case (States.GameGenre.Shooter):
                     transform.position = new Vector3(targetPos.x, 10.0f, targetPos.z);
                     break;
-                case (States.CameraMode.RPG):
+                case (States.GameGenre.RPG):
                     break;
             }
         }
 
-        //Incorporate averageing of mouse position, movement, character position later
-        
+        //Incorporate averaging of mouse position, movement, character position later
     }
 
     /*============================================================================
@@ -110,20 +109,19 @@ public class CameraController : MonoBehaviour
         isTrackingMovement = targetStr == "PlayerPrefab";
     }
 
-    public void SetCameraMode(States.CameraMode mode)
+    public void SetCameraMode(States.GameGenre mode)
     {
         currMode = mode;
         switch (currMode)
         {
-            case (States.CameraMode.Platformer):
+            case (States.GameGenre.Platformer):
                 cam.orthographic = true;
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
-            case (States.CameraMode.Shooter):
+            case (States.GameGenre.Shooter):
                 cam.orthographic = false;
                 transform.rotation = Quaternion.Euler(90, 0, 0);
                 break;
-
         }
     }
 
@@ -141,7 +139,7 @@ public class CameraController : MonoBehaviour
         camVelY = 0.1f;
 
         isTrackingMovement = true;
-        SetCameraMode(States.CameraMode.Platformer);
+        SetCameraMode(States.GameGenre.Platformer);
     }
 
     private void SyncScreen()
@@ -151,5 +149,10 @@ public class CameraController : MonoBehaviour
         mouseRightBound = Screen.width/2 + xShift;
         mouseUpBound = Screen.height/2 + yShift;
         mouseDownBound = Screen.height/2 - yShift;
+    }
+
+    public Vector3 PlayerPosWorldToScreen()
+    {
+        return cam.WorldToScreenPoint(playerPrefab.transform.position);
     }
 }
