@@ -8,7 +8,8 @@ public class ShooterEnemy : Enemy
     //[SerializeField] private NavMeshAgent agent;
 
     [SerializeField] private bool ranged;     //Melee or ranged attacked
-    [SerializeField] private bool follow;      //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
+    [SerializeField] private bool follow;     //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
+    [SerializeField] private bool sentry;     //Doesn't move from initial spot
 
     [SerializeField] private bool chaseMode;
     [SerializeField] private bool attackMode;
@@ -17,6 +18,8 @@ public class ShooterEnemy : Enemy
     [SerializeField] private float radius;      //Radius of their detection Circle
     [SerializeField] private float AtkDist;     //Distance of their attack
     [SerializeField] private float RetreatDist; //Distance of how close enemy can be to player
+    [SerializeField] private float RotSpd;      //How fast enemy turns
+    [SerializeField] private float AtkAngle;
 
     [SerializeField] private float timeBtwAtk;        //Time left till next attack
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
@@ -28,7 +31,7 @@ public class ShooterEnemy : Enemy
     {
 
         chaseMode = PlayerInDetectionRange();
-        attackMode = PlayerInAttackRange();
+        attackMode = PlayerInAttackCone();
         //retreatMode = PlayerInRetreatRange();
 
         //Check if enemy should attack player
@@ -70,16 +73,49 @@ public class ShooterEnemy : Enemy
     public override void Move(Vector3 Pos)
     {
         //If Enemy must chase player
-        if (chaseMode && follow)
+        if (chaseMode)
         {
-            //agent.SetDestination(player.transform.position); //For Potential NavMesh
-            base.Move(player.transform.position);
-        }
+            //Have Sentry enemy rotate to player
+            if (sentry)
+            {
+                //agent.SetDestination(player.transform.position); //For Potential NavMesh
+                transform.rotation = Quaternion.Slerp(this.transform.rotation,
+                                       Quaternion.LookRotation(player.transform.position - this.transform.position),
+                                               RotSpd * Time.deltaTime);
+            }
+
+            //Have Enemy look at player while chasing them
+            else if (follow)
+            {
+                //agent.SetDestination(player.transform.position); //For Potential NavMesh
+
+                this.transform.LookAt(player.transform.position);
+                base.Move(player.transform.position);
+            }
+
+            else if (!follow)
+            {
+                this.transform.LookAt(player.transform.position);
+                base.Move(PathFollow());
+
+            }
+            
+        }        
 
         //Follow path if one given
-        else if (pathNodes.Count != 0 )
+        else if (pathNodes.Count != 0)
         {
-            base.Move(PathFollow());
+            Vector3 newPos = PathFollow();
+            this.transform.LookAt(new Vector3(newPos.x, this.transform.position.y, newPos.z));
+            base.Move(newPos);
+        }
+
+        //Have Sentry enemy rotate
+        else if (sentry)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                        Quaternion.LookRotation(this.transform.right - transform.position),
+                                                RotSpd * Time.deltaTime);
         }
                 
     }
@@ -93,7 +129,7 @@ public class ShooterEnemy : Enemy
             {
                 Debug.Log("Ranged attacked called");
 
-                Instantiate(Projectile, this.transform.position, Quaternion.identity);                    
+                //Instantiate(Projectile, this.transform.position, Quaternion.identity);                    
             }
 
             //Continue to move towards player to hit them
@@ -119,15 +155,24 @@ public class ShooterEnemy : Enemy
         return playerFound;
     }
 
-
-    public bool PlayerInAttackRange()
+    //Perform cone check to see if player is within the enemy's vision
+    public bool PlayerInAttackCone()
     {
         bool attack = false;
 
-        if (Vector3.Distance(this.transform.position, player.transform.position) <= AtkDist)
+        Vector3 agentOrentation = this.transform.rotation.eulerAngles;
+        Collider[] contextColliders = Physics.OverlapSphere(this.transform.position, AtkDist);
+        foreach (Collider c in contextColliders)
         {
-            Debug.Log("Player in Attack Range");
-            attack = true;
+            if (c.tag == "Player" && c.name != this.name)
+            {
+                Debug.Log("Player in Sphere"); 
+                Vector3 dir = this.transform.position - c.transform.position;
+                if (Vector3.Dot(agentOrentation, dir) > Mathf.Cos(AtkAngle / 2))
+                {
+                    attack = true;
+                }
+            }
         }
 
         return attack;

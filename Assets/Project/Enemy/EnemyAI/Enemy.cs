@@ -5,22 +5,22 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    public string type;                     //Name (Ex: TestBox)
+    [SerializeField] protected string type;                     //Name (Ex: TestBox)
 
-    public float health;
-    public float atkDamage;
-    public float moveSpd;
+    [SerializeField] protected float health;
+    [SerializeField] protected float atkDamage;
+    [SerializeField] protected float moveSpd;
 
-    public int detectionLvl;                // 0,1,2
+    [SerializeField] protected int detectionLvl;                // 0,1,2
 
-    public bool platformer, shooter, rpg;
+    [SerializeField] protected bool platformer, shooter, rpg;
 
-    public Rigidbody rgbdy;
+    [SerializeField] protected Rigidbody rgbdy;
 
-    public List<Transform> pathNodes;       
-    public int currNode = 0;
+    [SerializeField] protected List<Transform> pathNodes;
+    [SerializeField] protected int currNode = 0;
 
-    public GameObject player;
+    [SerializeField] protected GameObject player;
 
     // Start is called before the first frame update
     void Start()
