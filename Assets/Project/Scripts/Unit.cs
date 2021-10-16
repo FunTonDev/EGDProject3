@@ -14,11 +14,8 @@ public class Action
 }
 
 
-public class PartyMemberScript : MonoBehaviour
+public class Unit : MonoBehaviour
 {
-    public Image HPBar;
-    public Image StaminaBar;
-
     public string unitName;
 
     public float currentHP;
