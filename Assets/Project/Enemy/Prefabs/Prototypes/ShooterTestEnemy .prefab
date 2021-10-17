@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8502243763931986138}
   - component: {fileID: 8502243763931986137}
   - component: {fileID: 8502243763931986139}
-  m_Layer: 0
+  - component: {fileID: -9085207474030722447}
+  m_Layer: 7
   m_Name: 'ShooterTestEnemy '
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -84,19 +85,15 @@ MonoBehaviour:
   platformer: 0
   shooter: 1
   rpg: 0
-  rgbdy: {fileID: 0}
   pathNodes:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  currNode: 0
-  player: {fileID: 0}
   ranged: 1
   follow: 0
   sentry: 0
-  chaseMode: 0
-  attackMode: 0
-  retreatMode: 0
+  PlayerInSightRange: 0
+  PlayerInAtkRange: 0
   radius: 6
   AtkDist: 4
   RetreatDist: 3
@@ -105,6 +102,28 @@ MonoBehaviour:
   timeBtwAtk: 0
   StartTimeBtwAtk: 2
   Projectile: {fileID: 0}
+--- !u!195 &-9085207474030722447
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8502243763931986119}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8502243764277963708
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +135,7 @@ GameObject:
   - component: {fileID: 8502243764277963709}
   - component: {fileID: 8502243764277963711}
   - component: {fileID: 8502243764277963710}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +216,7 @@ GameObject:
   - component: {fileID: 8502243764899265250}
   - component: {fileID: 8502243764899265252}
   - component: {fileID: 8502243764899265251}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
