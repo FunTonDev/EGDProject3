@@ -10,6 +10,7 @@ TagManager:
   - Climbable
   - PartyUnitPrefab
   - EnemyUnitPrefab
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
