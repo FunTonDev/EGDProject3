@@ -8,6 +8,8 @@ TagManager:
   - Neutral
   - TransitionArea
   - Climbable
+  - PartyUnitPrefab
+  - EnemyUnitPrefab
   layers:
   - Default
   - TransparentFX

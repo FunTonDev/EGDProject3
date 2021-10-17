@@ -8,6 +8,9 @@ public enum battleState { START, PLAYER, ATTACK, ENEMY, WIN, LOSE, FLEE, HUH }
 
 public class BattleManager : MonoBehaviour
 {
+    //Use to determine state of the battle (turns, win/loss, etc.)
+    public battleState state;
+
     public InputManager inputMan;
 
     //List of the positions of menus
@@ -23,6 +26,8 @@ public class BattleManager : MonoBehaviour
     //A list of positions the cursor can go through
     [SerializeField]
     public List<MenuPositions> cursor_positions;
+
+    private List<GameObject> menus;                 //The list of menu objects
 
     public Text DisplayText;
 
@@ -105,6 +110,11 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    IEnumerator setupBattle()
+    {
+        yield return new WaitForSeconds(0.0f);
+    }
+
     //Perform the selected actions, after they have been selected
     public IEnumerator PerformActions()
     {
@@ -115,8 +125,8 @@ public class BattleManager : MonoBehaviour
     IEnumerator fadeIn()
     {
         Color ori = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
-        transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(0, 2f, false);
+        transform.GetChild(8).Find("Fader").GetComponent<Image>().color = ori;
+        transform.GetChild(8).Find("Fader").GetComponent<Image>().CrossFadeAlpha(0, 2f, false);
         yield return new WaitForSeconds(0.5f);
 
     }
@@ -127,14 +137,24 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Color ori = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         //transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
-        transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
+        transform.GetChild(8).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        menus = new List<GameObject>();
+        for (int i = 2; i < transform.GetChild(8).childCount; i++)
+        {
+            menus.Add(transform.GetChild(8).GetChild(i).gameObject);
+        }
+
+        StartCoroutine(fadeIn());
+        menu_input = false;
+
+        state = battleState.START;
+        StartCoroutine(setupBattle());
     }
 
     // Update is called once per frame
