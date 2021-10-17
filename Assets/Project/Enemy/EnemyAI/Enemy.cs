@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -15,14 +14,13 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected int detectionLvl;                // 0,1,2
 
     [SerializeField] protected bool platformer, shooter, rpg;
-    
+
+    [SerializeField] protected Rigidbody rgbdy;
+
     [SerializeField] protected List<Transform> pathNodes;
-    protected int currNode = 0;
+    [SerializeField] protected int currNode = 0;
 
-    protected Rigidbody rgbdy;
-    protected GameObject player;
-
-    protected NavMeshAgent NavAgent;
+    [SerializeField] protected GameObject player;
 
     // Start is called before the first frame update
     void Start()
@@ -31,12 +29,6 @@ public abstract class Enemy : MonoBehaviour
         rgbdy = this.GetComponent<Rigidbody>();
 
         player = GameObject.FindGameObjectWithTag("Player");
-
-        if (shooter || rpg)
-        {
-            NavAgent = GetComponent<NavMeshAgent>();
-            NavAgent.speed = moveSpd;
-        }
     }
 
     

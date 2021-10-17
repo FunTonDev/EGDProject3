@@ -62,7 +62,6 @@ public class ShooterEnemy : Enemy
             transform.rotation = Quaternion.Slerp(transform.rotation,
                                         Quaternion.LookRotation(this.transform.right),
                                                 0.5f * Time.deltaTime);
-            
         }
 
         //Follow path if one given
@@ -70,8 +69,7 @@ public class ShooterEnemy : Enemy
         {
             Vector3 newPos = PathFollow();
             this.transform.LookAt(new Vector3(newPos.x, this.transform.position.y, newPos.z));
-            NavAgent.SetDestination(newPos);
-            //base.Move(newPos);
+            base.Move(newPos);
         }
     }
 
@@ -87,21 +85,21 @@ public class ShooterEnemy : Enemy
                                            RotSpd * Time.deltaTime);
         }
 
-        //Enemy continues on set path, but looks at player during so
+        //Enemy continues on path, but looks at player during so
         else if (!follow)
         {
             this.transform.LookAt(player.transform.position);
-            //base.Move(PathFollow());
-            NavAgent.SetDestination(PathFollow());
+            base.Move(PathFollow());
 
         }
 
         //Enemy follows player to chase him down
         else if (follow)
         {
+            //agent.SetDestination(player.transform.position); //For Potential NavMesh
+
             this.transform.LookAt(player.transform.position);
-            //base.Move(player.transform.position);
-            NavAgent.SetDestination(player.transform.position);
+            base.Move(player.transform.position);
         }
 
     }
@@ -110,22 +108,11 @@ public class ShooterEnemy : Enemy
     {
         Attack();
 
-        //For enemies that don't follow the player when attack, continuing to stay on a path while firing
-        if (pathNodes.Count != 0 && !follow)
+        //For enemies that don't follow the player when attack, either continuing to stay on a path or in place
+        if (!follow)
         {
-            this.transform.LookAt(player.transform.position);
-            //base.Move(PathFollow());
-            NavAgent.SetDestination(PathFollow());
+            Move(Vector3.zero);
         }
-
-        //If sentry enemy, contine to rotate towards player
-        else if (sentry)
-        {
-            transform.rotation = Quaternion.Slerp(this.transform.rotation,
-                                   Quaternion.LookRotation(player.transform.position - this.transform.position),
-                                           RotSpd * Time.deltaTime);
-        }
-
     }
 
 
