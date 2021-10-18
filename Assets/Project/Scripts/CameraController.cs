@@ -29,6 +29,8 @@ public class CameraController : MonoBehaviour
     private Vector3 mousePos;
     private Vector3 targetPos;
 
+    private Vector3 initEuler;
+
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
@@ -40,6 +42,7 @@ public class CameraController : MonoBehaviour
         SetCameraTarget("PlayerPrefab");
         SyncScreen();
         SetCameraMode(States.GameGenre.Platformer);
+        initEuler = transform.eulerAngles;
     }
 
     private void FixedUpdate()
@@ -55,11 +58,15 @@ public class CameraController : MonoBehaviour
             {
                 case (States.GameGenre.Platformer):
                     transform.position = targetPos + new Vector3(0, 0, -8.0f) + new Vector3(xChange, yChange, 0);
+                    transform.eulerAngles = initEuler;
                     break;
                 case (States.GameGenre.Shooter):
                     transform.position = new Vector3(targetPos.x, 10.0f, targetPos.z);
+                    transform.eulerAngles = initEuler + new Vector3(90f, 0.0f, 0.0f);
                     break;
                 case (States.GameGenre.RPG):
+                    transform.position = targetPos + new Vector3(0, 1.0f, -8.0f) + new Vector3(xChange, yChange, 0);
+                    transform.eulerAngles = initEuler + new Vector3(20.42f, 0.0f, 0.0f);
                     break;
             }
         }
