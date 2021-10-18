@@ -38,7 +38,7 @@ public class ShooterEnemy : Enemy
         //retreatMode = PlayerInRetreatRange();
 
         //If enemy should be attacking the player
-        if(PlayerInSightRange && PlayerInAtkRange)
+        if(PlayerInAtkRange)
             { AttackPlayer();}
 
         //If enemy should be chasing the player
@@ -182,17 +182,18 @@ public class ShooterEnemy : Enemy
             Quaternion rotationMod = Quaternion.AngleAxis((i/((float)numOfRays-1)) * AtkAngle * 2 - AtkAngle, this.transform.up); 
             Vector3 dir = rotation * rotationMod * Vector3.forward;
 
-            Ray ray = new Ray(this.transform.position, dir);
+            //Ray ray = new Ray(this.transform.position, dir);
             RaycastHit hitInfo;
-            if(Physics.Raycast(ray, out hitInfo, AtkDist, layerMask))
+            if(Physics.Raycast(this.transform.position, dir, out hitInfo, AtkDist))
             {
+                Debug.Log(hitInfo.collider.gameObject.name);
                 if (hitInfo.collider.tag == "Player")
                 {
                     attack = true;
                     break;
                 }
 
-                if (hitInfo.collider.tag == "Enemy") Debug.Log("Enemy Raycast hit Enemy");
+                if (hitInfo.collider.tag == "Wall") Debug.Log("Enemy Raycast hit wall");
                 
             }
         }

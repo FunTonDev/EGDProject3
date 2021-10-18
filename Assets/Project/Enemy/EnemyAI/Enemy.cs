@@ -11,6 +11,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float health;
     [SerializeField] protected float atkDamage;
     [SerializeField] protected float moveSpd;
+    [SerializeField] protected float armor;
 
     [SerializeField] protected int detectionLvl;                // 0,1,2
 
@@ -100,11 +101,21 @@ public abstract class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        Debug.Log(string.Format("Enemy {0} took {1} damage", type, damage));
-
+        if(armor > 0)
+        {
+            armor -= (3 / 4) * damage;
+            health -= (1 / 4) * damage;
+            Debug.Log(string.Format("Enemy {0} took {1} damage", type, (1 / 4)* damage));
+        }
+        else
+        {
+            health -= damage;
+            Debug.Log(string.Format("Enemy {0} took {1} damage", type, damage));
+        }      
+        
         if (health <= 0)
             { Death(); }
+
     }
 
     public void Death()
