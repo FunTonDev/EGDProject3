@@ -23,7 +23,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private float timeBtwAtk;        //Time left till next attack
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
 
-    [SerializeField] private GameObject Projectile;
+    [SerializeField] private GameObject AttackObj;
 
     public float GetAtkDist() { return AtkDist; }
     public float GetAtkAngle() { return AtkAngle; }
@@ -55,7 +55,9 @@ public class ShooterEnemy : Enemy
 
     //Follow path, or stay still if there is no path
     private void Patroling()
-    {       
+    {
+        transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
+
         //Have Sentry enemy rotate
         if (sentry)
         {
@@ -77,7 +79,7 @@ public class ShooterEnemy : Enemy
 
     private void ChasePlayer()
     {
-
+        transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
         //Sentry stays in place but rotates to look at Player's current position
         if (sentry)
         {
@@ -93,7 +95,6 @@ public class ShooterEnemy : Enemy
             this.transform.LookAt(player.transform.position);
             //base.Move(PathFollow());
             NavAgent.SetDestination(PathFollow());
-
         }
 
         //Enemy follows player to chase him down
@@ -110,6 +111,7 @@ public class ShooterEnemy : Enemy
     {
         Attack();
 
+        transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
         //For enemies that don't follow the player when attack, continuing to stay on a path while firing
         if (pathNodes.Count != 0 && !follow)
         {
@@ -169,31 +171,9 @@ public class ShooterEnemy : Enemy
     //Perform cone check to see if player is within the enemy's vision
     public bool PlayerInAttackVision()
     {
-        bool attack = false;
-        /*
-        Vector3 agentOrentation = this.transform.rotation.eulerAngles;
-        Collider[] contextColliders = Physics.OverlapSphere(this.transform.position, AtkDist);
-        foreach (Collider c in contextColliders)
-        {
-            if (c.tag == "Player")
-            {
-                //Debug.Log("Player in Sphere"); 
-                Vector3 dir = this.transform.position - c.transform.position;
-                Debug.Log("DotProduct: " + Vector3.Dot(agentOrentation, dir));
-                Debug.Log("Cone Threashold: " + Mathf.Cos(AtkAngle / 2));
-                if (Vector3.Dot(agentOrentation, dir) > Mathf.Cos(AtkAngle / 2))
-                {
-                    Debug.Log("Player in Conecheck");
-                    attack = true;
-                }
-            }
-        }
-        */
-
-
         //Perform a series of Raycast to see if player is in front of enemy
+        bool attack = false;
         float numOfRays = 5;
-        float RcDist = AtkDist;
 
         for(int i = 0; i < numOfRays; i++)
         {
@@ -203,7 +183,7 @@ public class ShooterEnemy : Enemy
 
             Ray ray = new Ray(this.transform.position, dir);
             RaycastHit hitInfo;
-            if(Physics.Raycast(ray, out hitInfo, RcDist))
+            if(Physics.Raycast(ray, out hitInfo, AtkDist))
             {
                 if (hitInfo.collider.tag == "Player")
                 {
