@@ -35,15 +35,6 @@ public class BattleManager : MonoBehaviour
     public List<Unit> PartyMembers;
     public List<Unit> EnemyMembers;
 
-    //UI elements of Units
-    public List<Text> partyNames;
-    public List<Image> HealthBars;
-    public List<Image> StaminaBars;
-
-    //UI elements of Units(Enemies)
-    public List<Text> EnemyNames;
-    public List<Image> EnemyHealthBars;
-
     //Int to track how many abilities away from the bottom before the menu can start scrolling
     private int ability_offset;
     //Int to track how many actions away from the bottom before the menu can start scrolling
@@ -112,6 +103,39 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator setupBattle()
     {
+        currentUnit = 0;
+        for (int i = 0; i < 3; i++) PartyMembers.Add(null);
+        for (int i = 0; i < 3; i++) EnemyMembers.Add(null);
+        //Load in from json file or other source. Until available, load in prefabs
+        PartyMembers[0] = new Pixal();
+        PartyMembers[1] = new Mama();
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (PartyMembers[i] != null)
+            {
+                if (PartyMembers[i].sprites[0] != null)
+                {
+                    partyPrefabs[i].GetComponent<SpriteRenderer>().sprite = PartyMembers[i].sprites[0];
+                }
+                else
+                {
+                    partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
+                }
+                partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
+                    new Vector3(0.5f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 0.2f, 0.0f);
+                partyPrefabs[i].transform.GetChild(1).GetComponent<SpriteRenderer>().transform.localScale =
+                    new Vector3(0.5f * PartyMembers[i].currentStamina / PartyMembers[i].maxStamina, 0.2f, 0.0f);
+            }
+            else
+            {
+                partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            }
+        }
+
+        EnemyMembers[0] = new Slime();
+        EnemyMembers[1] = new Skeleton();
+        EnemyMembers[2] = new Hound();
         yield return new WaitForSeconds(0.0f);
     }
 
@@ -125,8 +149,8 @@ public class BattleManager : MonoBehaviour
     IEnumerator fadeIn()
     {
         Color ori = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        transform.GetChild(8).Find("Fader").GetComponent<Image>().color = ori;
-        transform.GetChild(8).Find("Fader").GetComponent<Image>().CrossFadeAlpha(0, 2f, false);
+        transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
+        transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(0, 2f, false);
         yield return new WaitForSeconds(0.5f);
 
     }
@@ -137,7 +161,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Color ori = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         //transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
-        transform.GetChild(8).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
+        transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
     }
 
 
@@ -145,13 +169,17 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         menus = new List<GameObject>();
-        for (int i = 2; i < transform.GetChild(8).childCount; i++)
+        for (int i = 2; i < transform.GetChild(1).childCount-1; i++)
         {
-            menus.Add(transform.GetChild(8).GetChild(i).gameObject);
+            menus.Add(transform.GetChild(1).GetChild(i).gameObject);
         }
 
-        StartCoroutine(fadeIn());
+        //StartCoroutine(fadeIn());
         menu_input = false;
+
+        PartyMembers = new List<Unit>();
+        EnemyMembers = new List<Unit>();
+
 
         state = battleState.START;
         StartCoroutine(setupBattle());
