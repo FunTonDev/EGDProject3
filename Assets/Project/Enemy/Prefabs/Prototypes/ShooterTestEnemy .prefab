@@ -101,7 +101,10 @@ MonoBehaviour:
   AtkAngle: 0
   timeBtwAtk: 0
   StartTimeBtwAtk: 2
-  Projectile: {fileID: 0}
+  AttackObj: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 127
 --- !u!195 &-9085207474030722447
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -24,6 +24,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
 
     [SerializeField] private GameObject AttackObj;
+    [SerializeField] private LayerMask layerMask;
 
     public float GetAtkDist() { return AtkDist; }
     public float GetAtkAngle() { return AtkAngle; }
@@ -183,13 +184,16 @@ public class ShooterEnemy : Enemy
 
             Ray ray = new Ray(this.transform.position, dir);
             RaycastHit hitInfo;
-            if(Physics.Raycast(ray, out hitInfo, AtkDist))
+            if(Physics.Raycast(ray, out hitInfo, AtkDist, layerMask))
             {
                 if (hitInfo.collider.tag == "Player")
                 {
                     attack = true;
                     break;
                 }
+
+                if (hitInfo.collider.tag == "Enemy") Debug.Log("Enemy Raycast hit Enemy");
+                
             }
         }
 
