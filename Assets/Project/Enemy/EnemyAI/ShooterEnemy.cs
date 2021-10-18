@@ -24,7 +24,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
 
     [SerializeField] private GameObject AttackObj;
-    [SerializeField] private LayerMask layerMask;
+    //[SerializeField] private LayerMask layerMask;
 
     public float GetAtkDist() { return AtkDist; }
     public float GetAtkAngle() { return AtkAngle; }
@@ -174,8 +174,12 @@ public class ShooterEnemy : Enemy
     {
         //Perform a series of Raycast to see if player is in front of enemy
         bool attack = false;
-        float numOfRays = 5;
+        int numOfRays = 5;
 
+        //attack = this.GetComponentInChildren<RayCheck>().rayCheck(numOfRays, AtkAngle, AtkDist, "Player");
+
+
+        /*
         for(int i = 0; i < numOfRays; i++)
         {
             Quaternion rotation = this.transform.rotation;
@@ -183,21 +187,24 @@ public class ShooterEnemy : Enemy
             Vector3 dir = rotation * rotationMod * Vector3.forward;
 
             //Ray ray = new Ray(this.transform.position, dir);
+
             RaycastHit hitInfo;
             if(Physics.Raycast(this.transform.position, dir, out hitInfo, AtkDist))
             {
-                Debug.Log(hitInfo.collider.gameObject.name);
+                
                 if (hitInfo.collider.tag == "Player")
                 {
+                    Debug.Log("Enemy Raycast hit Player");
                     attack = true;
                     break;
                 }
 
-                if (hitInfo.collider.tag == "Wall") Debug.Log("Enemy Raycast hit wall");
-                
+                if (hitInfo.collider.name == "NavMesh") Debug.Log("Enemy Raycast hit NavMesh");
+
             }
         }
-
+        */
+        
         return attack;
     }
 
