@@ -49,34 +49,40 @@ public class CameraController : MonoBehaviour
     {
         xChange = yChange = 0.0f;
         targetPos = cameraTarget.position;
-        CursorBiasUpdate();
-        if (cameraTarget.CompareTag("Player"))
+        switch (cameraTarget.tag)
         {
-            //CharMoveBiasUpdate()
-            
-            switch (currMode)
-            {
-                case (States.GameGenre.Platformer):
-                    transform.position = targetPos + new Vector3(0, 0, -8.0f) + new Vector3(xChange, yChange, 0);
-                    transform.eulerAngles = initEuler;
-                    break;
-                case (States.GameGenre.Shooter):
-                    transform.position = new Vector3(targetPos.x, 10.0f, targetPos.z);
-                    transform.eulerAngles = initEuler + new Vector3(90f, 0.0f, 0.0f);
-                    break;
-                case (States.GameGenre.RPG):
-                    transform.position = targetPos + new Vector3(0, 1.0f, -8.0f) + new Vector3(xChange, yChange, 0);
-                    transform.eulerAngles = initEuler + new Vector3(20.42f, 0.0f, 0.0f);
-                    break;
-            }
+            case "Player":
+                PlayerCamUpdate();
+                break;
         }
-
-        //Incorporate averaging of mouse position, movement, character position later
     }
 
     /*============================================================================
      * GAMEPLAY UPDATE METHODS
      ============================================================================*/
+    private void PlayerCamUpdate()
+    {
+        CursorBiasUpdate();
+        //CharMoveBiasUpdate()
+
+        switch (currMode)
+        {
+            case (States.GameGenre.Platformer):
+                transform.position = targetPos + new Vector3(0, 0, -8.0f) + new Vector3(xChange, yChange, 0);
+                transform.eulerAngles = initEuler;
+                break;
+            case (States.GameGenre.Shooter):
+                transform.position = new Vector3(targetPos.x, 10.0f, targetPos.z);
+                transform.eulerAngles = initEuler + new Vector3(90f, 0.0f, 0.0f);
+                break;
+            case (States.GameGenre.RPG):
+                transform.position = targetPos + new Vector3(0, 1.0f, -8.0f) + new Vector3(xChange, yChange, 0);
+                transform.eulerAngles = initEuler + new Vector3(20.42f, 0.0f, 0.0f);
+                break;
+        }
+
+        //Incorporate averaging of mouse position, movement, character position later
+    }
     private void CursorBiasUpdate()
     {
         Vector3 playerScreenPos = cam.WorldToScreenPoint(playerPrefab.transform.position);
@@ -161,5 +167,10 @@ public class CameraController : MonoBehaviour
     public Vector3 PlayerPosWorldToScreen()
     {
         return cam.WorldToScreenPoint(playerPrefab.transform.position);
+    }
+
+    public void SetPlayerMode(States.GameGenre mode)
+    {
+
     }
 }
