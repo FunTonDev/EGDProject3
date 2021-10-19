@@ -3,28 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Enemy
-  - Neutral
-  - TransitionArea
-  - Climbable
-<<<<<<< HEAD
-  - PartyUnitPrefab
-  - EnemyUnitPrefab
-  - Wall
-=======
-  - Control
->>>>>>> aeebcd7 (Refined platformer/shooter controls)
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
-  - Player
-  - Enemy
-  - Wall
+  - 
+  - 
+  - 
   - 
   - 
   - 
