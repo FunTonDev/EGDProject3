@@ -8,9 +8,13 @@ TagManager:
   - Neutral
   - TransitionArea
   - Climbable
+<<<<<<< HEAD
   - PartyUnitPrefab
   - EnemyUnitPrefab
   - Wall
+=======
+  - Control
+>>>>>>> aeebcd7 (Refined platformer/shooter controls)
   layers:
   - Default
   - TransparentFX

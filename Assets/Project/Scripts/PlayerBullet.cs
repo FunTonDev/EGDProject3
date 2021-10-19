@@ -10,25 +10,26 @@ public class PlayerBullet : MonoBehaviour
 
     [Header("Variables")]
     public float bulletForce;
-    public Quaternion direction;
 
     void Start()
     {
         bulletForce = 25.0f;
-        direction = transform.rotation;
         bulletRigB = GetComponent<Rigidbody>();
         bulletSphereC = GetComponent<SphereCollider>();
-        bulletRigB.AddForce(transform.right * bulletForce, ForceMode.VelocityChange);
+        bulletRigB.AddForce(transform.forward * bulletForce, ForceMode.VelocityChange);
         Invoke("SelfDestruct", 3.0f);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag != "Player")
+        {
+            SelfDestruct();
+        }
     }
 
     private void SelfDestruct()
     {
         Destroy(gameObject);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        SelfDestruct();
     }
 }

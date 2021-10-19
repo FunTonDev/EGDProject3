@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigB;
     [SerializeField] private BoxCollider playerBoxC;
     [SerializeField] private AudioSource playerAudS;
+    [SerializeField] private GameObject secondaryAxis;
     public GameObject bulletPrefab;
     public List<AudioClip> playerClips;
     public Mesh SpriteMesh;
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 wallNorm;
     public LayerMask groundingMask;
 
+    public States.GameGenre playerGenre;
     private delegate void ControlDelegate();
     private ControlDelegate controlDel;
 
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour
         playerRigB = GetComponent<Rigidbody>();
         playerBoxC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
-        controlDel = PlatformerMoveUpdate;
+        secondaryAxis = gameObject.transform.Find("SecondaryAxis").gameObject;
     }
 
     private void Update()
@@ -94,12 +96,12 @@ public class PlayerController : MonoBehaviour
             TimerUpdate();
         }
         PauseUpdate();
-        DebugUpdate();
+        //DebugUpdate();
     }
 
     private void FixedUpdate()
     {
-        if (!gameMan.paused) { controlDel(); } //Delegate uses current genre control schema
+        if (!gameMan.paused && controlDel != null) { controlDel(); } //Delegate uses current genre control schema
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -173,7 +175,6 @@ public class PlayerController : MonoBehaviour
 
     private void ShooterMoveUpdate()
     {
-        Debug.Log(inputMan.inputY);
         playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
         playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
@@ -188,10 +189,17 @@ public class PlayerController : MonoBehaviour
         //playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
     }
 
+    private void RPGMoveUpdate()
+    {
+
+    }
+
     private void CursorMoveUpdate()
     {
         healthBar.fillAmount = currentHP / maxHP;
         cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
+        float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
+        secondaryAxis.transform.localEulerAngles = (playerGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
     }
 
     /*============================================================================
@@ -252,12 +260,7 @@ public class PlayerController : MonoBehaviour
     {
         if (inputMan.inputFire1 == 1 && shootTimer <= 0)
         {
-            Vector3 playerScreenPos = camCont.PlayerPosWorldToScreen();
-            Vector3 mouseScreenPos = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
-            Vector3 aimDir = new Vector3(mouseScreenPos.x - playerScreenPos.x, mouseScreenPos.y - playerScreenPos.y, 0).normalized;
-            Quaternion aimQ = Quaternion.FromToRotation(Vector3.up, aimDir);     //Vector3.right for platformer
-            Instantiate(bulletPrefab, transform.position, aimQ);
-            Debug.Log(mouseScreenPos + " " + playerScreenPos);
+            Instantiate(bulletPrefab, transform.position, secondaryAxis.transform.rotation);
             shootTimer = shootDelayTime;
         }
     }
@@ -326,6 +329,20 @@ public class PlayerController : MonoBehaviour
     {
         switch (trigger.gameObject.tag)
         {
+            case "Control":
+                switch (trigger.gameObject.name[trigger.gameObject.name.Length - 1])
+                {
+                    case 'P':
+                        SetPlayerMode(States.GameGenre.Platformer);
+                        break;
+                    case 'S':
+                        SetPlayerMode(States.GameGenre.Shooter);
+                        break;
+                    case 'R':
+                        SetPlayerMode(States.GameGenre.RPG);
+                        break;
+                }
+                break;
             case "TransitionArea":
                 tranMan.SceneSwitch(trigger.gameObject.GetComponent<TransitionBlock>().goToName);
                 break;
@@ -404,32 +421,17 @@ public class PlayerController : MonoBehaviour
             case States.GameGenre.Platformer:
                 controlDel = PlatformerMoveUpdate;
                 playerRigB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
-                camCont.SetCameraMode(States.GameGenre.Platformer);
                 break;
             case States.GameGenre.Shooter:
                 controlDel = ShooterMoveUpdate;
                 playerRigB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-                
                 break;
             case States.GameGenre.RPG:
+                controlDel = RPGMoveUpdate;
+                playerRigB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                 break;
         }
         camCont.SetCameraMode(mode);
-    }
-
-    private void DebugUpdate()
-    {
-        if (inputMan.inputAlt3 == 1 && toggleTimer <= 0)
-        {
-            if (camCont.currMode == States.GameGenre.Platformer)
-            {
-                SetPlayerMode(States.GameGenre.Shooter);
-            }
-            else
-            {
-                SetPlayerMode(States.GameGenre.Platformer);
-            }
-            toggleTimer = toggleDelayTime;
-        }
+        playerGenre = mode;
     }
 }
