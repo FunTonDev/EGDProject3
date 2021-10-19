@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 8502243763931986136}
   - component: {fileID: 8502243763931986138}
   - component: {fileID: 8502243763931986137}
-  - component: {fileID: 8502243763931986139}
   - component: {fileID: -9085207474030722447}
+  - component: {fileID: 8502243763931986139}
+  - component: {fileID: 3813947409719957562}
   m_Layer: 7
   m_Name: 'ShooterTestEnemy '
   m_TagString: Enemy
@@ -65,46 +66,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &8502243763931986139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8502243763931986119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da162e078a428b5448c5cb89c96d399b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: BoxEnemy
-  health: 50
-  atkDamage: 2
-  moveSpd: 2
-  detectionLvl: 1
-  platformer: 0
-  shooter: 1
-  rpg: 0
-  pathNodes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  ranged: 1
-  follow: 0
-  sentry: 0
-  PlayerInSightRange: 0
-  PlayerInAtkRange: 0
-  radius: 6
-  AtkDist: 4
-  RetreatDist: 3
-  RotSpd: 2
-  AtkAngle: 0
-  timeBtwAtk: 0
-  StartTimeBtwAtk: 2
-  AttackObj: {fileID: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 127
 --- !u!195 &-9085207474030722447
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -127,6 +88,56 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8502243763931986139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8502243763931986119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da162e078a428b5448c5cb89c96d399b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: BoxEnemy
+  health: 50
+  atkDamage: 2
+  moveSpd: 2
+  armor: 0
+  detectionLvl: 1
+  platformer: 0
+  shooter: 1
+  rpg: 0
+  pathNodes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ranged: 1
+  follow: 0
+  sentry: 0
+  PlayerInSightRange: 0
+  PlayerInAtkRange: 0
+  detctRadius: 0
+  AtkDist: 4
+  RetreatDist: 3
+  RotSpd: 2
+  AtkAngle: 0
+  timeBtwAtk: 0
+  StartTimeBtwAtk: 2
+  AttackObj: {fileID: 0}
+--- !u!114 &3813947409719957562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8502243763931986119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89de121daaf9a4948b0654b3561b625d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8502243764277963708
 GameObject:
   m_ObjectHideFlags: 0

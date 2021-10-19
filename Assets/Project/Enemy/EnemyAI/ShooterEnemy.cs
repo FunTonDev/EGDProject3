@@ -14,7 +14,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private bool PlayerInSightRange, PlayerInAtkRange;
      private bool retreatMode;
 
-    [SerializeField] private float radius;      //Radius of their detection Circle
+    [SerializeField] private float detctRadius;      //Radius of their detection Circle
     [SerializeField] private float AtkDist;     //Distance of their attack
     [SerializeField] private float RetreatDist; //Distance of how close enemy can be to player
     [SerializeField] private float RotSpd;      //How fast enemy turns
@@ -26,6 +26,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private GameObject AttackObj;
     //[SerializeField] private LayerMask layerMask;
 
+    public float GetDetctRadius() { return detctRadius; }
     public float GetAtkDist() { return AtkDist; }
     public float GetAtkAngle() { return AtkAngle; }
 
@@ -160,7 +161,7 @@ public class ShooterEnemy : Enemy
     {
         bool playerFound = false;
 
-        if(Vector3.Distance(this.transform.position, player.transform.position) <= radius)
+        if(Vector3.Distance(this.transform.position, player.transform.position) <= detctRadius)
         {
             //Debug.Log("Player in Detection Range");
             playerFound = true;
@@ -169,43 +170,11 @@ public class ShooterEnemy : Enemy
         return playerFound;
     }
 
-    //Perform cone check to see if player is within the enemy's vision
+    //Perform cone check with the FieldOfView script see if player is within the enemy's vision
     public bool PlayerInAttackVision()
     {
-        //Perform a series of Raycast to see if player is in front of enemy
-        bool attack = false;
-        int numOfRays = 5;
+        return this.GetComponent<FieldOfView>().FindVisibleTargets();
 
-        //attack = this.GetComponentInChildren<RayCheck>().rayCheck(numOfRays, AtkAngle, AtkDist, "Player");
-
-
-        /*
-        for(int i = 0; i < numOfRays; i++)
-        {
-            Quaternion rotation = this.transform.rotation;
-            Quaternion rotationMod = Quaternion.AngleAxis((i/((float)numOfRays-1)) * AtkAngle * 2 - AtkAngle, this.transform.up); 
-            Vector3 dir = rotation * rotationMod * Vector3.forward;
-
-            //Ray ray = new Ray(this.transform.position, dir);
-
-            RaycastHit hitInfo;
-            if(Physics.Raycast(this.transform.position, dir, out hitInfo, AtkDist))
-            {
-                
-                if (hitInfo.collider.tag == "Player")
-                {
-                    Debug.Log("Enemy Raycast hit Player");
-                    attack = true;
-                    break;
-                }
-
-                if (hitInfo.collider.name == "NavMesh") Debug.Log("Enemy Raycast hit NavMesh");
-
-            }
-        }
-        */
-        
-        return attack;
     }
 
     public bool PlayerInRetreatRange()

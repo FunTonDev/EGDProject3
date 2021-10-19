@@ -83,7 +83,6 @@ public abstract class Enemy : MonoBehaviour
         return newPos;
     }
 
-
     public virtual void Move(Vector3 Pos)
     {
         Vector3 temp = Vector3.MoveTowards(transform.position, Pos, moveSpd * Time.deltaTime);

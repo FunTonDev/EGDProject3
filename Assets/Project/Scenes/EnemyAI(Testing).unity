@@ -143,7 +143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 118157168}
   - component: {fileID: 118157169}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: NavMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 118157167}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -303,18 +303,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
   m_PrefabInstance: {fileID: 1407827910}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &188827807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188827802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10f14431120c87a43909b09b71662ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &188827808
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -333,7 +321,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -527,7 +515,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_RootOrder
@@ -587,11 +575,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkDist
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkAngle
-      value: 25
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: detctRadius
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: pathNodes.Array.data[0]
@@ -1097,28 +1089,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932013976}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1031414159 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
-  m_PrefabInstance: {fileID: 1148907154}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1031414160 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
   m_PrefabInstance: {fileID: 1148907154}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1031414164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1031414159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10f14431120c87a43909b09b71662ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1054561920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1356,11 +1331,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkAngle
-      value: 25
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: chaseMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: detctRadius
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: pathNodes.Array.size
@@ -1393,28 +1372,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3833506642618337171, guid: 8b32c22c7a247f94a920f106f461a1a2, type: 3}
   m_PrefabInstance: {fileID: 309025515}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1247802781 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
-  m_PrefabInstance: {fileID: 338476119}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1247802782 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
   m_PrefabInstance: {fileID: 338476119}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1247802786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247802781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10f14431120c87a43909b09b71662ae5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1255546102 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3833506643762817999, guid: 8b32c22c7a247f94a920f106f461a1a2, type: 3}
@@ -1572,6 +1534,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1616,6 +1582,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986137, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkDist
       value: 5
@@ -1623,6 +1593,10 @@ PrefabInstance:
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkAngle
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: detctRadius
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: layerMask.m_Bits
