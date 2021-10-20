@@ -8,35 +8,50 @@ public class EnemyBullet : MonoBehaviour
 
     [SerializeField] private bool tracking;
 
-    [SerializeField] private Transform playerPos;
-    [SerializeField] private Vector3 target;
+    private Transform playerPos;
+    private Vector3 target;
 
 
     void Start()
     {
+
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
 
         target = new Vector3(playerPos.position.x, playerPos.position.y, playerPos.position.z);
 
-        //Invoke("SelfDestruct", 3.0f);
-    }
-
-    void Update()
-    {
         if (tracking)
         {
-            Vector3.MoveTowards(this.transform.position, playerPos.position, speed * Time.deltaTime);
+            Invoke("SelfDestruct", 6.0f);
         }
 
         else
         {
-            Vector3.MoveTowards(this.transform.position, target, speed * Time.deltaTime);
+            Invoke("SelfDestruct", 4.0f);
+        }
+        
+
+        
+    }
+
+    void Update()
+    {
+       
+        if (tracking)
+        {            
+            transform.position = Vector3.MoveTowards(this.transform.position, playerPos.position, speed * Time.deltaTime);
+        }
+
+        else
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * speed);
+            //transform.position = Vector3.MoveTowards(this.transform.position, target, speed * Time.deltaTime);
         }
         
     }
 
     private void SelfDestruct()
     {
+        //Debug.Log("Bullet SelfDestruct");
         Destroy(gameObject);
     }
 

@@ -20,11 +20,10 @@ public class ShooterEnemy : Enemy
     [SerializeField] private float RotSpd;      //How fast enemy turns
     [SerializeField] private float AtkAngle = 60.0f;
 
-    [SerializeField] private float timeBtwAtk;        //Time left till next attack
+    private float timeBtwAtk;        //Time left till next attack
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
 
     [SerializeField] private GameObject AttackObj;
-    //[SerializeField] private LayerMask layerMask;
 
     public float GetDetctRadius() { return detctRadius; }
     public float GetAtkDist() { return AtkDist; }
@@ -142,7 +141,9 @@ public class ShooterEnemy : Enemy
             {
                 Debug.Log("Ranged attacked called");
 
-                //Instantiate(Projectile, this.transform.position, Quaternion.identity);                    
+                Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
+                spawnPos.y = 0.5f;
+                Instantiate(AttackObj, spawnPos, this.transform.rotation);                    
             }
 
             //Continue to move towards player to hit them
