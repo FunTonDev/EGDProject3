@@ -28,8 +28,8 @@ public class CameraController : MonoBehaviour
 
     private Vector3 mousePos;
     private Vector3 targetPos;
-
-    private Vector3 initEuler;
+    private Vector3 genrePos;
+    private Quaternion targetRot;
 
     /*============================================================================
      * DEFAULT UNITY METHODS
@@ -42,7 +42,6 @@ public class CameraController : MonoBehaviour
         SetCameraTarget("PlayerPrefab");
         SyncScreen();
         SetCameraMode(States.GameGenre.Platformer);
-        initEuler = transform.eulerAngles;
     }
 
     private void FixedUpdate()
@@ -64,24 +63,9 @@ public class CameraController : MonoBehaviour
     {
         CursorBiasUpdate();
         //CharMoveBiasUpdate()
-
-        switch (currMode)
-        {
-            case (States.GameGenre.Platformer):
-                transform.position = targetPos + new Vector3(0, 0, -8.0f) + new Vector3(xChange, yChange, 0);
-                transform.eulerAngles = initEuler;
-                break;
-            case (States.GameGenre.Shooter):
-                transform.position = new Vector3(targetPos.x, 10.0f, targetPos.z);
-                transform.eulerAngles = initEuler + new Vector3(90f, 0.0f, 0.0f);
-                break;
-            case (States.GameGenre.RPG):
-                transform.position = targetPos + new Vector3(0, 1.0f, -8.0f) + new Vector3(xChange, yChange, 0);
-                transform.eulerAngles = initEuler + new Vector3(20.42f, 0.0f, 0.0f);
-                break;
-        }
-
-        //Incorporate averaging of mouse position, movement, character position later
+        transform.position = targetPos + genrePos;
+        transform.rotation = targetRot;
+        //Incorporate averaging of mouse position, movement, character position later using x/y change //Vector3(xChange, yChange, 0);
     }
     private void CursorBiasUpdate()
     {
@@ -129,11 +113,18 @@ public class CameraController : MonoBehaviour
         {
             case (States.GameGenre.Platformer):
                 cam.orthographic = true;
-                transform.rotation = Quaternion.Euler(0, 0, 0);
+                genrePos = new Vector3(0, 0, -8.0f);
+                targetRot = Quaternion.Euler(0, 0, 0);
                 break;
             case (States.GameGenre.Shooter):
                 cam.orthographic = false;
-                transform.rotation = Quaternion.Euler(90, 0, 0);
+                genrePos = new Vector3(0, 10.0f, 0);
+                targetRot = Quaternion.Euler(90, 0, 0);
+                break;
+            case (States.GameGenre.RPG):
+                cam.orthographic = false;
+                genrePos = new Vector3(0, 5.0f, -6.0f);
+                targetRot = Quaternion.Euler(45, 0, 0);
                 break;
         }
     }
@@ -152,7 +143,6 @@ public class CameraController : MonoBehaviour
         camVelY = 0.1f;
 
         isTrackingMovement = true;
-        SetCameraMode(States.GameGenre.Platformer);
     }
 
     private void SyncScreen()

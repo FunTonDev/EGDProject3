@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,7 +19,6 @@ public class PlayerController : MonoBehaviour
     public List<AudioClip> playerClips;
     public Mesh SpriteMesh;
     public Mesh ModelMesh;
-    public Image healthBar;
 
     [Header("Variables")]
     public float currentHP;
@@ -51,8 +49,6 @@ public class PlayerController : MonoBehaviour
     public float dashDelayTime;
     public float shootTimer;
     public float shootDelayTime;
-    public float pauseTimer;
-    public float pauseDelayTime;    //1.0
     public float toggleTimer;
     public float toggleDelayTime;   //1.0
     public float rollTimer;
@@ -95,7 +91,6 @@ public class PlayerController : MonoBehaviour
             FireUpdate();
             TimerUpdate();
         }
-        PauseUpdate();
         //DebugUpdate();
     }
 
@@ -191,12 +186,17 @@ public class PlayerController : MonoBehaviour
 
     private void RPGMoveUpdate()
     {
+        playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce/2), ForceMode.VelocityChange);
+        playerRigB.AddForce(new Vector3(inputMan.inputX * xForce/2, 0, 0), ForceMode.VelocityChange);
+        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+        float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
+
 
     }
 
     private void CursorMoveUpdate()
     {
-        healthBar.fillAmount = currentHP / maxHP;
         cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
         float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
         secondaryAxis.transform.localEulerAngles = (playerGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
@@ -205,57 +205,6 @@ public class PlayerController : MonoBehaviour
     /*============================================================================
      * GAMEPLAY UPDATE METHODS
      ============================================================================*/
-    private void PauseUpdate()
-    {
-        if (inputMan.inputCancel == 1 && pauseTimer <= 0)
-        {
-            gameMMan.TogglePauseMenu();
-            pauseTimer = pauseDelayTime;
-        }
-        //If game is paused, take in input and color selected button
-        if (gameMan.paused)
-        {
-            for (int i = 1; i < 4; i++)
-            {
-                if (i != gameMMan.pauseIndex+1)
-                {
-                    gameMMan.panels[1].transform.GetChild(i).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
-                }
-                else
-                {
-                    gameMMan.panels[1].transform.GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f);
-                }
-            }
-            if (inputMan.inputY > 0 && gameMMan.pauseIndex < 2)
-            {
-                gameMMan.pauseIndex += 1;
-            }
-            if (inputMan.inputY < 0 && gameMMan.pauseIndex > 0)
-            {
-                gameMMan.pauseIndex -= 1;
-            }
-            if (inputMan.inputSubmit != 0)
-            {
-                //Check what to do based on button pressed
-                switch (gameMMan.pauseIndex)
-                {
-                    //Quit
-                    case 0:
-                        //Go to main menu and save the game (not sure if we're gonna use savepoints)
-                        break;
-                    //Options
-                    case 1:
-                        break;
-                    //Resume
-                    case 2:
-                        gameMMan.TogglePauseMenu();
-                        pauseTimer = pauseDelayTime;
-                        break;
-                }
-            }
-        }
-    }
-
     private void FireUpdate()
     {
         if (inputMan.inputFire1 == 1 && shootTimer <= 0)
@@ -272,7 +221,6 @@ public class PlayerController : MonoBehaviour
         dashTimer -= dashTimer > 0 ? Time.deltaTime : 0;
         shootTimer -= shootTimer > 0 ? Time.deltaTime : 0;
         rollTimer -= rollTimer > 0 ? Time.deltaTime : 0;
-        pauseTimer -= pauseTimer > 0 ? Time.deltaTime : 0;
         toggleTimer -= toggleTimer > 0 ? Time.deltaTime : 0;
     }
 
@@ -386,8 +334,6 @@ public class PlayerController : MonoBehaviour
         dashDelayTime = 1.0f;
         shootTimer = 0;        
         shootDelayTime = 0.5f;
-        pauseTimer = 0;
-        pauseDelayTime = 1.0f;
         toggleTimer = 0;
         toggleDelayTime = 1.0f;
         rollTimer = 0;
@@ -397,21 +343,6 @@ public class PlayerController : MonoBehaviour
         walled = false;
         canClimb = false;
         climbing = false;
-
-        wallNorm = new Vector3(0, 0, 0);
-        //playerRigB.constraints = 
-    }
-
-    [ContextMenu("Set to Platformer")]
-    private void SetPlatformerValues()
-    {
-
-    }
-
-    [ContextMenu("Set to Shooter")]
-    private void SetShooterValues()
-    {
-
     }
 
     public void SetPlayerMode(States.GameGenre mode)

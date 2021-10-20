@@ -15,8 +15,3 @@ This project is the 2D/3D Metroidvania project for Experimental Game Design (Fal
 
 NOTES:
 -Project split into two main folders as of writing. Please use 'Project' to store game content!
-
-TODO:
--Team: Assign tasks soon
--Jon: Work on cursor biased camera, start on top down controls
--Ryan: Menus/Transitions
