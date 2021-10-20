@@ -14,8 +14,6 @@ public class GameMenuManager : MonoBehaviour
     [Header("Variables")]
     public int mainIndex;
     public int optionsIndex;
-    public bool canNav;
-    public bool canPause;
 
     public States.MenuSection currentSection;
 
@@ -39,104 +37,92 @@ public class GameMenuManager : MonoBehaviour
      ============================================================================*/
     private void MenuUpdate()
     {
-        if (inputMan.inputCancel != 0 && canPause && !gameMan.paused)
-        {
-            gameMan.paused = !gameMan.paused;
-            TogglePauseMenu();
-        }
         if (gameMan.paused)
         {
-            NavUpdate();
-            SubmitUpdate();
-            //sectionDel();
+            if (inputMan.inputY_D) { NavUpdate(); }
+            if (inputMan.inputSubmit_D) { SubmitUpdate(); }
         }
+        else { if (inputMan.inputCancel_D) { TogglePauseMenu(); } }
     }
+
     private void NavUpdate()
     {
-        int navDiff = (inputMan.inputY > 0) ? 1 : 0 + ((inputMan.inputY < 0) ? -1 : 0);
-        if (navDiff != 0 && canNav)
+        int navDiff = (inputMan.inputY > 0) ? 1 : 0 + ((inputMan.inputY < 0) ? -1 : 0);            
+        if (currentSection == States.MenuSection.Main)
         {
-            StartCoroutine(ResetNavDelay());
-            if (currentSection == States.MenuSection.Main)
-            {
-                mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
-                mainButtons[mainIndex].Select();
-            }
-            else
-            {
-                optionsIndex += ((navDiff < 0 && optionsIndex > 0) || (navDiff > 0 && optionsIndex < mainButtons.Count - 1)) ? navDiff : 0;
-                optionButtons[optionsIndex].Select();
-            }
+            mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
+            mainButtons[mainIndex].Select();
         }
-        
-        /*foreach (Button b in mainButtons)
+        else
         {
-            
-            //b.Select();
-        }*/
+            optionsIndex += ((navDiff < 0 && optionsIndex > 0) || (navDiff > 0 && optionsIndex < mainButtons.Count - 1)) ? navDiff : 0;
+            optionButtons[optionsIndex].Select();
+        }
     }
 
     private void SubmitUpdate()
     {
-        if (inputMan.inputSubmit == 1 && canNav)
+        if (currentSection == States.MenuSection.Main)
         {
-            if (currentSection == States.MenuSection.Main)
+            switch (mainIndex)
             {
-                switch (mainIndex)
-                {
-                    case 0:
-                        //Go to main menu and save the game (not sure if we're gonna use savepoints)
-                        break;
-                    //Options
-                    case 1:
-                        SwitchMenuSection(States.MenuSection.Options);
-                        break;
-                    case 2:
-                        TogglePauseMenu();
-                        break;
+                case 0:     //Go to main menu and save the game (not sure if we're gonna use savepoints)
+                    break;
+                case 1:
+                    SwitchUISection(States.MenuSection.Options);
+                    break;
+                case 2:
+                    TogglePauseMenu();
+                    break;
                 }
             }
-            else if (currentSection == States.MenuSection.Options)
+        else if (currentSection == States.MenuSection.Options)
+        {
+            switch (optionsIndex)
             {
-                switch (optionsIndex)
-                {
-                    case 0:
-                        break;
-                }
+                case 0:
+                    SwitchUISection(States.MenuSection.Main);
+                    break;
             }
         }
     }
+
     public void TogglePauseMenu()
     {
         gameMan.paused = !gameMan.paused;
         Time.timeScale = gameMan.paused ? 0 : 1;
-        panels[1].SetActive(gameMan.paused);
         Cursor.visible = gameMan.paused;
-        SwitchMenuSection(States.MenuSection.Main);
+        if (gameMan.paused) { SwitchUISection(States.MenuSection.Main); }
+        else { SwitchUISection(States.MenuSection.Play); }
     }
 
-    public void SwitchMenuSection(States.MenuSection i)
+    public void SwitchUISection(States.MenuSection i)
     {
-        panels[(int)currentSection].SetActive(false);
+        switch (currentSection)
+        {
+            case States.MenuSection.Play:
+                panels[0].SetActive(false);
+                break;
+            case States.MenuSection.Main:
+                panels[1].SetActive(false);
+                break;
+            case States.MenuSection.Options:
+                panels[2].SetActive(false);
+                break;
+        }
         currentSection = i;
-        panels[(int)currentSection].SetActive(true);
-    }
-
-    /*============================================================================
-     * MISC METHODS
-     ============================================================================*/
-    private IEnumerator ResetNavDelay()
-    {
-        canNav = false;
-        yield return new WaitForSeconds(1.0f);
-        canNav = true;
-    }
-
-    private IEnumerator ResetPauseDelay()
-    {
-        canPause = false;
-        yield return new WaitForSeconds(1.0f);
-        canPause = true;
+        switch (currentSection)
+        {
+            case States.MenuSection.Play:
+                panels[0].SetActive(true);
+                break;
+            case States.MenuSection.Main:
+                panels[1].SetActive(true);
+                break;
+            case States.MenuSection.Options:
+                panels[2].SetActive(true);
+                break;
+        }
     }
 
     /*============================================================================
@@ -148,7 +134,5 @@ public class GameMenuManager : MonoBehaviour
         mainIndex = 0;
         optionsIndex = 0;
         currentSection = States.MenuSection.Main;
-        canNav = false;
-        canPause = true;
     }
 }

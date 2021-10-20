@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -249,7 +249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129606582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -200}
+  m_LocalPosition: {x: -90, y: -1.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 574865542}
@@ -857,7 +857,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 492874209}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 200, y: 0, z: -100}
+  m_LocalPosition: {x: 90, y: -1.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 683976720}
@@ -1892,7 +1892,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796991366}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 200, y: 1, z: -100}
+  m_LocalPosition: {x: 90, y: 1, z: -10}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 923990735}
@@ -3071,7 +3071,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298759413}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.53, y: 2.92, z: 0}
+  m_LocalPosition: {x: 118.7, y: 2.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1342036608}
@@ -3359,19 +3359,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputX: 0
+  inputX_U: 0
+  inputX_D: 0
   inputY: 0
+  inputY_U: 0
+  inputY_D: 0
   inputSubmit: 0
+  inputSubmit_U: 0
+  inputSubmit_D: 0
   inputCancel: 0
+  inputCancel_U: 0
+  inputCancel_D: 0
   inputAlt1: 0
+  inputAlt1_U: 0
+  inputAlt1_D: 0
   inputAlt2: 0
+  inputAlt2_U: 0
+  inputAlt2_D: 0
   inputAlt3: 0
+  inputAlt3_U: 0
+  inputAlt3_D: 0
   inputAlt4: 0
+  inputAlt4_U: 0
+  inputAlt4_D: 0
   inputMX: 0
   inputMY: 0
   inputScroll: 0
+  inputScroll_U: 0
+  inputScroll_D: 0
   inputFire1: 0
+  inputFire1_U: 0
+  inputFire1_D: 0
   inputFire2: 0
+  inputFire2_U: 0
+  inputFire2_D: 0
   inputFire3: 0
+  inputFire3_U: 0
+  inputFire3_D: 0
 --- !u!4 &1426350750
 Transform:
   m_ObjectHideFlags: 0
@@ -3412,8 +3436,6 @@ MonoBehaviour:
   - {fileID: 418830988}
   mainIndex: 0
   optionsIndex: 0
-  canNav: 0
-  canPause: 1
   currentSection: 0
 --- !u!114 &1426350752
 MonoBehaviour:
@@ -3433,6 +3455,13 @@ MonoBehaviour:
   genreMain: 0
   genreExtra1: 0
   genreExtra2: 0
+  gameAudio: {fileID: 0}
+  platformerMusic1: {fileID: 0}
+  platformerMusic2: {fileID: 0}
+  shooterMusic1: {fileID: 0}
+  shooterMusic2: {fileID: 0}
+  RPGMusic1: {fileID: 0}
+  RPGMusic2: {fileID: 0}
   duration: 0
 --- !u!114 &1426350753
 MonoBehaviour:
@@ -4007,7 +4036,7 @@ Transform:
   m_GameObject: {fileID: 2049837467}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 120, y: 67, z: 67}
+  m_LocalScale: {x: 113, y: 67, z: 67}
   m_Children: []
   m_Father: {fileID: 1342036608}
   m_RootOrder: 6

@@ -54,6 +54,20 @@ public class Unit
         sprites = new Sprite[1];
     }
 
+    public bool takeDamage(int dam)
+    {
+        currentHP -= dam;
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void setStats(int lv = 1)
     {
         switch (lv)

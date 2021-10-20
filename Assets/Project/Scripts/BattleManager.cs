@@ -61,6 +61,8 @@ public class BattleManager : MonoBehaviour
 
     public List<GameObject> enemyPrefabs;
 
+    public List<Action> actions;
+
     //Int to track the number of units actually in the party
     int activeUnits = 0;
 
@@ -85,6 +87,11 @@ public class BattleManager : MonoBehaviour
     //The enemy currently being highlighted
     private int currentEnemy = 0;
 
+    public void playerTurn()
+    {
+        DisplayText.text = PartyMembers[currentUnit] + "'s turn";
+    }
+
     //Function to scroll through main menu in battle to choose what to do
     public void BaseMenuRoutine()
     {
@@ -99,6 +106,20 @@ public class BattleManager : MonoBehaviour
     public void RecruitMenuRoutine()
     {
 
+    }
+
+    public void makeMenuVisible(int num)
+    {
+        if (num == 0)
+        {
+            menus[2 + num].SetActive(true);
+            menus[2 + num + 1].SetActive(false);
+        }
+        else if (num == 1)
+        {
+            menus[2 + num].SetActive(true);
+            menus[2 + num - 1].SetActive(false);
+        }
     }
 
     IEnumerator setupBattle()
@@ -126,6 +147,7 @@ public class BattleManager : MonoBehaviour
                     new Vector3(0.5f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 0.2f, 0.0f);
                 partyPrefabs[i].transform.GetChild(1).GetComponent<SpriteRenderer>().transform.localScale =
                     new Vector3(0.5f * PartyMembers[i].currentStamina / PartyMembers[i].maxStamina, 0.2f, 0.0f);
+                activeUnits += 1;
             }
             else
             {
@@ -136,7 +158,25 @@ public class BattleManager : MonoBehaviour
         EnemyMembers[0] = new Slime();
         EnemyMembers[1] = new Skeleton();
         EnemyMembers[2] = new Hound();
-        yield return new WaitForSeconds(0.0f);
+        activeEnemies = 3;
+
+        actions = new List<Action>();
+
+        if (activeEnemies == 1)
+        {
+            DisplayText.text = "A " + EnemyMembers[0].unitName + " has appeared.";
+        }
+        else if (activeEnemies >= 2)
+        {
+            DisplayText.text = "A group of enemies appeared";
+        }
+        yield return new WaitForSeconds(1.0f);
+        currentUnit = 0;
+
+        state = battleState.PLAYER;
+        playerTurn();
+
+        yield return new WaitForSeconds(1.0f);
     }
 
     //Perform the selected actions, after they have been selected
