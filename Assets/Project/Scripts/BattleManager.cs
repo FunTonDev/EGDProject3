@@ -6,6 +6,44 @@ using UnityEngine.UI;
 //Different states of battle (turns)
 public enum battleState { START, PLAYER, ATTACK, ENEMY, WIN, LOSE, FLEE, HUH }
 
+public class actionTag
+{
+    public actionTag()
+    {
+        id = 0;
+        type = "none";
+        index = 0;
+        target = 0;
+        speed = 0;
+        priority = false;
+    }
+    //who == index of the user
+    //todo == type of action
+    public actionTag(int who, string todo, int what, int where, int agi, bool p = false)
+    {
+        id = who;
+        type = todo;
+        index = what;
+        target = where;
+        speed = agi;
+        priority = p;
+    }
+    public int getID() { return id; }
+    public string getType() { return type; }
+    public int getIndex() { return index; }
+    public int getTarget() { return target; }
+    public int getSPD() { return speed; }
+    public bool getFast() { return priority; }
+
+    int id = 0;                         //Index (who is doing the action)
+    string type;                        //String (represents what the action is)
+    int index = 0;                      //Numerical index of the ability/some other value
+    int target = 0;                     //Index (target of any effects the action has)
+    int speed = 0;                      //Speed at which the action happens
+    bool priority = false;              //Whether the action should happen first
+}
+
+
 public class BattleManager : MonoBehaviour
 {
     //Use to determine state of the battle (turns, win/loss, etc.)
@@ -61,7 +99,8 @@ public class BattleManager : MonoBehaviour
 
     public List<GameObject> enemyPrefabs;
 
-    public List<Action> actions;
+    private List<actionTag> actions;
+
 
     //Int to track the number of units actually in the party
     int activeUnits = 0;
@@ -87,6 +126,10 @@ public class BattleManager : MonoBehaviour
     //The enemy currently being highlighted
     private int currentEnemy = 0;
 
+    private int currentAction = 0;
+
+    private string currentActionType = "";
+
     public void playerTurn()
     {
         DisplayText.text = PartyMembers[currentUnit] + "'s turn";
@@ -107,18 +150,204 @@ public class BattleManager : MonoBehaviour
     {
 
     }
+    //Function to enter the target/action for an attack
+    public void takeAction(int target)
+    {
+        if (!currentActionType.Equals(""))
+        {
+            actions.Add(new actionTag(currentUnit, currentActionType, currentAction, target, PartyMembers[currentUnit].spd));
+        }
+        else
+        {
+            actions.Add(new actionTag(currentUnit, "Attack", currentAction, target, PartyMembers[currentUnit].spd));
+        }
+        currentUnit += 1;
+        currentActionType = "";
+        currentAction = 0;
+        
+        if (currentUnit >= 3)
+        {
+            //Calculate enemy actions, then go to perform actions
+            StartCoroutine(PerformActions());
+        }
+        else
+        {
+            playerTurn();
+        }
+    }
+
+    public void startAction(int type)
+    {
+        if (type == 0)
+        {
+
+        }
+    }
 
     public void makeMenuVisible(int num)
     {
         if (num == 0)
         {
-            menus[2 + num].SetActive(true);
-            menus[2 + num + 1].SetActive(false);
+            menus[1].SetActive(true);
+            menus[2].SetActive(false);
+            menus[3].SetActive(false);
         }
         else if (num == 1)
         {
-            menus[2 + num].SetActive(true);
-            menus[2 + num - 1].SetActive(false);
+            menus[1].SetActive(false);
+            menus[2].SetActive(true);
+            menus[3].SetActive(false);
+        }
+        else if (num == 2)
+        {
+            menus[1].SetActive(false);
+            menus[2].SetActive(false);
+            menus[3].SetActive(true);
+        }
+    }
+
+    //Start the enemy attack routine
+    public void enemyAttacks()
+    {
+        int other = 0;
+
+        for (int i = 0; i < EnemyMembers.Count; i++)
+        {
+            if (EnemyMembers[i].currentHP > 0)
+            {
+                other += 1;
+            }
+        }
+        //For each of the enemies present
+        for (int i = 0; i < EnemyMembers.Count; i++)
+        {
+            //If the enemy is there
+            if (EnemyMembers[i] != null)
+            {
+                //If the enemy isn't dead
+                if (EnemyMembers[i].currentHP > 0)
+                {
+                    bool self = false;
+                    bool self2 = false;
+                    //Check if the enemy has any support abilities
+                    for (int j = 0; j < EnemyMembers[i].abilities.Count; j++)
+                    {
+                        if (EnemyMembers[i].abilities[j].type == 1 &&
+                            EnemyMembers[i].abilities[j].priority > 0 &&
+                            (EnemyMembers.Count - enemyDeaths) > 1 && other > 1)
+                        {
+                            self = true;
+                        }
+                        if (EnemyMembers[i].abilities[j].type == 2 &&
+                            EnemyMembers[i].abilities[j].priority > 0)
+                        {
+                            self2 = true;
+                        }
+                    }
+                    //Randomly choose a type of ability to do
+                    List<bool> choices = new List<bool>();
+                    choices.Add(true);
+                    choices.Add(self);
+                    choices.Add(self2);
+                    int vals = Random.Range(0, 3);
+                    while (choices[vals] == false)
+                    {
+                        vals = Random.Range(0, 3);
+                    }
+
+                    //If attack is chosen
+                    if (vals == 0)
+                    {
+                        int x = 0;
+                        //Randomly choose target
+                        List<int> tochoos = new List<int>();
+                        for (int f = 0; f < PartyMembers.Count; f++)
+                        {
+                            tochoos.Add(f);
+                            //If a frontline unit, add twice
+                            if (f < 2)
+                            {
+                                tochoos.Add(f);
+                            }
+                        }
+                        int r = tochoos[Random.Range(0, tochoos.Count)];
+                        while (PartyMembers[r] == null)
+                        {
+                            r = tochoos[Random.Range(0, tochoos.Count)];
+                        }
+                        //Add ability index (priority) number of times to list
+                        List<int> probos = new List<int>();
+                        for (int d = 0; d < EnemyMembers[i].abilities.Count; d++)
+                        {
+                            for (int c = 0; c < EnemyMembers[i].abilities[d].priority; c++)
+                            {
+                                probos.Add(d);
+                            }
+                        }
+                        x = probos[Random.Range(0, probos.Count)];
+                        //While ability type isn't offensive
+                        while (EnemyMembers[i].abilities[x].type != 0)
+                        {
+                            x = probos[Random.Range(0, probos.Count)];
+                        }
+
+                        //Set speed to modified enemy agility
+                        int speed = EnemyMembers[i].spd;
+                        actionTag now = new actionTag(i, "enemyAttack", x, r, speed);
+                        actions.Add(now);
+                    }
+                    //If support ability is chosen (user is not the target)
+                    else if (vals == 1)
+                    {
+                        int x = 0;
+
+                        List<int> probos = new List<int>();
+                        while (EnemyMembers[i].abilities[x].type != 1)
+                        {
+                            x = probos[Random.Range(0, probos.Count)];
+                        }
+
+                        int r = Random.Range(0, EnemyMembers.Count);
+                        bool selfie = true;
+                        if (EnemyMembers[i].unitName.Equals(EnemyMembers[r].unitName) && i == r)
+                        {
+                            selfie = false;
+                        }
+                        while (EnemyMembers[r].currentHP <= 0 || !selfie)
+                        {
+                            r = Random.Range(0, EnemyMembers.Count);
+                            if (!EnemyMembers[i].unitName.Equals(EnemyMembers[r].unitName) && i != r)
+                            {
+                                selfie = true;
+                            }
+                        }
+
+                        int speed = EnemyMembers[i].spd;
+                        actionTag now = new actionTag(i, "enemyAbility", x, r, speed);
+                        actions.Add(now);
+                    }
+                    //If self-buff ability is chosen
+                    else if (vals == 2)
+                    {
+                        int x = 0;
+                        List<int> probos = new List<int>();
+                        for (int d = 0; d < EnemyMembers[i].abilities.Count; d++)
+                        {
+                            for (int c = 0; c < EnemyMembers[i].abilities[d].priority; c++)
+                            {
+                                probos.Add(d);
+                            }
+                        }
+                        while (EnemyMembers[i].abilities[x].type != 2)
+                        {
+                            x = probos[Random.Range(0, probos.Count)];
+                        }
+                        int speed = EnemyMembers[i].spd;
+                        actionTag now = new actionTag(i, "enemyAbility", x, i, speed);
+                        actions.Add(now);
+                    }
+                }
+            }
         }
     }
 
@@ -209,9 +438,11 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         menus = new List<GameObject>();
-        for (int i = 2; i < transform.GetChild(1).childCount-1; i++)
+        Debug.Log("Children # == " + transform.childCount);
+        for (int i = 2; i < transform.GetChild(0).childCount-1; i++)
         {
-            menus.Add(transform.GetChild(1).GetChild(i).gameObject);
+            Debug.Log("i == " + i + ", menu == " + transform.GetChild(0).GetChild(i).name);
+            menus.Add(transform.GetChild(0).GetChild(i).gameObject);
         }
 
         //StartCoroutine(fadeIn());

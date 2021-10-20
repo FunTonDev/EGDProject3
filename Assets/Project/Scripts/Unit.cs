@@ -8,7 +8,7 @@ public class Action
 {
     public string actionName;
     public string actionDesc;
-    public int actionType;  //0 == attack, 1 == support/buff
+    public int type;  //0 == attack, 1 == support/buff
 
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
     public float damage;
@@ -42,6 +42,8 @@ public class Unit
     public int atkItemBoost;
     public int defItemBoost;
     public int spdItemBoost;
+
+    public List<Action> abilities;
 
     public string spriteFilePath;
     public Sprite[] sprites;
