@@ -13,6 +13,8 @@ public class Action
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
     public float damage;
 
+    public int priority;
+
     public int target;  //0 == single, 1 == AOE/All
 }
 

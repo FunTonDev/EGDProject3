@@ -389,7 +389,7 @@ public class BattleManager : MonoBehaviour
         EnemyMembers[2] = new Hound();
         activeEnemies = 3;
 
-        actions = new List<Action>();
+        actions = new List<actionTag>();
 
         if (activeEnemies == 1)
         {
