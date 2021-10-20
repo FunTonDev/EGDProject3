@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 5339edcec9d8829458bbf591237aad84
 folderAsset: yes
 DefaultImporter:
@@ -6,3 +7,12 @@ DefaultImporter:
   userData:
   assetBundleName:
   assetBundleVariant:
+=======
+guid: f9825174855fa0c459ceab9b32ea1841
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>> 8868791 (Programming stuff idk)

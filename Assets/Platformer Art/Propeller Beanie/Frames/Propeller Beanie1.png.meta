@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: f47e1613dfb22b04db6ba499cbe96a71
+=======
+guid: d9ae2cf8d39022748912cb2783535203
+>>>>>>> 8868791 (Programming stuff idk)
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,6 +133,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
+<<<<<<< HEAD
     spriteID:
     internalID: 0
     vertices: []
@@ -142,3 +147,18 @@ TextureImporter:
   userData:
   assetBundleName:
   assetBundleVariant:
+=======
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>> 8868791 (Programming stuff idk)

@@ -47,7 +47,7 @@ public class GameMenuManager : MonoBehaviour
 
     private void NavUpdate()
     {
-        int navDiff = (inputMan.inputY > 0) ? 1 : 0 + ((inputMan.inputY < 0) ? -1 : 0);            
+        int navDiff = (inputMan.inputY > 0) ? -1 : 0 + ((inputMan.inputY < 0) ? 1 : 0);
         if (currentSection == States.MenuSection.Main)
         {
             mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
@@ -64,6 +64,7 @@ public class GameMenuManager : MonoBehaviour
     {
         if (currentSection == States.MenuSection.Main)
         {
+            mainButtons[mainIndex].onClick.Invoke();
             switch (mainIndex)
             {
                 case 0:     //Go to main menu and save the game (not sure if we're gonna use savepoints)
@@ -92,7 +93,11 @@ public class GameMenuManager : MonoBehaviour
         gameMan.paused = !gameMan.paused;
         Time.timeScale = gameMan.paused ? 0 : 1;
         Cursor.visible = gameMan.paused;
-        if (gameMan.paused) { SwitchUISection(States.MenuSection.Main); }
+        if (gameMan.paused)
+        {
+            SwitchUISection(States.MenuSection.Main);
+            mainButtons[mainIndex].Select();
+        }
         else { SwitchUISection(States.MenuSection.Play); }
     }
 
