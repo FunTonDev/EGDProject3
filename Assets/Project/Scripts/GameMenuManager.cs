@@ -40,7 +40,6 @@ public class GameMenuManager : MonoBehaviour
         if (gameMan.paused)
         {
             if (inputMan.inputY_D) { NavUpdate(); }
-            if (inputMan.inputSubmit_D) { SubmitUpdate(); }
         }
         else { if (inputMan.inputCancel_D) { TogglePauseMenu(); } }
     }
@@ -55,36 +54,8 @@ public class GameMenuManager : MonoBehaviour
         }
         else
         {
-            optionsIndex += ((navDiff < 0 && optionsIndex > 0) || (navDiff > 0 && optionsIndex < mainButtons.Count - 1)) ? navDiff : 0;
+            optionsIndex += ((navDiff < 0 && optionsIndex > 0) || (navDiff > 0 && optionsIndex < optionButtons.Count - 1)) ? navDiff : 0;
             optionButtons[optionsIndex].Select();
-        }
-    }
-
-    private void SubmitUpdate()
-    {
-        if (currentSection == States.MenuSection.Main)
-        {
-            mainButtons[mainIndex].onClick.Invoke();
-            switch (mainIndex)
-            {
-                case 0:     //Go to main menu and save the game (not sure if we're gonna use savepoints)
-                    break;
-                case 1:
-                    SwitchUISection(States.MenuSection.Options);
-                    break;
-                case 2:
-                    TogglePauseMenu();
-                    break;
-                }
-            }
-        else if (currentSection == States.MenuSection.Options)
-        {
-            switch (optionsIndex)
-            {
-                case 0:
-                    SwitchUISection(States.MenuSection.Main);
-                    break;
-            }
         }
     }
 
@@ -96,12 +67,16 @@ public class GameMenuManager : MonoBehaviour
         if (gameMan.paused)
         {
             SwitchUISection(States.MenuSection.Main);
-            mainButtons[mainIndex].Select();
         }
         else { SwitchUISection(States.MenuSection.Play); }
     }
 
-    public void SwitchUISection(States.MenuSection i)
+    public void SwitchUISection(int i)
+    {
+        SwitchUISection((States.MenuSection)i);
+    }
+
+    private void SwitchUISection(States.MenuSection i)
     {
         switch (currentSection)
         {
@@ -123,11 +98,14 @@ public class GameMenuManager : MonoBehaviour
                 break;
             case States.MenuSection.Main:
                 panels[1].SetActive(true);
+                mainButtons[mainIndex].Select();
                 break;
             case States.MenuSection.Options:
                 panels[2].SetActive(true);
+                optionButtons[optionsIndex].Select();
                 break;
         }
+        //Debug.Log(currentSection);
     }
 
     /*============================================================================
