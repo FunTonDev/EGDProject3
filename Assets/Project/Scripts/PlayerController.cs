@@ -91,24 +91,10 @@ public class PlayerController : MonoBehaviour
     {
         if (!gameMan.paused)
         {
-            playerGenre = gameMan.genreMain;
             CursorMoveUpdate();
             FireUpdate();
             TimerUpdate();
-            if (playerGenre == States.GameGenre.Platformer)
-            {
-                PlatformerMoveUpdate();
-            }
-            else if (playerGenre == States.GameGenre.Shooter)
-            {
-                ShooterMoveUpdate();
-            }
-            else if (playerGenre == States.GameGenre.RPG)
-            {
-                RPGMoveUpdate();
-            }
         }
-        //DebugUpdate();
     }
 
     private void FixedUpdate()
@@ -298,17 +284,20 @@ public class PlayerController : MonoBehaviour
         switch (trigger.gameObject.tag)
         {
             case "Control":
-                switch (trigger.gameObject.name[trigger.gameObject.name.Length - 1])
+                if (entered)
                 {
-                    case 'P':
-                        SetPlayerMode(States.GameGenre.Platformer);
-                        break;
-                    case 'S':
-                        SetPlayerMode(States.GameGenre.Shooter);
-                        break;
-                    case 'R':
-                        SetPlayerMode(States.GameGenre.RPG);
-                        break;
+                    switch (trigger.gameObject.name[trigger.gameObject.name.Length - 1])
+                    {
+                        case 'P':
+                            SetPlayerMode(States.GameGenre.Platformer);
+                            break;
+                        case 'S':
+                            SetPlayerMode(States.GameGenre.Shooter);
+                            break;
+                        case 'R':
+                            SetPlayerMode(States.GameGenre.RPG);
+                            break;
+                    }
                 }
                 break;
             case "TransitionArea":
