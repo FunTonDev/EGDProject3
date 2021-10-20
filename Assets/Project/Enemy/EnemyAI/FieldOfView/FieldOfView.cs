@@ -20,6 +20,13 @@ public class FieldOfView : MonoBehaviour
         atkAngle = this.GetComponent<ShooterEnemy>().GetAtkAngle();
     }
 
+    public void Update()
+    {
+        viewRadius = this.GetComponent<ShooterEnemy>().GetDetctRadius();
+        atkRadius = this.GetComponent<ShooterEnemy>().GetAtkDist();
+        atkAngle = this.GetComponent<ShooterEnemy>().GetAtkAngle();
+    }
+
 
     public bool FindVisibleTargets()
     {

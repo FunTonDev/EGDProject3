@@ -14,8 +14,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float armor;
 
     [SerializeField] protected int detectionLvl;                // 0,1,2
-
-    [SerializeField] protected bool platformer, shooter, rpg;
+    
+    [SerializeField] protected bool platformer, shooter, rpg;   //Genre
     
     [SerializeField] protected List<Transform> pathNodes;
     protected int currNode = 0;
