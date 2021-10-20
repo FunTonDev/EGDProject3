@@ -47,6 +47,7 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        currMode = playerPrefab.GetComponent<PlayerController>().playerGenre;
         xChange = yChange = 0.0f;
         targetPos = cameraTarget.position;
         switch (cameraTarget.tag)

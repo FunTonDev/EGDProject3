@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1978,6 +1978,8 @@ MonoBehaviour:
   playerRigB: {fileID: 0}
   playerBoxC: {fileID: 0}
   playerAudS: {fileID: 0}
+  playerJumpClip: {fileID: 8300000, guid: 23cbd1f275d64ad45a09c73484016a71, type: 3}
+  playerShootClip: {fileID: 8300000, guid: 744df1b5b201ab4408cec462f10f7bbe, type: 3}
   secondaryAxis: {fileID: 0}
   bulletPrefab: {fileID: 8752199938233944868, guid: 771dca5dd3ded244ea1a616ae56e838f, type: 3}
   playerClips:
@@ -2079,11 +2081,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796991366}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
-  m_LocalPosition: {x: 0, y: 1, z: -200}
-=======
   m_LocalPosition: {x: 0, y: 0.338, z: -200}
->>>>>>> ba85d98 (Ignore)
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 923990735}
@@ -2274,14 +2272,12 @@ MonoBehaviour:
   health: 100
   atkDamage: 1
   moveSpd: 2
+  armor: 0
   detectionLvl: 0
   platformer: 1
   shooter: 0
   rpg: 0
-  rgbdy: {fileID: 0}
   pathNodes: []
-  currNode: 0
-  player: {fileID: 0}
   facingLeft: 0
 --- !u!1 &833224603
 GameObject:
@@ -4093,6 +4089,8 @@ GameObject:
   - component: {fileID: 1426350749}
   - component: {fileID: 1426350751}
   - component: {fileID: 1426350753}
+  - component: {fileID: 1426350754}
+  - component: {fileID: 1426350755}
   m_Layer: 0
   m_Name: '[MANAGER]'
   m_TagString: Untagged
@@ -4175,13 +4173,16 @@ MonoBehaviour:
   pMode: 0
   backgroundIndex: 0
   paused: 0
-<<<<<<< HEAD
-=======
-  gameMode: 
->>>>>>> ba85d98 (Ignore)
   genreMain: 0
   genreExtra1: 0
   genreExtra2: 0
+  gameAudio: {fileID: 1426350755}
+  platformerMusic1: {fileID: 8300000, guid: 19a15fa906f1a4444b91c38fd37a7854, type: 3}
+  platformerMusic2: {fileID: 8300000, guid: 4c52390ad2a96ad4ca35b379ca86fee9, type: 3}
+  shooterMusic1: {fileID: 8300000, guid: 303a3f5617def28459fb99b6b4df31bc, type: 3}
+  shooterMusic2: {fileID: 8300000, guid: 5cd0a7474a5dd3e4895f6c734c250ef2, type: 3}
+  RPGMusic1: {fileID: 8300000, guid: 88711c1876424d545b0fd204fe62bf82, type: 3}
+  RPGMusic2: {fileID: 8300000, guid: c373225256f757c4e8e155f99a80386b, type: 3}
   duration: 0
 --- !u!114 &1426350753
 MonoBehaviour:
@@ -4199,6 +4200,198 @@ MonoBehaviour:
   choiceClip: {fileID: 0}
   confirmClip: {fileID: 0}
   toSwitch: 0
+--- !u!82 &1426350754
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426350748}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1426350755
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426350748}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1432200454
 GameObject:
   m_ObjectHideFlags: 0
@@ -4482,31 +4675,28 @@ MonoBehaviour:
   health: 50
   atkDamage: 2
   moveSpd: 2
+  armor: 0
   detectionLvl: 1
   platformer: 0
   shooter: 1
   rpg: 0
-  rgbdy: {fileID: 0}
   pathNodes:
   - {fileID: 1635146998}
   - {fileID: 74386713}
   - {fileID: 1273088450}
-  currNode: 0
-  player: {fileID: 0}
   ranged: 0
   follow: 1
   sentry: 0
-  chaseMode: 0
-  attackMode: 0
-  retreatMode: 0
-  radius: 6
+  PlayerInSightRange: 0
+  PlayerInAtkRange: 0
+  detctRadius: 0
   AtkDist: 4
   RetreatDist: 3
   RotSpd: 2
   AtkAngle: 0
   timeBtwAtk: 0
   StartTimeBtwAtk: 2
-  Projectile: {fileID: 0}
+  AttackObj: {fileID: 0}
 --- !u!54 &1567330789
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5008,28 +5198,25 @@ MonoBehaviour:
   health: 50
   atkDamage: 2
   moveSpd: 2
+  armor: 0
   detectionLvl: 1
   platformer: 0
   shooter: 1
   rpg: 0
-  rgbdy: {fileID: 0}
   pathNodes: []
-  currNode: 0
-  player: {fileID: 0}
   ranged: 1
   follow: 0
   sentry: 1
-  chaseMode: 0
-  attackMode: 0
-  retreatMode: 0
-  radius: 6
+  PlayerInSightRange: 0
+  PlayerInAtkRange: 0
+  detctRadius: 0
   AtkDist: 5
   RetreatDist: 3
   RotSpd: 2
   AtkAngle: 0
   timeBtwAtk: 0
   StartTimeBtwAtk: 2
-  Projectile: {fileID: 0}
+  AttackObj: {fileID: 0}
 --- !u!54 &1786044954
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5612,16 +5799,14 @@ MonoBehaviour:
   health: 50
   atkDamage: 1
   moveSpd: 2
+  armor: 0
   detectionLvl: 0
   platformer: 1
   shooter: 0
   rpg: 0
-  rgbdy: {fileID: 0}
   pathNodes:
   - {fileID: 1272293180}
   - {fileID: 675479526}
-  currNode: 0
-  player: {fileID: 0}
   facingLeft: 0
 --- !u!1001 &2587144833079808618
 PrefabInstance:

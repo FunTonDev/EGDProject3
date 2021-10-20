@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody playerRigB;
     [SerializeField] private BoxCollider playerBoxC;
     [SerializeField] private AudioSource playerAudS;
+    [SerializeField] private AudioClip playerJumpClip;
+    [SerializeField] private AudioClip playerShootClip;
     [SerializeField] private GameObject secondaryAxis;
     public GameObject bulletPrefab;
     public List<AudioClip> playerClips;
@@ -84,6 +87,8 @@ public class PlayerController : MonoBehaviour
         playerRigB = GetComponent<Rigidbody>();
         playerBoxC = GetComponent<BoxCollider>();
         playerAudS = GetComponent<AudioSource>();
+        //playerJumpClip = Resources.Load<AudioClip>("Audio/Sound_Effects/8_BIT_[50_SFX]_Jump_Free_Sound_Effects_N1_BY_jalastram/SFX_Jump_05");
+        //playerShootClip = (AudioClip)Resources.Load("Audio/Sound_Effects/Fire_5");
         secondaryAxis = gameObject.transform.Find("SecondaryAxis").gameObject;
     }
 
@@ -91,9 +96,22 @@ public class PlayerController : MonoBehaviour
     {
         if (!gameMan.paused)
         {
+            playerGenre = gameMan.genreMain;
             CursorMoveUpdate();
             FireUpdate();
             TimerUpdate();
+            if (playerGenre == States.GameGenre.Platformer)
+            {
+                PlatformerMoveUpdate();
+            }
+            else if (playerGenre == States.GameGenre.Shooter)
+            {
+                ShooterMoveUpdate();
+            }
+            else if (playerGenre == States.GameGenre.RPG)
+            {
+                RPGMoveUpdate();
+            }
         }
         PauseUpdate();
         //DebugUpdate();
@@ -144,6 +162,7 @@ public class PlayerController : MonoBehaviour
         {
             if (walled && !grounded && wallJumpCount < maxWallJumps)
             {
+                playerAudS.PlayOneShot(playerJumpClip);
                 wallJumpCount++;
                 Vector3 jumpDir = (wallNorm + transform.up).normalized;
                 playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
@@ -152,6 +171,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (jumpCount < maxJumps)
             {
+                playerAudS.PlayOneShot(playerJumpClip);
                 jumpCount++;
                 playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse);
                 jumpTimer = jumpDelayTime;
@@ -258,8 +278,9 @@ public class PlayerController : MonoBehaviour
 
     private void FireUpdate()
     {
-        if (inputMan.inputFire1 == 1 && shootTimer <= 0)
+        if (inputMan.inputFire1 == 1 && shootTimer <= 0 && playerGenre == States.GameGenre.Shooter)
         {
+            playerAudS.PlayOneShot(playerShootClip);
             Instantiate(bulletPrefab, transform.position, secondaryAxis.transform.rotation);
             shootTimer = shootDelayTime;
         }

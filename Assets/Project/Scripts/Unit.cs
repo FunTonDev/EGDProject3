@@ -94,7 +94,7 @@ public class Pixal : Unit
     public Pixal(int lv = 1)
     {
         unitName = "Pixal";
-        spriteFilePath = "Assets/Project/Art/Placeholder/Cube.png";
+        spriteFilePath = "Art/Placeholder/Cube.png";
         loadSprites();
         setStats(lv);
     }
@@ -105,7 +105,7 @@ public class Mama : Unit
     public Mama(int lv = 1)
     {
         unitName = "Mama";
-        spriteFilePath = "Assets/Project/Art/Placeholder/mama.jfif";
+        spriteFilePath = "Art/Placeholder/mama.jfif";
         loadSprites();
         setStats(lv);
     }
@@ -116,7 +116,7 @@ public class Hound : Unit
     public Hound(int lv = 1)
     {
         unitName = "Hound";
-        spriteFilePath = "Assets/Project/Art/Placeholder/Dog.jfif";
+        spriteFilePath = "Art/Placeholder/Dog.jfif";
         loadSprites();
         setStats(lv);
     }
@@ -127,7 +127,7 @@ public class Slime : Unit
     public Slime(int lv = 1)
     {
         unitName = "Slime";
-        spriteFilePath = "Assets/Project/Art/Placeholder/BasicSlime";
+        spriteFilePath = "Art/Placeholder/BasicSlime";
         loadSprites();
         setStats(lv);
     }
@@ -138,7 +138,7 @@ public class BossSlime : Unit
     public BossSlime(int lv = 1)
     {
         unitName = "Suspicious Slime";
-        spriteFilePath = "Assets/Project/Art/Placeholder/KingSlime";
+        spriteFilePath = "Art/Placeholder/KingSlime";
         loadSprites();
         setStats(lv);
     }
@@ -149,7 +149,7 @@ public class Skeleton : Unit
     public Skeleton(int lv = 1)
     {
         unitName = "Skeleton";
-        spriteFilePath = "Assets/Project/Art/Placeholder/Skeletoj";
+        spriteFilePath = "Art/Placeholder/Skeletoj";
         loadSprites();
         setStats(lv);
     }
