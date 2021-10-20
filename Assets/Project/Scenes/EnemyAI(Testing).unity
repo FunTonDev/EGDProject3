@@ -579,10 +579,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkAngle
-      value: 30
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: AttackObj
+      value: 
+      objectReference: {fileID: 2327161074033181551, guid: 86956d8f0b6cbdb42b22a01157540581, type: 3}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: maxAtkDist
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: minAtkDist
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: detctRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: maxdetctRadius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: mindetctRadius
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
@@ -1263,7 +1283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_RootOrder
@@ -1310,6 +1330,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: RotSpd
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: follow
       value: 0
       objectReference: {fileID: 0}
@@ -1334,12 +1358,32 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: AttackObj
+      value: 
+      objectReference: {fileID: 2315463149150691004, guid: 58be0d718c953204597bd8a184471a47, type: 3}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: chaseMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: maxAtkDist
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: minAtkDist
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: detctRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: maxdetctRadius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: mindetctRadius
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: pathNodes.Array.size
@@ -1536,7 +1580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_RootOrder
@@ -1595,7 +1639,27 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: AttackObj
+      value: 
+      objectReference: {fileID: 2315463149150691004, guid: 58be0d718c953204597bd8a184471a47, type: 3}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: maxAtkDist
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: minAtkDist
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: detctRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: maxdetctRadius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: mindetctRadius
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}

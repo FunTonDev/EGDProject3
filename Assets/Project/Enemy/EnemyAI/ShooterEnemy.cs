@@ -7,18 +7,24 @@ public class ShooterEnemy : Enemy
 
     //[SerializeField] private NavMeshAgent agent;
 
-    [SerializeField] private bool ranged;     //Melee or ranged attacked
-    [SerializeField] private bool follow;     //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
-    [SerializeField] private bool sentry;     //Doesn't move from initial spot
+    [SerializeField] private bool ranged;    //Melee or ranged attacked
+    [SerializeField] private bool follow;   //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
+    [SerializeField] private bool sentry;  //Doesn't move from initial spot
+    private bool agroMode;                //Enemy detection radius expands after player enters it visions or attacks enemy
 
     [SerializeField] private bool PlayerInSightRange, PlayerInAtkRange;
      private bool retreatMode;
 
-    [SerializeField] private float detctRadius;      //Radius of their detection Circle
-    [SerializeField] private float AtkDist;     //Distance of their attack
+    private float detctRadius;                        //Radius of their detection Circle
+    private float AtkDist;                           //Distance of attack
+    [SerializeField] private float mindetctRadius;  //minRadius of their detection Circle
+    [SerializeField] private float maxdetctRadius; //maxRadius of their detection Circle    
+    [SerializeField] private float minAtkDist;    //minDistance of attack
+    [SerializeField] private float maxAtkDist;   //maxDistance of attack
     [SerializeField] private float RetreatDist; //Distance of how close enemy can be to player
-    [SerializeField] private float RotSpd;      //How fast enemy turns
-    [SerializeField] private float AtkAngle = 60.0f;
+    [SerializeField] private float RotSpd;     //How fast enemy turns
+    [SerializeField] private float AtkAngle;  //Angle of their cone of vision for attacking
+    [SerializeField] private float rotAngle;  //How far enemy can turn
 
     private float timeBtwAtk;        //Time left till next attack
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
@@ -32,23 +38,44 @@ public class ShooterEnemy : Enemy
 
 
     public override void ClassUpdate()
-    { 
+    {
+
+        if (agroMode)
+        {
+            detctRadius = maxdetctRadius;
+            AtkDist = maxAtkDist;
+        }
+        else
+        {
+            detctRadius = mindetctRadius;
+            AtkDist = minAtkDist;
+        }
+
         PlayerInSightRange = PlayerInDetectionRange();
         PlayerInAtkRange = PlayerInAttackVision();
         //retreatMode = PlayerInRetreatRange();
 
         //If enemy should be attacking the player
         if(PlayerInAtkRange)
-            { AttackPlayer();}
+        {
+            agroMode = true;
+            AttackPlayer();
+        }
 
         //If enemy should be chasing the player
         else if(PlayerInSightRange && !PlayerInAtkRange)
-            { ChasePlayer();}
+        {
+            agroMode = true;
+            ChasePlayer();
+        }
 
 
         //If enemy isn't chasing or attacking player
         else if(!PlayerInSightRange && !PlayerInAtkRange)
-            { Patroling();}
+        {
+            agroMode = false;
+            Patroling();
+        }
         
         //Cooldown attack
         timeBtwAtk -= Time.deltaTime;
@@ -146,11 +173,13 @@ public class ShooterEnemy : Enemy
                 Instantiate(AttackObj, spawnPos, this.transform.rotation);                    
             }
 
-            //Continue to move towards player to hit them
+            //Melee attack
             else
             {
                 Debug.Log("Melee attacked called");
-                Move(Vector3.zero);
+                Vector3 spawnPos = this.transform.position + (this.transform.forward * 0.5f);
+                spawnPos.y = 0.5f;
+                Instantiate(AttackObj, spawnPos, this.transform.rotation);            
             }
 
             timeBtwAtk = StartTimeBtwAtk;
@@ -209,6 +238,7 @@ public class ShooterEnemy : Enemy
         else if(collision.collider.tag == "Bullet")
         {
             base.TakeDamage(5);
+            agroMode = true;
         }
     }
 

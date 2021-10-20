@@ -27,8 +27,7 @@ public class EnemyBullet : MonoBehaviour
         else
         {
             Invoke("SelfDestruct", 4.0f);
-        }
-        
+        }     
 
         
     }
@@ -57,6 +56,8 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+
+
         SelfDestruct();
     }
 }
