@@ -105,7 +105,6 @@ public class GameMenuManager : MonoBehaviour
                 optionButtons[optionsIndex].Select();
                 break;
         }
-        //Debug.Log(currentSection);
     }
 
     /*============================================================================

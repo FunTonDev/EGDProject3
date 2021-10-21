@@ -68,11 +68,15 @@ public class PlayerController : MonoBehaviour
     private delegate void ControlDelegate();
     private ControlDelegate controlDel;
 
+    private GameObject closestTile;
+    private float RPGTileSize;
+
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
     private void Start()
     {
+        RPGTileSize = 10.0f;
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         gameMMan = GameObject.Find("[MANAGER]").GetComponent<GameMenuManager>();
@@ -119,6 +123,11 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider trigger)
     {
         TriggerCheck(trigger, true);
+    }
+
+    private void OnTriggerStay(Collider trigger)
+    {
+        TriggerCheck(trigger, false);
     }
 
     private void OnTriggerExit(Collider trigger)
@@ -191,13 +200,22 @@ public class PlayerController : MonoBehaviour
 
     private void RPGMoveUpdate()
     {
-        playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce/2), ForceMode.VelocityChange);
-        playerRigB.AddForce(new Vector3(inputMan.inputX * xForce/2, 0, 0), ForceMode.VelocityChange);
-        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
-        float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+        float xClampVel = 0, yClampVel = 0;
+        if (inputMan.inputX != 0)
+        {
+            playerRigB.AddForce(new Vector3(inputMan.inputX * xForce / 2, 0, 0), ForceMode.VelocityChange);
+            xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+        }
+        else if (inputMan.inputY != 0)
+        {
+            playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce / 2), ForceMode.VelocityChange);
+            yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+        }
+        else if (closestTile != null)
+        {
+            transform.position = new Vector3(closestTile.transform.position.x, transform.position.y, closestTile.transform.position.z);
+        }
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
-
-
     }
 
     private void CursorMoveUpdate()
@@ -300,8 +318,14 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 break;
+            case "Grid":
+                if (closestTile == null || Vector3.Distance(transform.position, trigger.transform.position) < Vector3.Distance(transform.position, closestTile.transform.position))
+                {
+                    closestTile = trigger.gameObject;
+                }
+                break;
             case "TransitionArea":
-                tranMan.SceneSwitch(trigger.gameObject.GetComponent<TransitionBlock>().goToName);
+                tranMan.SceneSwitch(trigger.gameObject.name.Substring(10));
                 break;
             case "Climbable":
                 canClimb = entered;
