@@ -64,7 +64,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 wallNorm;
     public LayerMask groundingMask;
 
-    public States.GameGenre playerGenre;
+    public States.GameGenre playerPrimaryGenre;
+    public States.GameGenre playerSubGenre;
     private delegate void ControlDelegate();
     private ControlDelegate controlDel;
 
@@ -149,9 +150,9 @@ public class PlayerController : MonoBehaviour
 
         if (inputMan.inputAct4_D && jumpTimer <= 0) //Jump check
         {
-            if (walled && !grounded && wallJumpCount < maxWallJumps)
+            playerAudS.PlayOneShot(playerJumpClip);
+            if (!grounded && walled && wallJumpCount < maxWallJumps)
             {
-                playerAudS.PlayOneShot(playerJumpClip);
                 wallJumpCount++;
                 Vector3 jumpDir = (wallNorm + transform.up).normalized;
                 playerRigB.AddForce(jumpDir * 50000.0f, ForceMode.Force);
@@ -160,7 +161,6 @@ public class PlayerController : MonoBehaviour
             }
             else if (jumpCount < maxJumps)
             {
-                playerAudS.PlayOneShot(playerJumpClip);
                 jumpCount++;
                 playerRigB.AddForce(new Vector3(0, jumpForce * jumpCount, 0), ForceMode.Impulse);
                 jumpTimer = jumpDelayTime;
@@ -171,6 +171,7 @@ public class PlayerController : MonoBehaviour
         {
             playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
         }
+
         if (canClimb)       //Y move check
         {
             //WORK ON LATER
@@ -178,7 +179,8 @@ public class PlayerController : MonoBehaviour
             //float yClampVel = inputMan.inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
             //playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
         }
-        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
+
+        float xClampVel = (!inputMan.inputX_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
     }
 
@@ -222,7 +224,7 @@ public class PlayerController : MonoBehaviour
     {
         cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
         float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
-        secondaryAxis.transform.localEulerAngles = (playerGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
+        secondaryAxis.transform.localEulerAngles = (playerPrimaryGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
     }
 
     /*============================================================================
@@ -230,7 +232,7 @@ public class PlayerController : MonoBehaviour
      ============================================================================*/
     private void FireUpdate()
     {
-        if (inputMan.inputFire1 == 1 && shootTimer <= 0 && playerGenre == States.GameGenre.Shooter)
+        if (inputMan.inputFire1 == 1 && shootTimer <= 0 && playerPrimaryGenre == States.GameGenre.Shooter)
         {
             playerAudS.PlayOneShot(playerShootClip);
             Instantiate(bulletPrefab, transform.position, secondaryAxis.transform.rotation);
@@ -302,20 +304,9 @@ public class PlayerController : MonoBehaviour
         switch (trigger.gameObject.tag)
         {
             case "Control":
-                if (entered)
+                if (entered)    //ControlVol name requires last 2 chars manually added in-editor to specify genres
                 {
-                    switch (trigger.gameObject.name[trigger.gameObject.name.Length - 1])
-                    {
-                        case 'P':
-                            SetPlayerMode(States.GameGenre.Platformer);
-                            break;
-                        case 'S':
-                            SetPlayerMode(States.GameGenre.Shooter);
-                            break;
-                        case 'R':
-                            SetPlayerMode(States.GameGenre.RPG);
-                            break;
-                    }
+                    SetPlayerMode(trigger.gameObject.name[13], trigger.gameObject.name[14]);
                 }
                 break;
             case "Grid":
@@ -378,24 +369,41 @@ public class PlayerController : MonoBehaviour
         climbing = false;
     }
 
-    public void SetPlayerMode(States.GameGenre mode)
+    public void SetPlayerMode(char primaryMode, char secondaryMode = 'n')
     {
-        switch(mode)
+        switch(primaryMode.ToString().ToUpper())    //Primary -> Controls/Position/Orientation
         {
-            case States.GameGenre.Platformer:
+            case "P":
+                playerPrimaryGenre = States.GameGenre.Platformer;
                 controlDel = PlatformerMoveUpdate;
                 playerRigB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
                 break;
-            case States.GameGenre.Shooter:
+            case "S":
+                playerPrimaryGenre = States.GameGenre.Shooter;
                 controlDel = ShooterMoveUpdate;
                 playerRigB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                 break;
-            case States.GameGenre.RPG:
+            case "R":
+                playerPrimaryGenre = States.GameGenre.RPG;
                 controlDel = RPGMoveUpdate;
                 playerRigB.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                 break;
         }
-        camCont.SetCameraMode(mode);
-        playerGenre = mode;
+
+        switch (secondaryMode.ToString().ToUpper()) //Secondary -> Camera
+        {
+            case "P":
+                playerSubGenre = States.GameGenre.Platformer;   
+                break;
+            case "S":
+                playerSubGenre = States.GameGenre.Shooter;
+                break;
+            case "R":
+                playerSubGenre = States.GameGenre.RPG;
+                break;
+            default:
+                break;
+        }
+        camCont.SetCameraMode(playerSubGenre);
     }
 }

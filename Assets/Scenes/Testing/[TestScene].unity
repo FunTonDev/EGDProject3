@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3088,18 +3088,27 @@ MonoBehaviour:
   inputCancel: 0
   inputCancel_U: 0
   inputCancel_D: 0
-  inputAlt1: 0
-  inputAlt1_U: 0
-  inputAlt1_D: 0
-  inputAlt2: 0
-  inputAlt2_U: 0
-  inputAlt2_D: 0
-  inputAlt3: 0
-  inputAlt3_U: 0
-  inputAlt3_D: 0
-  inputAlt4: 0
-  inputAlt4_U: 0
-  inputAlt4_D: 0
+  inputAct1: 0
+  inputAct1_U: 0
+  inputAct1_D: 0
+  inputAct2: 0
+  inputAct2_U: 0
+  inputAct2_D: 0
+  inputAct3: 0
+  inputAct3_U: 0
+  inputAct3_D: 0
+  inputAct4: 0
+  inputAct4_U: 0
+  inputAct4_D: 0
+  inputAct5: 0
+  inputAct5_U: 0
+  inputAct5_D: 0
+  inputAct6: 0
+  inputAct6_U: 0
+  inputAct6_D: 0
+  inputAct7: 0
+  inputAct7_U: 0
+  inputAct7_D: 0
   inputMX: 0
   inputMY: 0
   inputScroll: 0
@@ -3746,15 +3755,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6677177545914274468, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 90
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 6677177545914274468, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6677177545914274468, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6677177545914274468, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3788,6 +3797,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1bfa973cf8f3b2e45b6967fab62712a6, type: 2}
+    - target: {fileID: 6677177545914274470, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
+      propertyPath: maxXVelocity
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677177545914274470, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
+      propertyPath: maxYVelocity
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6677177545914274473, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: m_Name
       value: PlayerPrefab
