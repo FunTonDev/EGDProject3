@@ -73,10 +73,17 @@ public class BattleManager : MonoBehaviour
     public List<Unit> PartyMembers;
     public List<Unit> EnemyMembers;
 
-    //Int to track how many abilities away from the bottom before the menu can start scrolling
-    private int ability_offset;
-    //Int to track how many actions away from the bottom before the menu can start scrolling
-    private int action_offset;
+    public GameObject actionBackground;
+    
+    private int mainIndex;
+    private int actionIndex;
+    private int enemyIndex;
+    private int allyIndex;
+
+    public List<Button> mainButtons;
+    public List<Button> actionButtons;
+    public List<Button> enemyButtons;
+    public List<Button> allyButtons;
 
     //Current ability being highlighted
     private int highlighted_ability;
@@ -84,13 +91,6 @@ public class BattleManager : MonoBehaviour
     private int highlighted_action;
     //Bool to check whether the menu is accepting input
     private bool menu_input;
-
-    //Bool to check whether the player has the ability menu open
-    private bool ability_select_menu;
-    //Bool to check whether the player is selecting an enemy to attack
-    private bool enemy_select_menu;
-    //Bool to check whether the player is selecting an ally for an ability
-    private bool unit_select_menu;
 
     public GameObject background;
 
@@ -135,21 +135,6 @@ public class BattleManager : MonoBehaviour
         DisplayText.text = PartyMembers[currentUnit] + "'s turn";
     }
 
-    //Function to scroll through main menu in battle to choose what to do
-    public void BaseMenuRoutine()
-    {
-
-    }
-    //Function to scroll through possible abilites/actions
-    public void ActionMenuRoutine()
-    {
-
-    }
-    //Function to try and recruit an enemy as a party member
-    public void RecruitMenuRoutine()
-    {
-
-    }
     //Function to enter the target/action for an attack
     public void takeAction(int target)
     {
@@ -178,7 +163,18 @@ public class BattleManager : MonoBehaviour
 
     public void startAction(int type)
     {
+        //Attack
         if (type == 0)
+        {
+
+        }
+        //Action
+        else if (type == 1)
+        {
+
+        }
+        //Defend
+        else if (type == 2)
         {
 
         }
@@ -188,21 +184,35 @@ public class BattleManager : MonoBehaviour
     {
         if (num == 0)
         {
+            actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Actions";
+            active_menu = 1;
             menus[1].SetActive(true);
             menus[2].SetActive(false);
             menus[3].SetActive(false);
         }
         else if (num == 1)
         {
+            actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Attack";
+            active_menu = 2;
             menus[1].SetActive(false);
             menus[2].SetActive(true);
             menus[3].SetActive(false);
         }
         else if (num == 2)
         {
+            actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Support";
+            active_menu = 3;
             menus[1].SetActive(false);
             menus[2].SetActive(false);
             menus[3].SetActive(true);
+        }
+        else
+        {
+            actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Battling Time";
+            active_menu = 0;
+            menus[1].SetActive(false);
+            menus[2].SetActive(false);
+            menus[3].SetActive(false);
         }
     }
 
@@ -264,14 +274,9 @@ public class BattleManager : MonoBehaviour
                         for (int f = 0; f < PartyMembers.Count; f++)
                         {
                             tochoos.Add(f);
-                            //If a frontline unit, add twice
-                            if (f < 2)
-                            {
-                                tochoos.Add(f);
-                            }
                         }
                         int r = tochoos[Random.Range(0, tochoos.Count)];
-                        while (PartyMembers[r] == null)
+                        while (PartyMembers[r] == null || PartyMembers[r].currentHP <= 0)
                         {
                             r = tochoos[Random.Range(0, tochoos.Count)];
                         }
@@ -302,6 +307,13 @@ public class BattleManager : MonoBehaviour
                         int x = 0;
 
                         List<int> probos = new List<int>();
+                        for (int d = 0; d < EnemyMembers[i].abilities.Count; d++)
+                        {
+                            for (int c = 0; c < EnemyMembers[i].abilities[d].priority; c++)
+                            {
+                                probos.Add(d);
+                            }
+                        }
                         while (EnemyMembers[i].abilities[x].type != 1)
                         {
                             x = probos[Random.Range(0, probos.Count)];
@@ -433,15 +445,45 @@ public class BattleManager : MonoBehaviour
         transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
     }
 
+    private void NavUpdate()
+    {
+        int navDiff = (inputMan.inputY > 0) ? -1 : 0 + ((inputMan.inputY < 0) ? 1 : 0);
+        if (state == battleState.PLAYER)
+        {
+            //Base
+            if (active_menu == 0)
+            {
+                mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
+                mainButtons[mainIndex].Select();
+            }
+            //Action
+            else if (active_menu == 1)
+            {
+                actionIndex += ((navDiff < 0 && actionIndex > 0) || (navDiff > 0 && actionIndex < actionButtons.Count - 1)) ? navDiff : 0;
+                actionButtons[actionIndex].Select();
+            }
+            //Target Enemy
+            else if (active_menu == 2)
+            {
+                enemyIndex += ((navDiff < 0 && enemyIndex > 0) || (navDiff > 0 && enemyIndex < enemyButtons.Count - 1)) ? navDiff : 0;
+                enemyButtons[enemyIndex].Select();
+            }
+            //Target Ally
+            else if (active_menu == 3)
+            {
+                allyIndex += ((navDiff < 0 && allyIndex > 0) || (navDiff > 0 && allyIndex < allyButtons.Count - 1)) ? navDiff : 0;
+                allyButtons[allyIndex].Select();
+            }
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
         menus = new List<GameObject>();
-        Debug.Log("Children # == " + transform.childCount);
         for (int i = 2; i < transform.GetChild(0).childCount-1; i++)
         {
-            Debug.Log("i == " + i + ", menu == " + transform.GetChild(0).GetChild(i).name);
             menus.Add(transform.GetChild(0).GetChild(i).gameObject);
         }
 

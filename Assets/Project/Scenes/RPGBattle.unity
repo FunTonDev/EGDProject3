@@ -543,7 +543,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &281740423
 Transform:
   m_ObjectHideFlags: 0
@@ -1715,7 +1715,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Actions
+  m_Text: Battling Time
 --- !u!222 &740179829
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2073,7 +2073,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2585,7 +2585,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1031959484}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: makeMenuVisible
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1069693075
 GameObject:
   m_ObjectHideFlags: 0
@@ -2876,7 +2888,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3561,9 +3573,35 @@ MonoBehaviour:
   cursor_position: 0
   active_menu: 0
   cursor_positions: []
-  menus: []
   DisplayText: {fileID: 1765737274}
-  background: {fileID: 0}
+  actionBackground: {fileID: 987904355}
+  mainButtons:
+  - {fileID: 1224189132}
+  - {fileID: 915285111}
+  - {fileID: 1813117694}
+  actionButtons:
+  - {fileID: 1224189132}
+  - {fileID: 915285111}
+  - {fileID: 1813117694}
+  - {fileID: 2123153703}
+  - {fileID: 1927522594}
+  - {fileID: 1031959486}
+  - {fileID: 1793817119}
+  enemyButtons:
+  - {fileID: 1224189132}
+  - {fileID: 915285111}
+  - {fileID: 1813117694}
+  - {fileID: 511235506}
+  - {fileID: 1226553027}
+  - {fileID: 508434957}
+  allyButtons:
+  - {fileID: 1224189132}
+  - {fileID: 915285111}
+  - {fileID: 1813117694}
+  - {fileID: 1069693077}
+  - {fileID: 1493085669}
+  - {fileID: 399969505}
+  background: {fileID: 987904355}
   partyPrefabs:
   - {fileID: 425486979}
   - {fileID: 1692126010}
@@ -3572,7 +3610,6 @@ MonoBehaviour:
   - {fileID: 711192056}
   - {fileID: 1698636}
   - {fileID: 1482136640}
-  actionTypes: []
 --- !u!1 &1650394419
 GameObject:
   m_ObjectHideFlags: 0
@@ -4014,7 +4051,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1793817117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: makeMenuVisible
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1813117692
 GameObject:
   m_ObjectHideFlags: 0
@@ -4097,7 +4146,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1813117695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: makeMenuVisible
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1813117695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4256,7 +4317,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1927522592}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: makeMenuVisible
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1930240187
 GameObject:
   m_ObjectHideFlags: 0
@@ -5041,4 +5114,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2123153701}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: makeMenuVisible
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

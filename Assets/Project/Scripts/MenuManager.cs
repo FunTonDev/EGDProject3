@@ -7,9 +7,16 @@ using UnityEngine.SceneManagement;  //Remove later, reserve scene changes for TR
 public class MenuManager : MonoBehaviour
 {
     [Header("Components")]
+    [SerializeField] private InputManager inputMan;
     [SerializeField] private AudioSource menuSource;
     [SerializeField] private Graphic bg;
 
+    public List<Button> mainButtons;
+    public List<Button> playButtons;
+    public List<Button> optionButtons;
+    public List<Button> helpButtons;
+    public List<Button> creditsButtons;
+    public List<Button> quitButtons;
     public List<GameObject> panels;
     public AudioClip choiceClip;
     public AudioClip confirmClip;
@@ -19,6 +26,9 @@ public class MenuManager : MonoBehaviour
     public int mainIndex;
     public int playIndex;
     public int optionsIndex;
+    public int helpIndex;
+    public int creditsIndex;
+    public int quitIndex;
     public States.MenuSection currentSection;
 
     [Header("Button Input")]
@@ -37,13 +47,16 @@ public class MenuManager : MonoBehaviour
      ============================================================================*/
     public void Start()
     {
+        inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         SetActiveMenuPanel(States.MenuSection.Main);
-        mainIndex = 1;
+        mainIndex = 0;
     }
 
     private void Update()
     {
+        if (inputMan.inputY_D) { NavUpdate(); }
         ButtonUpdate();
+        /*
         if (currentSection == States.MenuSection.Main)
         {
             panels[0].transform.GetChild(mainIndex-1).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f);
@@ -174,6 +187,7 @@ public class MenuManager : MonoBehaviour
         {
 
         }
+        */
 
         inputButton = false;
     }
@@ -181,6 +195,125 @@ public class MenuManager : MonoBehaviour
     /*============================================================================
      * MENU METHODS
      ============================================================================*/
+    private void NavUpdate()
+    {
+        int navDiff = (inputMan.inputY > 0) ? -1 : 0 + ((inputMan.inputY < 0) ? 1 : 0);
+        if (currentSection == States.MenuSection.Main)
+        {
+            mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
+            mainButtons[mainIndex].Select();
+        }
+        else if (currentSection == States.MenuSection.Play)
+        {
+            playIndex += ((navDiff < 0 && playIndex > 0) || (navDiff > 0 && playIndex < playButtons.Count - 1)) ? navDiff : 0;
+            playButtons[playIndex].Select();
+        }
+        else if (currentSection == States.MenuSection.Options)
+        {
+            optionsIndex += ((navDiff < 0 && optionsIndex > 0) || (navDiff > 0 && optionsIndex < optionButtons.Count - 1)) ? navDiff : 0;
+            optionButtons[optionsIndex].Select();
+        }
+        else if (currentSection == States.MenuSection.Help)
+        {
+            helpIndex += ((navDiff < 0 && helpIndex > 0) || (navDiff > 0 && helpIndex < helpButtons.Count - 1)) ? navDiff : 0;
+            helpButtons[helpIndex].Select();
+        }
+        else if (currentSection == States.MenuSection.Credits)
+        {
+            creditsIndex += ((navDiff < 0 && creditsIndex > 0) || (navDiff > 0 && creditsIndex < creditsButtons.Count - 1)) ? navDiff : 0;
+            creditsButtons[creditsIndex].Select();
+        }
+        else if (currentSection == States.MenuSection.Quit)
+        {
+            quitIndex += ((navDiff < 0 && quitIndex > 0) || (navDiff > 0 && quitIndex < quitButtons.Count - 1)) ? navDiff : 0;
+            quitButtons[quitIndex].Select();
+        }
+    }
+
+    public void openMenu(int num)
+    {
+        if (num >= 0 && num <= 5) closeCurrentMenu();
+        switch (num)
+        {
+            case 0:
+                currentSection = States.MenuSection.Main;
+                mainIndex = 0;
+                panels[0].SetActive(true);
+                break;
+            case 1:
+                currentSection = States.MenuSection.Play;
+                playIndex = 0;
+                panels[1].SetActive(true);
+                break;
+            case 2:
+                currentSection = States.MenuSection.Options;
+                optionsIndex = 0;
+                panels[2].SetActive(true);
+                break;
+            case 3:
+                currentSection = States.MenuSection.Help;
+                helpIndex = 0;
+                panels[3].SetActive(true);
+                break;
+            case 4:
+                currentSection = States.MenuSection.Credits;
+                creditsIndex = 0;
+                panels[4].SetActive(true);
+                break;
+            case 5:
+                currentSection = States.MenuSection.Quit;
+                quitIndex = 0;
+                panels[5].SetActive(true);
+                break;
+        }
+    }
+
+    public void openSaveSlot(int save)
+    {
+        switch (save)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                SceneManager.LoadScene("[Test Scene]");
+                break;
+        }
+    }
+
+    public void closeCurrentMenu()
+    {
+        switch (currentSection)
+        {
+            case States.MenuSection.Main:
+                panels[0].SetActive(false);
+                break;
+            case States.MenuSection.Play:
+                panels[1].SetActive(false);
+                break;
+            case States.MenuSection.Options:
+                panels[2].SetActive(false);
+                break;
+            case States.MenuSection.Help:
+                panels[3].SetActive(false);
+                break;
+            case States.MenuSection.Credits:
+                panels[4].SetActive(false);
+                break;
+            case States.MenuSection.Quit:
+                panels[5].SetActive(false);
+                break;
+        }
+    }
+    
+    public void quitGame()
+    {
+        Application.Quit();
+    }
+
     public void MenuChoice(int index)
     {
         switch (index)
