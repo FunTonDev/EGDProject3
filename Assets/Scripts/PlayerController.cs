@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour
             else if (playerRigB.velocity.y > maxJumpVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxJumpVelocity, playerRigB.velocity.z); }
         }
 
-        if (inputMan.inputAlt1 == 1 && jumpTimer <= 0) //Jump check
+        if (inputMan.inputAct4_D && jumpTimer <= 0) //Jump check
         {
             if (walled && !grounded && wallJumpCount < maxWallJumps)
             {
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
         float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
 
-        if (inputMan.inputAlt2 == 1 && rollTimer <= 0) //Roll check
+        if (inputMan.inputAct7_D && rollTimer <= 0) //Roll check
         {
             Debug.Log("ROLL");
         }
