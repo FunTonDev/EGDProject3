@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         duration = 0.0f;
         DontDestroyOnLoad(gameObject);
         SetUpScene();
+        gameAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
     }
 
     private void SetUpScene()

@@ -25,7 +25,7 @@ public class RPGGridGenerator : MonoBehaviour
         {
             for (int j = 0; j < totalHor; j++)
             {
-                Vector3 pos = new Vector3(startXPos + tileSize * j, yPos, startZPos - tileSize * i);
+                Vector3 pos = new Vector3(startXPos + tileSize * j, yPos + 0.5f, startZPos - tileSize * i);
                 Instantiate(gridUnit, pos, gridContainer.transform.rotation, gridContainer);
             }
         }
