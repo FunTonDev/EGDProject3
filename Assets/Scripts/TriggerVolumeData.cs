@@ -94,6 +94,7 @@ public class TriggerVolumeData : MonoBehaviour
     {
         playerCont.playerRigB.useGravity = true;
         playerCont.controlDel = playerCont.PlatformerMoveUpdate;
+        playerCont.GenreCosmeticUpdate(0);
         playerCont.jumpForce = inJumpForce;
         playerCont.dashForce = inDashForce;
         playerCont.maxJumpVelocity = inMaxJumpVel;
@@ -104,12 +105,14 @@ public class TriggerVolumeData : MonoBehaviour
     {
         playerCont.playerRigB.useGravity = true;
         playerCont.controlDel = playerCont.ShooterMoveUpdate;
+        playerCont.GenreCosmeticUpdate(1);
     }
 
     private void SetRPGValues()
     {
         playerCont.playerRigB.useGravity = false;
         playerCont.controlDel = playerCont.RPGMoveUpdate;
+        playerCont.GenreCosmeticUpdate(2);
     }
     private void SetHubValues()
     {

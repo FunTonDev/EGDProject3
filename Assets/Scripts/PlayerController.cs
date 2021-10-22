@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public MeshRenderer playerMeshR;
     private GameObject secondaryAxis;
     private GameObject closestTile;
+    private List<GameObject> genreCosmetics;
 
     [Header("Components")]
     public GameObject bulletPrefab;
@@ -70,10 +71,8 @@ public class PlayerController : MonoBehaviour
     public float rollTimer;
     public float rollDelayTime;
 
-
-
-
-    public States.GameGenre playerPrimaryGenre; //Genre-Control Data
+    [Header("Genre-Control Data")]
+    public States.GameGenre playerPrimaryGenre;
     public States.GameGenre playerSubGenre;
     public delegate void ControlDelegate();
     public ControlDelegate controlDel;
@@ -93,6 +92,11 @@ public class PlayerController : MonoBehaviour
         playerMeshF = gameObject.transform.GetChild(0).GetComponent<MeshFilter>();
         playerMeshR = gameObject.transform.GetChild(0).GetComponent<MeshRenderer>();
         secondaryAxis = gameObject.transform.GetChild(1).gameObject;
+        genreCosmetics = new List<GameObject>();
+        for (int i = 0; i < gameObject.transform.GetChild(2).childCount; i++)
+        {
+            genreCosmetics.Add(gameObject.transform.GetChild(2).GetChild(i).gameObject);
+        }
     }
 
     private void Update()
@@ -263,7 +267,13 @@ public class PlayerController : MonoBehaviour
         toggleTimer -= toggleTimer > 0 ? Time.deltaTime : 0;
     }
 
-    public float ChangeHealth(float change)
+    public void GenreCosmeticUpdate(int index)
+    {
+        foreach (GameObject g in genreCosmetics) { g.SetActive(false); }
+        if (index > -1 && index < genreCosmetics.Count) { genreCosmetics[index].SetActive(true); }
+    }
+
+    public float HealthUpdate(float change)
     {
         currentHP += change;
         return currentHP;
