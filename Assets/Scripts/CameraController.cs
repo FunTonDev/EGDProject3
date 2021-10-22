@@ -46,7 +46,6 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        currMode = playerPrefab.GetComponent<PlayerController>().playerGenre;
         xChange = yChange = 0.0f;
         targetPos = cameraTarget.position;
         switch (cameraTarget.tag)
@@ -112,11 +111,6 @@ public class CameraController : MonoBehaviour
         currMode = mode;
         switch (currMode)
         {
-            case (States.GameGenre.Platformer):
-                cam.orthographic = true;
-                genrePos = new Vector3(0, 0, -8.0f);
-                targetRot = Quaternion.Euler(0, 0, 0);
-                break;
             case (States.GameGenre.Shooter):
                 cam.orthographic = false;
                 genrePos = new Vector3(0, 10.0f, 0);
@@ -126,6 +120,11 @@ public class CameraController : MonoBehaviour
                 cam.orthographic = false;
                 genrePos = new Vector3(0, 5.0f, -6.0f);
                 targetRot = Quaternion.Euler(45, 0, 0);
+                break;
+            default:    //Applies same cam to platformer and hub; subject to change
+                cam.orthographic = true;
+                genrePos = new Vector3(0, 0, -8.0f);
+                targetRot = Quaternion.Euler(0, 0, 0);
                 break;
         }
     }
@@ -162,6 +161,6 @@ public class CameraController : MonoBehaviour
 
     public void SetPlayerMode(States.GameGenre mode)
     {
-
+        
     }
 }
