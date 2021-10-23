@@ -913,7 +913,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 399969506}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: takeAction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &399969506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1328,7 +1340,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 508434955}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: takeAction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &511235502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1473,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 511235504}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: takeAction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &657397128
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,7 +2109,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2588,12 +2624,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1516336858}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: makeMenuVisible
+        m_MethodName: startAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2680,7 +2716,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1069693078}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: takeAction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1069693078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2888,7 +2936,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3051,7 +3099,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1226553025}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: takeAction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1257592881
 GameObject:
   m_ObjectHideFlags: 0
@@ -3378,7 +3438,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1493085670}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1516336858}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: takeAction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1493085670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4054,12 +4126,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1516336858}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: makeMenuVisible
+        m_MethodName: startAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4320,7 +4392,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1516336858}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: makeMenuVisible
+        m_MethodName: startAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5117,12 +5189,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1516336858}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: makeMenuVisible
+        m_MethodName: startAction
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

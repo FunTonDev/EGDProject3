@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //Different states of battle (turns)
 public enum battleState { START, PLAYER, ATTACK, ENEMY, WIN, LOSE, FLEE, HUH }
@@ -130,6 +131,16 @@ public class BattleManager : MonoBehaviour
 
     private string currentActionType = "";
 
+    //Bool to check whether text is displayed that have button delays
+    bool skipper = false;
+    private List<string> write_queue;
+    private List<string> image_queue;
+    public List<string> dialogueText;
+    public float scroll_speed;
+    private bool active;
+    private bool writing;
+    private bool ender = false;
+
     public void playerTurn()
     {
         DisplayText.text = PartyMembers[currentUnit] + "'s turn";
@@ -140,7 +151,28 @@ public class BattleManager : MonoBehaviour
     {
         if (!currentActionType.Equals(""))
         {
-            actions.Add(new actionTag(currentUnit, currentActionType, currentAction, target, PartyMembers[currentUnit].spd));
+            if (currentActionType == "Action")
+            {
+                if (EnemyMembers[target] != null)
+                {
+                    actions.Add(new actionTag(currentUnit, currentActionType, currentAction, target, PartyMembers[currentUnit].spd));
+                }
+                else
+                {
+                    DisplayText.text = "Can't attack an empty Space";
+                }
+            }
+            else if (currentActionType == "Support")
+            {
+                if (PartyMembers[target] != null)
+                {
+                    actions.Add(new actionTag(currentUnit, currentActionType, currentAction, target, PartyMembers[currentUnit].spd));
+                }
+                else
+                {
+                    DisplayText.text = "Can't support an empty Space";
+                }
+            }
         }
         else
         {
@@ -150,7 +182,7 @@ public class BattleManager : MonoBehaviour
         currentActionType = "";
         currentAction = 0;
         
-        if (currentUnit >= 3)
+        if (currentUnit >= activeUnits)
         {
             //Calculate enemy actions, then go to perform actions
             StartCoroutine(PerformActions());
@@ -161,22 +193,25 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void startAction(int type)
+    //Function to use an action and move to select a spot
+    public void startAction(int num)
     {
-        //Attack
-        if (type == 0)
+        if (num > PartyMembers[currentUnit].abilities.Count)
         {
-
+            DisplayText.text = "Can't use a Locked Ability";
         }
-        //Action
-        else if (type == 1)
+        else
         {
-
-        }
-        //Defend
-        else if (type == 2)
-        {
-
+            if (PartyMembers[currentUnit].abilities[num].type == 1)
+            {
+                currentActionType = "Support";
+                makeMenuVisible(2);
+            }
+            else
+            {
+                currentActionType = "Action";
+                makeMenuVisible(0);
+            }
         }
     }
 
@@ -393,6 +428,7 @@ public class BattleManager : MonoBehaviour
             else
             {
                 partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                partyPrefabs[i].SetActive(false);
             }
         }
 
@@ -420,10 +456,448 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
     }
 
+    //public function for clearing the text of the textbox
+    public void Clear()
+    {
+        DisplayText.text = "";
+    }
+    IEnumerator textDisplay(string tt, bool stop = false)
+    {
+        ender = stop;
+        if (!stop && state != battleState.START)
+        {
+            scroll_speed = 40;
+        }
+        else
+        {
+            scroll_speed = 20;
+        }
+        //StopCoroutine("textDisplay");
+        Clear();
+        write_queue.Add(tt);
+        writing = true;
+        for (int i = 0; i < write_queue[0].Length && writing; i++)
+        {
+            if (inputMan.inputSubmit != 0.0f && stop)
+            {
+                Debug.Log("Should stop now");
+                Clear();
+                DisplayText.text = tt;
+                write_queue.RemoveAt(0);
+                writing = false;
+                //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+                break;
+            }
+            if (writing)
+            {
+                yield return new WaitForSeconds(1f / scroll_speed);
+                DisplayText.text += write_queue[0][i];
+            }
+        }
+        writing = false;
+        if (write_queue.Count >= 1)
+        {
+            Debug.Log("write queue count == " + write_queue.Count);
+            write_queue.RemoveAt(0);
+        }
+        DisplayText.text = tt;
+        if (stop)
+        {
+            yield return new WaitForSeconds(0.2f);
+            yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit != 0.0f));
+        }
+    }
+
     //Perform the selected actions, after they have been selected
     public IEnumerator PerformActions()
     {
+        transform.GetChild(1).Find("ActionMenu").gameObject.SetActive(false);
+        enemyAttacks();
+        if (state != battleState.WIN && state != battleState.LOSE && state != battleState.FLEE && EnemyMembers.Count - enemyDeaths > 0 && activeUnits - partyDeaths > 0)
+        {
+            actions.Sort((a, b) => { return b.getSPD().CompareTo(a.getSPD()); });
+            actions.Sort((a, b) => { return b.getFast().CompareTo(a.getFast()); });
+            for (int z = 0; z < actions.Count; z++)
+            {
+                string sc = actions[z].getType();
+                yield return new WaitForSeconds(0.5f);
+                int ind = actions[z].getID();
+
+                //Use offensive ability
+                if (actions[z].getType() == "Action" && state == battleState.ATTACK)
+                {
+                    int toget = actions[z].getTarget();
+                    if (EnemyMembers[toget].currentHP <= 0)
+                    {
+                        while (EnemyMembers[toget].currentHP <= 0 && toget > 0)
+                        {
+                            toget--;
+                        }
+                        if (toget == 0 && EnemyMembers[toget].currentHP <= 0)
+                        {
+                            while (EnemyMembers[toget].currentHP <= 0 && toget < EnemyMembers.Count - 1)
+                            {
+                                toget++;
+                            }
+                        }
+                        if (EnemyMembers[toget].currentHP <= 0)
+                        {
+                            state = battleState.WIN;
+                            yield return battleEnd();
+                        }
+                    }
+
+                    string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
+
+
+                    yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName, true);
+                    yield return playerAbility(actions[z].getIndex(), toget, PartyMembers[ind], EnemyMembers[toget]);                    
+                }
+                //Use Buff/Support ability (player)
+                else if (actions[z].getType() == "Support" && state == battleState.ATTACK)
+                {
+                    int pose = actions[z].getTarget();
+                    string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
+                    if (PartyMembers[pose] != null)
+                    {
+                        if (PartyMembers[pose].currentHP > 0)
+                        {
+                            yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName);
+                            yield return playerAbility(actions[z].getIndex(), pose, PartyMembers[ind], PartyMembers[pose]);
+                        }
+                        else
+                        {
+                            StartCoroutine(textDisplay(PartyMembers[ind].unitName + " used " + abiName + ", but they were too late"));
+                        }
+                    }
+                    else
+                    {
+                        StartCoroutine(textDisplay(PartyMembers[ind].unitName + " used " + abiName + ", but nobody was there"));
+                    }
+                }
+                //Use basic attack
+                else if (actions[z].getType() == "Attack" && state == battleState.ATTACK)
+                {
+                    int toget = actions[z].getTarget();
+
+                    if (EnemyMembers[toget].currentHP <= 0)
+                    {
+                        while (EnemyMembers[toget].currentHP <= 0 && toget > 0)
+                        {
+                            toget--;
+                        }
+                        if (toget == 0 && EnemyMembers[toget].currentHP <= 0)
+                        {
+                            while (EnemyMembers[toget].currentHP <= 0 && toget < EnemyMembers.Count - 1)
+                            {
+                                toget++;
+                            }
+                        }
+                        if (EnemyMembers[toget].currentHP <= 0)
+                        {
+                            state = battleState.WIN;
+                            yield return battleEnd();
+                        }
+                    }
+                    
+                    yield return textDisplay(PartyMembers[ind].unitName + " attacked the enemy", true);
+                    yield return basicAttack(PartyMembers[ind], EnemyMembers[toget]);
+                }
+                else if (actions[z].getType() == "enemyAttack" && state == battleState.ATTACK)
+                {
+                    //EnemyMembers[ind].changeSprite(1);
+                    int toget = actions[z].getTarget();
+                    if (PartyMembers[toget] != null)
+                    {
+                        if (PartyMembers[toget].currentHP > 0)
+                        {
+                            yield return textDisplay(EnemyMembers[ind].unitName + " used " +
+                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName, true);
+                            yield return enemyAttack(actions[z].getIndex(), toget, EnemyMembers[ind], PartyMembers[toget]);
+                        }
+                        //If dead unit at position
+                        else
+                        {
+                            if (partyDeaths < activeUnits)
+                            {
+                                int baseNum = toget;
+                                while (PartyMembers[toget] == null || PartyMembers[toget].currentHP <= 0 || toget == baseNum)
+                                {
+                                    toget = Random.Range(0, PartyMembers.Count);
+                                }
+                                yield return textDisplay(EnemyMembers[ind].unitName + " used " +
+                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
+                                yield return enemyAttack(actions[z].getIndex(), toget, EnemyMembers[ind], PartyMembers[toget]);
+                            }
+                            else
+                            {
+                                state = battleState.WIN;
+                                yield return battleEnd();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (partyDeaths < activeUnits)
+                        {
+                            int baseNum = toget;
+                            while (PartyMembers[toget] == null || PartyMembers[toget].currentHP <= 0 || toget == baseNum)
+                            {
+                                toget = Random.Range(0, PartyMembers.Count);
+                            }
+                            yield return textDisplay(EnemyMembers[ind].unitName + " used " +
+                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
+                            yield return enemyAttack(actions[z].getIndex(), toget,
+                                EnemyMembers[ind], PartyMembers[toget]);
+                        }
+                        else
+                        {
+                            state = battleState.WIN;
+                            yield return battleEnd();
+                        }
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                    //EnemyMembers[ind].changeSprite(0);
+                }
+                //Enemy performs a non-offensive ability
+                else if (actions[z].getType() == "enemyAction" && state == battleState.ATTACK)
+                {
+                    //EnemyMembers[ind].changeSprite(1);
+                    if (EnemyMembers[actions[z].getTarget()] != null)
+                    {
+                        if (EnemyMembers[actions[z].getTarget()].currentHP > 0)
+                        {
+                            yield return textDisplay(EnemyMembers[ind].unitName + " used " +
+                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
+                            yield return enemyAbility(actions[z].getIndex(), actions[z].getTarget(),
+                                EnemyMembers[ind], EnemyMembers[actions[z].getTarget()]);
+                        }
+                        else
+                        {
+                            yield return textDisplay(EnemyMembers[ind].unitName + " tried supporting " +
+                                EnemyMembers[actions[z].getTarget()].unitName + ", but they weren't there");
+                        }
+                    }
+                    else
+                    {
+                        yield return textDisplay(EnemyMembers[ind].unitName + " tried using ability," +
+                            " but nobody was there");
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                    //EnemyMembers[ind].changeSprite(0);
+                }
+                else
+                {
+                    yield return textDisplay("Invalid action selected");
+                }
+                yield return new WaitForSeconds(0.5f);
+                if (!skipper)
+                {
+                    yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit != 0.0f));
+                }
+                else skipper = false;
+                int tempPD = 0;
+                int tempPA = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (PartyMembers[i] != null)
+                    {
+                        tempPA += 1;
+                        if (PartyMembers[i].currentHP <= 0)
+                        {
+                            tempPD += 1;
+                        }
+                    }
+                }
+                int tempED = 0;
+                for (int i = 0; i < EnemyMembers.Count; i++)
+                {
+                    if (EnemyMembers[i].currentHP <= 0)
+                    {
+                        tempED += 1;
+                    }
+                }
+                if (partyDeaths >= activeUnits || tempPA == tempPD)
+                {
+                    state = battleState.LOSE;
+                    yield return battleEnd();
+                }
+                else if (enemyDeaths >= EnemyMembers.Count || tempED >= EnemyMembers.Count)
+                {
+                    state = battleState.WIN;
+                    yield return battleEnd();
+                }
+            }
+
+            actions.Clear();
+
+            if (state != battleState.WIN && state != battleState.LOSE && state != battleState.FLEE && enemyDeaths < EnemyMembers.Count && partyDeaths < activeUnits)
+            {
+                yield return new WaitForSeconds(1.5f);
+                state = battleState.PLAYER;
+                transform.GetChild(1).Find("ActionMenu").gameObject.SetActive(true);
+                //Make actions menu visible again
+                currentUnit = 0;
+                while (PartyMembers[currentUnit] == null || PartyMembers[currentUnit].currentHP <= 0) currentUnit++;
+                playerTurn();
+            }
+            else
+            {
+                yield return battleEnd();
+            }
+        }
+    }
+
+
+    //Deal damage to enemy, check if it is dead, and act accordingly (win battle or enemy turn)
+    //ata - the index of the ability
+    //val - the index of the target(enemy if type 0)
+    //uni - the user of the ability
+    //target - the target of the ability
+    IEnumerator playerAbility(int ata, int val, Unit uni, Unit target)
+    {
         yield return new WaitForSeconds(0.0f);
+    }
+
+    //Use a basic attack against the target
+    IEnumerator basicAttack(Unit uni, Unit target)
+    {
+        //dialogue.text = "Player used " + ata.name;
+        bool crite = false;
+        bool good = false;
+        bool bad = false;
+
+        yield return new WaitForSeconds(1f);
+        int val = 5;
+        //val = uni.takeDamageCalc(target, val, op);
+
+        //Check if target is weak or resistant to a certain damage type
+
+        /*
+        if (target.weaknesses[op] == true)
+        {
+            val = (int)(val * 1.5);
+            good = true;
+        }
+        else if (target.resistances[op] == true)
+        {
+            val = (int)(val * 0.5);
+            bad = true;
+        }
+        */
+
+        //Check if the unit gets a crit
+        int crit = Random.Range(1, 101);
+
+        int tv = 0;
+        while (target != EnemyMembers[tv] && tv < EnemyMembers.Count)
+        {
+            tv++;
+        }
+        float dif = target.currentHP;
+        bool dead = target.takeDamage(val);
+        dif -= target.currentHP;
+
+        if (dif > 0)
+        {
+            //StartCoroutine(showDamage(dif, tv, op));
+        }
+        //uni.setSP(uni.currentSP - 2);
+        //StartCoroutine(flashDamage(target));
+        //yield return flashDealDamage(uni);
+
+        if (crite)
+        {
+            //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+            yield return textDisplay("It's a critical hit!", true);
+            //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+            skipper = true;
+        }
+        if (good)
+        {
+            yield return textDisplay("It did a lot of damage!", true);
+            //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+            skipper = true;
+        }
+        if (bad)
+        {
+            yield return textDisplay("It didn't do too much damage..", true);
+            //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+            skipper = true;
+        }
+
+        //yield return new WaitForSeconds(0.5f);
+
+        //If enemy is dead, battle is won
+        if (dead)
+        {
+            enemyDeaths++;
+            yield return unitDeath(target);
+            //yield return levelUp(target.giveEXP());
+            if (enemyDeaths >= EnemyMembers.Count)
+            {
+                state = battleState.WIN;
+                yield return battleEnd();
+            }
+        }
+    }
+
+    //An enemy attack function, used with enemies that have a list of abilities
+    //ata - index of attack
+    //val - index of enemy (target)
+    //uni - enemy using attack
+    //target - target of attack
+    IEnumerator enemyAttack(int ata, int val, Unit uni, Unit target)
+    {
+        yield return new WaitForSeconds(0);
+    }
+
+    //An enemy uses a non-offensive ability
+    IEnumerator enemyAbility(int ata, int val, Unit uni, Unit target)
+    {
+        yield return new WaitForSeconds(0);
+    }
+
+    //Fade out a unit from the screen when they die
+    IEnumerator unitDeath(Unit bot, int ind = 0)
+    {
+        StartCoroutine(textDisplay(bot.unitName + " has been defeated"));
+        yield return new WaitForSeconds(1f);
+        /*
+        if (bot.enemy)
+        {
+            if (bot.spBar != null)
+            {
+                bot.spBar.CrossFadeAlpha(0, 2f, false);
+                bot.spSideText.CrossFadeAlpha(0, 2f, false);
+                bot.spReadOut.CrossFadeAlpha(0, 2f, false);
+                bot.sanBar.CrossFadeAlpha(0, 2f, false);
+            }
+        }
+        else
+        {
+            bot.setHUD();
+            Color dede = bot.deadIcon.color;
+            dede.a = 1.0f;
+            bot.view.CrossFadeAlpha(0.4f, 2f, false);
+            bot.nameText.CrossFadeAlpha(0.4f, 2f, false);
+            bot.BBackground.CrossFadeAlpha(0.4f, 2f, false);
+            bot.WBackground.CrossFadeAlpha(0.4f, 2f, false);
+            bot.levelText.CrossFadeAlpha(0.4f, 2f, false);
+            bot.hpBar.CrossFadeAlpha(0.4f, 2f, false);
+            bot.hpSideText.CrossFadeAlpha(0.4f, 2f, false);
+            bot.hpReadOut.CrossFadeAlpha(0.4f, 2f, false);
+            if (bot.spBar != null)
+            {
+                bot.spBar.CrossFadeAlpha(0.4f, 2f, false);
+                bot.spSideText.CrossFadeAlpha(0.4f, 2f, false);
+                bot.spReadOut.CrossFadeAlpha(0.4f, 2f, false);
+                bot.sanBar.CrossFadeAlpha(0.4f, 2f, false);
+            }
+        }
+        */
+
+        yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit != 0));
     }
 
     //Fade into the battle scene (from black to screen)
@@ -443,6 +917,97 @@ public class BattleManager : MonoBehaviour
         Color ori = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         //transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
         transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
+    }
+
+    //Display relevant text based on who wins the battle
+    IEnumerator battleEnd()
+    {
+        StopCoroutine("performActions");
+        StopCoroutine("playerAttack");
+        StopCoroutine("basicAttack");
+        StopCoroutine("enemyAttack");
+        //If win, display text and give money (and rewards after rolling chances)
+        if (state == battleState.WIN)
+        {
+            if (EnemyMembers.Count == 1)
+            {
+                yield return textDisplay("The " + EnemyMembers[0].unitName + " has been defeated", true);
+            }
+            else if (EnemyMembers.Count > 1)
+            {
+                yield return textDisplay("The group of enemies have been defeated", true);
+            }
+            //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+            int avg = 0;
+            int num = 0;
+            int mone = 0;
+            avg = avg / num;
+            for (int i = 0; i < EnemyMembers.Count; i++)
+            {
+                mone += EnemyMembers[i].capital;
+            }
+            if (mone > 0)
+            {
+                yield return textDisplay("Received $" + mone + " buckaroos", true);
+                //data.SetMoney(data.GetMoney() + mone);
+                //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+            }
+        }
+        else if (state == battleState.LOSE)
+        {
+            yield return textDisplay("You Died", true);
+            for (int i = 0; i < 4; i++)
+            {
+                if (PartyMembers[i] != null)
+                {
+                    if (PartyMembers[i].currentHP <= 0)
+                    {
+                        switch (PartyMembers[i].unitName)
+                        {
+                            /*
+                            case "Pixal":
+                                loader.dead[0] = true;
+                                break;
+                            case "Mama":
+                                loader.dead[1] = true;
+                                break;
+                                */
+                            //From previous JSON loader, to check what allies were dead
+                        }
+                    }
+                }
+            }
+        }
+        else if (state == battleState.FLEE)
+        {
+            yield return textDisplay("The party managed to escape", true);
+            //loader.flee = true;
+        }
+        else if (state == battleState.HUH)
+        {
+            yield return textDisplay("Nothing really happened", true);
+        }
+      
+        //loader.money = data.GetMoney();
+        //loader.Save(PlayerPrefs.GetInt("_active_save_file_"));
+        //yield return new WaitForSeconds(0.5f);
+        //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+        yield return fadeOut();
+        StartCoroutine(NextScene());
+    }
+
+    //Transfer to the next scene (most likely overworld or loading/transition screen
+    IEnumerator NextScene()
+    {
+        yield return new WaitForSeconds(2f);
+        if (state != battleState.LOSE)
+        {
+            //SceneManager.LoadScene(loader.active_scene);
+        }
+        else
+        {
+            SceneManager.LoadScene("GameOverScene");
+        }
     }
 
     private void NavUpdate()

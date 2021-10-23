@@ -50,6 +50,8 @@ public class Unit
     public string spriteFilePath;
     public Sprite[] sprites;
 
+    public int capital;
+
 
     public List<Action> unitActions;
     // Start is called before the first frame update
