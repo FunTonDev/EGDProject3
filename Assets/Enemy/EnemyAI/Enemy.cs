@@ -14,7 +14,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float armor;
 
     [SerializeField] protected int detectionLvl;                // 0,1,2
-    
+    protected float setAxisLevel;
+
     [SerializeField] protected bool platformer, shooter, rpg;   //Genre
     
     [SerializeField] protected List<Transform> pathNodes;
@@ -24,6 +25,8 @@ public abstract class Enemy : MonoBehaviour
     protected GameObject player;
 
     protected NavMeshAgent NavAgent;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +38,14 @@ public abstract class Enemy : MonoBehaviour
 
         if (shooter || rpg)
         {
+            setAxisLevel = player.transform.position.y;
             NavAgent = GetComponent<NavMeshAgent>();
             NavAgent.speed = moveSpd;
+        }
+
+        else
+        {
+            setAxisLevel = player.transform.position.z;
         }
     }
 
@@ -87,11 +96,13 @@ public abstract class Enemy : MonoBehaviour
     {
         Vector3 temp = Vector3.MoveTowards(transform.position, Pos, moveSpd * Time.deltaTime);
 
+        /*
         if (shooter)
-            { temp.y = 0.5f; }
+            { temp.y = setAxisLevel; }
 
         else if (platformer)
-            { temp.z = -1; }
+            { temp.z = setAxisLevel; }
+            */
          
 
         transform.position = temp;

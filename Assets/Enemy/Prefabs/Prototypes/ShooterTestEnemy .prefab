@@ -118,12 +118,14 @@ MonoBehaviour:
   sentry: 0
   PlayerInSightRange: 0
   PlayerInAtkRange: 0
-  detctRadius: 0
-  AtkDist: 4
+  mindetctRadius: 0
+  maxdetctRadius: 0
+  minAtkDist: 0
+  maxAtkDist: 0
   RetreatDist: 3
   RotSpd: 2
   AtkAngle: 0
-  timeBtwAtk: 0
+  rotAngle: 0
   StartTimeBtwAtk: 2
   AttackObj: {fileID: 0}
 --- !u!114 &3813947409719957562
@@ -278,7 +280,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 063dbe7852e5b31408ff49288082ca1f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

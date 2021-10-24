@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
 {
+    float bufferRadius;
     float viewRadius;
     float atkRadius;
     [Range(0, 360)]
     float atkAngle;
 
+    public float GetBufferRadius() { return bufferRadius; }
     public float GetViewRadius() { return viewRadius; }
     public float GetAtkRadius() { return atkRadius; }
     public float GetAtkAngle() { return atkAngle; }
 
     public void Start()
     {
+        bufferRadius = this.GetComponent<ShooterEnemy>().GetBufferDist();
         viewRadius = this.GetComponent<ShooterEnemy>().GetDetctRadius();
         atkRadius = this.GetComponent<ShooterEnemy>().GetAtkDist();
         atkAngle = this.GetComponent<ShooterEnemy>().GetAtkAngle();

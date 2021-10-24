@@ -9,10 +9,15 @@ public class FieldOfViewEditor : Editor
     private void OnSceneGUI()
     {
         FieldOfView fow = (FieldOfView)target;
+        //View circle
         Handles.color = Color.white;
         Handles.DrawWireArc (fow.transform.position, Vector3.up, Vector3.forward, 360, fow.GetViewRadius());
 
+        //Buffer circle
+        Handles.color = Color.black;
+        Handles.DrawWireArc(fow.transform.position, Vector3.up, Vector3.forward, 360, fow.GetBufferRadius());
 
+        //Attack cone
         Vector3 ViewAngleA = fow.DirFromAngle(-fow.GetAtkAngle() / 2, false);
         Vector3 ViewAngleB = fow.DirFromAngle(fow.GetAtkAngle() / 2, false);
 

@@ -21,10 +21,10 @@ public class ShooterEnemy : Enemy
     [SerializeField] private float maxdetctRadius; //maxRadius of their detection Circle    
     [SerializeField] private float minAtkDist;    //minDistance of attack
     [SerializeField] private float maxAtkDist;   //maxDistance of attack
-    [SerializeField] private float RetreatDist; //Distance of how close enemy can be to player
+    [SerializeField] private float BufferDist;  //Distance of how close enemy can be to player
     [SerializeField] private float RotSpd;     //How fast enemy turns
     [SerializeField] private float AtkAngle;  //Angle of their cone of vision for attacking
-    [SerializeField] private float rotAngle;  //How far enemy can turn
+    [SerializeField] private float rotAngle; //How far enemy can turn
 
     private float timeBtwAtk;        //Time left till next attack
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
@@ -34,6 +34,7 @@ public class ShooterEnemy : Enemy
     public float GetDetctRadius() { return detctRadius; }
     public float GetAtkDist() { return AtkDist; }
     public float GetAtkAngle() { return AtkAngle; }
+    public float GetBufferDist() { return BufferDist; }
 
 
 
@@ -53,7 +54,7 @@ public class ShooterEnemy : Enemy
 
         PlayerInSightRange = PlayerInDetectionRange();
         PlayerInAtkRange = PlayerInAttackVision();
-        //retreatMode = PlayerInRetreatRange();
+        retreatMode = PlayerInBufferRange();
 
         //If enemy should be attacking the player
         if(PlayerInAtkRange)
@@ -125,7 +126,7 @@ public class ShooterEnemy : Enemy
             NavAgent.SetDestination(PathFollow());
         }
 
-        //Enemy follows player to chase him down
+        //Enemy follows player to chase him down if they are not within buffer dist
         else if (follow)
         {
             this.transform.LookAt(player.transform.position);
@@ -155,6 +156,7 @@ public class ShooterEnemy : Enemy
                                    Quaternion.LookRotation(player.transform.position - this.transform.position),
                                            RotSpd * Time.deltaTime);
         }
+
 
     }
 
@@ -207,17 +209,23 @@ public class ShooterEnemy : Enemy
 
     }
 
-    public bool PlayerInRetreatRange()
+    public bool PlayerInBufferRange()
     {
-        bool retreat = false;
+        bool stop = false;
 
-        if (Vector3.Distance(this.transform.position, player.transform.position) <= RetreatDist)
+        if (Vector3.Distance(this.transform.position, player.transform.position) <= BufferDist)
         {
             //Debug.Log("Player in Retreat Range");
-            retreat = true;
+            stop = true;
         }
 
-        return retreat;
+        return stop;
+    }
+
+    IEnumerator waiter()
+    {
+        //Wait for 4 seconds
+        yield return new WaitForSeconds(2);
     }
 
 

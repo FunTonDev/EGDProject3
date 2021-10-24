@@ -35,7 +35,7 @@ public class PlatformerEnemy : Enemy
             if (this.transform.position.x < base.PathFollow().x)
             {
                 //Debug.Log("Eneemy Moving right");
-                this.transform.eulerAngles = new Vector3(0, 180, 0);
+                this.transform.eulerAngles = new Vector3(0, 90, 0);
                 facingLeft = false;
             }            
 
@@ -43,7 +43,7 @@ public class PlatformerEnemy : Enemy
             else
             {
                 //Debug.Log("Enemy Moving left");
-                this.transform.eulerAngles = new Vector3(0, 0, 0);
+                this.transform.eulerAngles = new Vector3(0, 270, 0);
                 facingLeft = true;
             }
         }
@@ -51,14 +51,15 @@ public class PlatformerEnemy : Enemy
         else
         {
             if (facingLeft)
-            { transform.position += new Vector3(1, 0, 0) * moveSpd * Time.deltaTime; }
+            { this.transform.position += this.transform.forward * moveSpd * Time.deltaTime; }
 
             else
-            {transform.position += new Vector3(-1, 0, 0) * moveSpd * Time.deltaTime; }           
+            {this.transform.position += this.transform.forward * moveSpd * Time.deltaTime; }           
 
         }
                 
     }
+    
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -90,10 +91,21 @@ public class PlatformerEnemy : Enemy
             //Flip enemy direction
             //Make sure enemy didn't hit ground
             if(rgbdy.velocity.y == 0.0f)
-            {
-                Debug.Log(string.Format("Enemy {0} hit Wall", type));
-                facingLeft = !facingLeft;
-                this.transform.eulerAngles += new Vector3(0, 180, 0);
+            {                
+                Debug.Log(string.Format("{0} flipped direction", this.name));
+
+                Debug.Log(rgbdy.velocity.y);
+
+                facingLeft = !facingLeft;   
+                
+
+                if(pathNodes.Count != 0)
+                    { this.currNode = (this.currNode + 1) % pathNodes.Count;}
+
+                else
+                {
+                    this.transform.eulerAngles += new Vector3(0, 180, 0);
+                }
             }
         }
 
