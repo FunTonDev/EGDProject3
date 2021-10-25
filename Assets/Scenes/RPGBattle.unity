@@ -3605,6 +3605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1516336857}
   - component: {fileID: 1516336858}
+  - component: {fileID: 1516336859}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -3682,6 +3683,67 @@ MonoBehaviour:
   - {fileID: 711192056}
   - {fileID: 1698636}
   - {fileID: 1482136640}
+  dialogueText: []
+  scroll_speed: 0
+--- !u!114 &1516336859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516336856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e867abc4d6dfc9644af201fa7f204035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputX: 0
+  inputX_U: 0
+  inputX_D: 0
+  inputY: 0
+  inputY_U: 0
+  inputY_D: 0
+  inputSubmit: 0
+  inputSubmit_U: 0
+  inputSubmit_D: 0
+  inputCancel: 0
+  inputCancel_U: 0
+  inputCancel_D: 0
+  inputAct1: 0
+  inputAct1_U: 0
+  inputAct1_D: 0
+  inputAct2: 0
+  inputAct2_U: 0
+  inputAct2_D: 0
+  inputAct3: 0
+  inputAct3_U: 0
+  inputAct3_D: 0
+  inputAct4: 0
+  inputAct4_U: 0
+  inputAct4_D: 0
+  inputAct5: 0
+  inputAct5_U: 0
+  inputAct5_D: 0
+  inputAct6: 0
+  inputAct6_U: 0
+  inputAct6_D: 0
+  inputAct7: 0
+  inputAct7_U: 0
+  inputAct7_D: 0
+  inputMX: 0
+  inputMY: 0
+  inputScroll: 0
+  inputScroll_U: 0
+  inputScroll_D: 0
+  inputFire1: 0
+  inputFire1_U: 0
+  inputFire1_D: 0
+  inputFire2: 0
+  inputFire2_U: 0
+  inputFire2_D: 0
+  inputFire3: 0
+  inputFire3_U: 0
+  inputFire3_D: 0
 --- !u!1 &1650394419
 GameObject:
   m_ObjectHideFlags: 0
@@ -3906,8 +3968,8 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
     m_FontSize: 75
     m_FontStyle: 2
-    m_BestFit: 0
-    m_MinSize: 0
+    m_BestFit: 1
+    m_MinSize: 40
     m_MaxSize: 75
     m_Alignment: 4
     m_AlignByGeometry: 0

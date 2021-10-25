@@ -6,14 +6,18 @@ using UnityEditor;
 
 public class Action
 {
+    public Action()
+    {
+
+    }
     public string actionName;
     public string actionDesc;
     public int type;  //0 == attack, 1 == support/buff
 
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
-    public float damage;
+    public int damage;
 
-    public int priority;
+    public int priority = 1;
 
     public int target;  //0 == single, 1 == AOE/All
 }
@@ -54,10 +58,15 @@ public class Unit
 
 
     public List<Action> unitActions;
-    // Start is called before the first frame update
+
+
     public Unit(int lv = 1)
     {
         sprites = new Sprite[1];
+        abilities = new List<Action>();
+        Action action1 = new Action();
+        action1.damage = 2;
+        abilities.Add(action1);
     }
 
     public bool takeDamage(int dam)

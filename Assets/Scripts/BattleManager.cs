@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 //Different states of battle (turns)
 public enum battleState { START, PLAYER, ATTACK, ENEMY, WIN, LOSE, FLEE, HUH }
@@ -137,6 +138,10 @@ public class BattleManager : MonoBehaviour
     private List<string> image_queue;
     public List<string> dialogueText;
     public float scroll_speed;
+
+    //Main text to let player know state of battle
+    private TMP_Text dialogue;
+
     private bool active;
     private bool writing;
     private bool ender = false;
@@ -435,7 +440,29 @@ public class BattleManager : MonoBehaviour
         EnemyMembers[0] = new Slime();
         EnemyMembers[1] = new Skeleton();
         EnemyMembers[2] = new Hound();
-        activeEnemies = 3;
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (EnemyMembers[i] != null)
+            {
+                if (EnemyMembers[i].sprites[0] != null)
+                {
+                    enemyPrefabs[i].GetComponent<SpriteRenderer>().sprite = EnemyMembers[i].sprites[0];
+                }
+                else
+                {
+                    enemyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
+                }
+                enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
+                    new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
+                activeEnemies += 1;
+            }
+            else
+            {
+                enemyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                enemyPrefabs[i].SetActive(false);
+            }
+        }
 
         actions = new List<actionTag>();
 
@@ -511,7 +538,11 @@ public class BattleManager : MonoBehaviour
     //Perform the selected actions, after they have been selected
     public IEnumerator PerformActions()
     {
-        transform.GetChild(1).Find("ActionMenu").gameObject.SetActive(false);
+        transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+        transform.GetChild(0).GetChild(3).gameObject.SetActive(false);
+        transform.GetChild(0).GetChild(4).gameObject.SetActive(false);
+        transform.GetChild(0).GetChild(5).gameObject.SetActive(false);
         enemyAttacks();
         if (state != battleState.WIN && state != battleState.LOSE && state != battleState.FLEE && EnemyMembers.Count - enemyDeaths > 0 && activeUnits - partyDeaths > 0)
         {
@@ -735,8 +766,6 @@ public class BattleManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(1.5f);
                 state = battleState.PLAYER;
-                transform.GetChild(1).Find("ActionMenu").gameObject.SetActive(true);
-                //Make actions menu visible again
                 currentUnit = 0;
                 while (PartyMembers[currentUnit] == null || PartyMembers[currentUnit].currentHP <= 0) currentUnit++;
                 playerTurn();
@@ -746,6 +775,8 @@ public class BattleManager : MonoBehaviour
                 yield return battleEnd();
             }
         }
+        transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+        transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
     }
 
 
@@ -849,6 +880,7 @@ public class BattleManager : MonoBehaviour
     //target - target of attack
     IEnumerator enemyAttack(int ata, int val, Unit uni, Unit target)
     {
+        target.takeDamage(uni.abilities[ata].damage);
         yield return new WaitForSeconds(0);
     }
 
@@ -1046,6 +1078,8 @@ public class BattleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        inputMan = GetComponent<InputManager>();
+
         menus = new List<GameObject>();
         for (int i = 2; i < transform.GetChild(0).childCount-1; i++)
         {
@@ -1058,6 +1092,9 @@ public class BattleManager : MonoBehaviour
         PartyMembers = new List<Unit>();
         EnemyMembers = new List<Unit>();
 
+        dialogue = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        write_queue = new List<string>();
+        scroll_speed = 20;
 
         state = battleState.START;
         StartCoroutine(setupBattle());
