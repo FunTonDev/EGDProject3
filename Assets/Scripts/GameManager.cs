@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public AudioClip shooterMusic2;
     public AudioClip RPGMusic1;
     public AudioClip RPGMusic2;
+    public AudioClip HubMusic;
 
     [Header("Cinematic Variables")]
     public float duration;
@@ -63,6 +64,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        GameObject pla = GameObject.FindGameObjectWithTag("Player");
+        if (pla.GetComponent<PlayerController>().playerSubGenre != genreMain)
+        {
+            genreMain = pla.GetComponent<PlayerController>().playerSubGenre;
+        }
         if (genreMain == States.GameGenre.Platformer)
         {
             if (gameAudio.clip != platformerMusic1)
@@ -87,6 +93,15 @@ public class GameManager : MonoBehaviour
             {
                 gameAudio.Stop();
                 gameAudio.clip = RPGMusic1;
+                gameAudio.Play();
+            }
+        }
+        else
+        {
+            if (gameAudio.clip != HubMusic)
+            {
+                gameAudio.Stop();
+                gameAudio.clip = HubMusic;
                 gameAudio.Play();
             }
         }
