@@ -14,7 +14,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float armor;
 
     [SerializeField] protected int detectionLvl;                // 0,1,2
-    protected float setAxisLevel;
+    protected float axisLevel;
 
     [SerializeField] protected bool platformer, shooter, rpg;   //Genre
     
@@ -38,14 +38,14 @@ public abstract class Enemy : MonoBehaviour
 
         if (shooter || rpg)
         {
-            setAxisLevel = player.transform.position.y;
+            axisLevel = player.transform.position.y;
             NavAgent = GetComponent<NavMeshAgent>();
             NavAgent.speed = moveSpd;
         }
 
         else
         {
-            setAxisLevel = player.transform.position.z;
+            axisLevel = player.transform.position.z;
         }
     }
 
@@ -94,19 +94,26 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Move(Vector3 Pos)
     {
-        Vector3 temp = Vector3.MoveTowards(transform.position, Pos, moveSpd * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, Pos, moveSpd * Time.deltaTime);
+        SetAxisLevel();
 
-        /*
+        //rgbdy.AddForce(Vector3.MoveTowards(transform.position, PathFollow(), moveSpd * Time.deltaTime));
+    }
+
+    public void SetAxisLevel()
+    {
+        Vector3 temp = this.transform.position;
         if (shooter)
-            { temp.y = setAxisLevel; }
+        { temp.y = axisLevel; }
 
         else if (platformer)
-            { temp.z = setAxisLevel; }
-            */
-         
+        { temp.z = axisLevel; }
 
-        transform.position = temp;
-        //rgbdy.AddForce(Vector3.MoveTowards(transform.position, PathFollow(), moveSpd * Time.deltaTime));
+
+
+        this.transform.position = temp;
+
+        this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
     }
 
     public void TakeDamage(float damage)

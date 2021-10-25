@@ -683,7 +683,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_Name
-      value: ShooterTestEnemy  (1)
+      value: ShooterTestEnemy  (Melee)
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_Layer
@@ -755,12 +755,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkAngle
-      value: 45
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AttackObj
       value: 
       objectReference: {fileID: 2327161074033181551, guid: 86956d8f0b6cbdb42b22a01157540581, type: 3}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: BufferDist
+      value: 0.85
+      objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: maxAtkDist
       value: 1
@@ -1269,7 +1273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df42110772d2aa4ead30d73de637b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.1
+  speed: 0.05
 --- !u!65 &732356321
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2036,7 +2040,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_Name
-      value: ShooterTestEnemy  (2)
+      value: ShooterTestEnemy  (Sentry)
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_Layer
@@ -2459,7 +2463,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_Name
-      value: 'ShooterTestEnemy '
+      value: 'ShooterTestEnemy  '
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_Layer
@@ -2535,7 +2539,7 @@ PrefabInstance:
       objectReference: {fileID: 2315463149150691004, guid: 58be0d718c953204597bd8a184471a47, type: 3}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: BufferDist
-      value: 3.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: maxAtkDist

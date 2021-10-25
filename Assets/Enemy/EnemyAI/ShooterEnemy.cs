@@ -12,8 +12,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private bool sentry;  //Doesn't move from initial spot
     private bool agroMode;                //Enemy detection radius expands after player enters it visions or attacks enemy
 
-    [SerializeField] private bool PlayerInSightRange, PlayerInAtkRange;
-     private bool retreatMode;
+    [SerializeField] private bool PlayerInSightRange, PlayerInAtkRange, PlayerInBufferRange;
 
     private float detctRadius;                        //Radius of their detection Circle
     private float AtkDist;                           //Distance of attack
@@ -46,6 +45,7 @@ public class ShooterEnemy : Enemy
             detctRadius = maxdetctRadius;
             AtkDist = maxAtkDist;
         }
+
         else
         {
             detctRadius = mindetctRadius;
@@ -54,17 +54,18 @@ public class ShooterEnemy : Enemy
 
         PlayerInSightRange = PlayerInDetectionRange();
         PlayerInAtkRange = PlayerInAttackVision();
-        retreatMode = PlayerInBufferRange();
+        PlayerInBufferRange = PlayerInBufferCircle();
+               
 
         //If enemy should be attacking the player
-        if(PlayerInAtkRange)
+        if (PlayerInAtkRange)
         {
             agroMode = true;
             AttackPlayer();
         }
 
         //If enemy should be chasing the player
-        else if(PlayerInSightRange && !PlayerInAtkRange)
+        else if(PlayerInSightRange && !PlayerInAtkRange && !PlayerInBufferRange)
         {
             agroMode = true;
             ChasePlayer();
@@ -77,7 +78,18 @@ public class ShooterEnemy : Enemy
             agroMode = false;
             Patroling();
         }
-        
+
+        else if(PlayerInBufferRange)
+        {
+            
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+                                            Quaternion.LookRotation(player.transform.position - this.transform.position),
+                                                        6.0f * Time.deltaTime);          
+
+        }
+
+        base.SetAxisLevel();
+
         //Cooldown attack
         timeBtwAtk -= Time.deltaTime;
     }
@@ -85,7 +97,7 @@ public class ShooterEnemy : Enemy
     //Follow path, or stay still if there is no path
     private void Patroling()
     {
-        transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
+        //transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
 
         //Have Sentry enemy rotate
         if (sentry)
@@ -108,7 +120,7 @@ public class ShooterEnemy : Enemy
 
     private void ChasePlayer()
     {
-        transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
+        //transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
         //Sentry stays in place but rotates to look at Player's current position
         if (sentry)
         {
@@ -122,7 +134,6 @@ public class ShooterEnemy : Enemy
         else if (!follow)
         {
             this.transform.LookAt(player.transform.position);
-            //base.Move(PathFollow());
             NavAgent.SetDestination(PathFollow());
         }
 
@@ -130,7 +141,6 @@ public class ShooterEnemy : Enemy
         else if (follow)
         {
             this.transform.LookAt(player.transform.position);
-            //base.Move(player.transform.position);
             NavAgent.SetDestination(player.transform.position);
         }
 
@@ -140,12 +150,14 @@ public class ShooterEnemy : Enemy
     {
         Attack();
 
-        transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
+
+        NavAgent.SetDestination(this.transform.position);
+        //transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
+
         //For enemies that don't follow the player when attack, continuing to stay on a path while firing
         if (pathNodes.Count != 0 && !follow)
         {
             this.transform.LookAt(player.transform.position);
-            //base.Move(PathFollow());
             NavAgent.SetDestination(PathFollow());
         }
 
@@ -157,6 +169,11 @@ public class ShooterEnemy : Enemy
                                            RotSpd * Time.deltaTime);
         }
 
+        else if(follow && !PlayerInBufferRange)
+        {
+            this.transform.LookAt(player.transform.position);
+            NavAgent.SetDestination(player.transform.position);
+        }
 
     }
 
@@ -179,7 +196,8 @@ public class ShooterEnemy : Enemy
             else
             {
                 Debug.Log("Melee attacked called");
-                Vector3 spawnPos = this.transform.position + (this.transform.forward * 0.5f);
+
+                Vector3 spawnPos = this.transform.position + (this.transform.forward * 0.75f);
                 spawnPos.y = 0.5f;
                 Instantiate(AttackObj, spawnPos, this.transform.rotation);            
             }
@@ -209,7 +227,7 @@ public class ShooterEnemy : Enemy
 
     }
 
-    public bool PlayerInBufferRange()
+    public bool PlayerInBufferCircle()
     {
         bool stop = false;
 
@@ -247,6 +265,7 @@ public class ShooterEnemy : Enemy
         {
             base.TakeDamage(5);
             agroMode = true;
+            this.transform.LookAt(player.transform.position);
         }
     }
 
