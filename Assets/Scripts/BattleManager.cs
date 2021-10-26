@@ -77,10 +77,10 @@ public class BattleManager : MonoBehaviour
 
     public GameObject actionBackground;
     
-    private int mainIndex;
-    private int actionIndex;
-    private int enemyIndex;
-    private int allyIndex;
+    public int mainIndex;
+    public int actionIndex;
+    public int enemyIndex;
+    public int allyIndex;
 
     public List<Button> mainButtons;
     public List<Button> actionButtons;
@@ -229,10 +229,57 @@ public class BattleManager : MonoBehaviour
             menus[1].SetActive(true);
             menus[2].SetActive(false);
             menus[3].SetActive(false);
+            Debug.Log("Ability num == " + PartyMembers[currentUnit].abilities.Count);
+            if (PartyMembers[currentUnit].abilities.Count < 4)
+            {
+                Debug.Log("Button 4 down");
+                actionButtons[6].gameObject.SetActive(false);
+            }
+            else
+            {
+                actionButtons[6].gameObject.SetActive(true);
+                actionButtons[6].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[3].actionName;
+            }
+            if (PartyMembers[currentUnit].abilities.Count < 3)
+            {
+                Debug.Log("Button 3 down");
+                actionButtons[5].gameObject.SetActive(false);
+            }
+            else
+            {
+                actionButtons[5].gameObject.SetActive(true);
+                actionButtons[5].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[2].actionName;
+            }
+            if (PartyMembers[currentUnit].abilities.Count < 2)
+            {
+                actionButtons[4].gameObject.SetActive(false);
+            }
+            else
+            {
+                actionButtons[4].gameObject.SetActive(true);
+                actionButtons[4].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[1].actionName;
+            }
+            if (PartyMembers[currentUnit].abilities.Count < 1)
+            {
+                actionButtons[3].gameObject.SetActive(false);
+                actionBackground.transform.GetChild(0).GetComponent<Text>().text = "No Actions Unlocked";
+            }
+            else
+            {
+                actionButtons[3].gameObject.SetActive(true);
+                actionButtons[3].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[0].actionName;
+            }
         }
         else if (num == 1)
         {
-            actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Attack";
+            if (currentActionType.Equals(""))
+            {
+                actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Attack";
+            }
+            else
+            {
+                actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Choose Target";
+            }
             active_menu = 2;
             menus[1].SetActive(false);
             menus[2].SetActive(true);
@@ -240,7 +287,14 @@ public class BattleManager : MonoBehaviour
         }
         else if (num == 2)
         {
-            actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Support";
+            if (currentActionType.Equals(""))
+            { 
+                actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Support";
+            }
+            else
+            {
+                actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Choose Target";
+            }
             active_menu = 3;
             menus[1].SetActive(false);
             menus[2].SetActive(false);
@@ -468,11 +522,11 @@ public class BattleManager : MonoBehaviour
 
         if (activeEnemies == 1)
         {
-            DisplayText.text = "A " + EnemyMembers[0].unitName + " has appeared.";
+            yield return textDisplay("A " + EnemyMembers[0].unitName + " has appeared.");
         }
         else if (activeEnemies >= 2)
         {
-            DisplayText.text = "A group of enemies appeared";
+            yield return textDisplay("A group of enemies appeared");
         }
         yield return new WaitForSeconds(1.0f);
         currentUnit = 0;
@@ -636,12 +690,15 @@ public class BattleManager : MonoBehaviour
                 }
                 else if (actions[z].getType() == "enemyAttack" && state == battleState.ATTACK)
                 {
+                    Debug.Log("Enemy Attacking");
                     //EnemyMembers[ind].changeSprite(1);
                     int toget = actions[z].getTarget();
                     if (PartyMembers[toget] != null)
                     {
+                        Debug.Log("Party " + toget + " not null");
                         if (PartyMembers[toget].currentHP > 0)
                         {
+                            Debug.Log("Party has HP");
                             yield return textDisplay(EnemyMembers[ind].unitName + " used " +
                                 EnemyMembers[ind].abilities[actions[z].getIndex()].actionName, true);
                             yield return enemyAttack(actions[z].getIndex(), toget, EnemyMembers[ind], PartyMembers[toget]);
@@ -777,6 +834,7 @@ public class BattleManager : MonoBehaviour
         }
         transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
         transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+        active_menu = 0;
     }
 
 
@@ -1047,30 +1105,38 @@ public class BattleManager : MonoBehaviour
         int navDiff = (inputMan.inputY > 0) ? -1 : 0 + ((inputMan.inputY < 0) ? 1 : 0);
         if (state == battleState.PLAYER)
         {
-            //Base
-            if (active_menu == 0)
-            {
-                mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
-                mainButtons[mainIndex].Select();
+            if (!menu_input)
+            { 
+                //Base
+                if (active_menu == 0)
+                {
+                    mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
+                    mainButtons[mainIndex].Select();
+                    menu_input = true;
+                }
+                //Action
+                else if (active_menu == 1)
+                {
+                    actionIndex += ((navDiff < 0 && actionIndex > 0) || (navDiff > 0 && actionIndex < actionButtons.Count - 1 - (4 - PartyMembers[currentUnit].abilities.Count))) ? navDiff : 0;
+                    actionButtons[actionIndex].Select();
+                    menu_input = true;
+                }
+                //Target Enemy
+                else if (active_menu == 2)
+                {
+                    enemyIndex += ((navDiff < 0 && enemyIndex > 0) || (navDiff > 0 && enemyIndex < enemyButtons.Count - 1)) ? navDiff : 0;
+                    enemyButtons[enemyIndex].Select();
+                    menu_input = true;
+                }
+                //Target Ally
+                else if (active_menu == 3)
+                {
+                    allyIndex += ((navDiff < 0 && allyIndex > 0) || (navDiff > 0 && allyIndex < allyButtons.Count - 1)) ? navDiff : 0;
+                    allyButtons[allyIndex].Select();
+                    menu_input = true;
+                }
             }
-            //Action
-            else if (active_menu == 1)
-            {
-                actionIndex += ((navDiff < 0 && actionIndex > 0) || (navDiff > 0 && actionIndex < actionButtons.Count - 1)) ? navDiff : 0;
-                actionButtons[actionIndex].Select();
-            }
-            //Target Enemy
-            else if (active_menu == 2)
-            {
-                enemyIndex += ((navDiff < 0 && enemyIndex > 0) || (navDiff > 0 && enemyIndex < enemyButtons.Count - 1)) ? navDiff : 0;
-                enemyButtons[enemyIndex].Select();
-            }
-            //Target Ally
-            else if (active_menu == 3)
-            {
-                allyIndex += ((navDiff < 0 && allyIndex > 0) || (navDiff > 0 && allyIndex < allyButtons.Count - 1)) ? navDiff : 0;
-                allyButtons[allyIndex].Select();
-            }
+            menu_input = false;
         }
     }
 
@@ -1103,6 +1169,12 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (state == battleState.PLAYER)
+        {
+            if (inputMan.inputY_D)
+            {
+                NavUpdate();
+            }
+        }
     }
 }
