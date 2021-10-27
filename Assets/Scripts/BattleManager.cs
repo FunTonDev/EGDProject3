@@ -189,6 +189,7 @@ public class BattleManager : MonoBehaviour
         
         if (currentUnit >= activeUnits)
         {
+            state = battleState.ATTACK;
             //Calculate enemy actions, then go to perform actions
             StartCoroutine(PerformActions());
         }
@@ -608,6 +609,9 @@ public class BattleManager : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 int ind = actions[z].getID();
 
+                Debug.Log("Current action == " + actions[z].getType());
+                Debug.Log("Index == " + actions[z].getID());
+
                 //Use offensive ability
                 if (actions[z].getType() == "Action" && state == battleState.ATTACK)
                 {
@@ -776,6 +780,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log(actions[z].getType());
                     yield return textDisplay("Invalid action selected");
                 }
                 yield return new WaitForSeconds(0.5f);
@@ -786,7 +791,7 @@ public class BattleManager : MonoBehaviour
                 else skipper = false;
                 int tempPD = 0;
                 int tempPA = 0;
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < PartyMembers.Count; i++)
                 {
                     if (PartyMembers[i] != null)
                     {
@@ -857,7 +862,7 @@ public class BattleManager : MonoBehaviour
         bool bad = false;
 
         yield return new WaitForSeconds(1f);
-        int val = 5;
+        int val = 5 * uni.atk;
         //val = uni.takeDamageCalc(target, val, op);
 
         //Check if target is weak or resistant to a certain damage type
@@ -890,6 +895,11 @@ public class BattleManager : MonoBehaviour
         if (dif > 0)
         {
             //StartCoroutine(showDamage(dif, tv, op));
+        }
+        for (int i = 0; i < EnemyMembers.Count; i++)
+        {
+            if (EnemyMembers[i].currentHP < 0) EnemyMembers[i].currentHP = 0;
+            enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
         }
         //uni.setSP(uni.currentSP - 2);
         //StartCoroutine(flashDamage(target));
@@ -939,6 +949,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator enemyAttack(int ata, int val, Unit uni, Unit target)
     {
         target.takeDamage(uni.abilities[ata].damage);
+        partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[val].currentHP / PartyMembers[val].maxHP, 0.2f, 0.0f);
         yield return new WaitForSeconds(0);
     }
 
@@ -953,6 +964,9 @@ public class BattleManager : MonoBehaviour
     {
         StartCoroutine(textDisplay(bot.unitName + " has been defeated"));
         yield return new WaitForSeconds(1f);
+
+        enemyPrefabs[ind].SetActive(false);
+        
         /*
         if (bot.enemy)
         {
