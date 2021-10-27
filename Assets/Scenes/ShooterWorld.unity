@@ -9498,6 +9498,7 @@ GameObject:
   - component: {fileID: 1626163981}
   - component: {fileID: 1626163980}
   - component: {fileID: 1626163979}
+  - component: {fileID: 1626163984}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9518,8 +9519,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputMan: {fileID: 0}
-  playerPrefab: {fileID: 2011241838}
-  cameraTarget: {fileID: 2011241839}
+  playerPrefab: {fileID: 0}
+  cameraTarget: {fileID: 0}
   cam: {fileID: 0}
   mouseLeftBound: 447
   mouseRightBound: 223
@@ -9628,7 +9629,7 @@ Transform:
   m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1640305118
 GameObject:
