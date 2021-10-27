@@ -63,7 +63,8 @@ public class CameraController : MonoBehaviour
     {
         CursorBiasUpdate();
         //CharMoveBiasUpdate()
-        transform.position = targetPos + genrePos;
+        Vector3 playerADSDir = ADSBiasUpdate();
+        transform.position = targetPos + genrePos + playerADSDir;
         transform.rotation = targetRot;
         //Incorporate averaging of mouse position, movement, character position later using x/y change //Vector3(xChange, yChange, 0);
     }
@@ -77,7 +78,7 @@ public class CameraController : MonoBehaviour
 
         Vector3 res = dirVec.normalized * adjustedDist;
 
-        Debug.DrawLine(playerPrefab.transform.position, playerPrefab.transform.position + res, Color.red);
+        
     }
 
     private void CharMoveBiasUpdate()
@@ -95,6 +96,16 @@ public class CameraController : MonoBehaviour
                 yChange = yDir;// * camVelY;
             }
         }
+    }
+
+    private Vector3 ADSBiasUpdate() //Currently a naive implementation, planning to add cursor cam
+    {
+        if (cameraTarget.GetComponent<PlayerController>().playerSubGenre != States.GameGenre.Shooter || inputMan.inputFire2 != 1) { return Vector3.zero; }
+        Vector3 mouseWorldPos = cam.ScreenToWorldPoint(new Vector3(inputMan.inputMX, inputMan.inputMY, 2.0f));
+        mouseWorldPos = new Vector3(mouseWorldPos.x, playerPrefab.transform.position.y, mouseWorldPos.z);
+        Vector3 dirVec = (mouseWorldPos - playerPrefab.transform.position).normalized;
+        float dist = Mathf.Clamp(Vector3.Distance(mouseWorldPos, playerPrefab.transform.position), 0, 1.0f) * 3.0f;
+        return dirVec * dist;
     }
 
     /*============================================================================

@@ -48,15 +48,15 @@ public class TriggerVolumeData : MonoBehaviour
         switch (primaryGenre)
         {
             case States.GameGenre.Platformer:
-                SetMoveValues(8.0f, 8.0f, 12.0f, 12.0f);
+                SetMoveValues(5.0f, 5.0f, 5.0f, 5.0f);
                 SetPlatformerValues(100.0f, 80.0f, 6.0f, -12.0f);
                 break;
             case States.GameGenre.Shooter:
-                SetMoveValues(5.0f, 5.0f, 10.0f, 10.0f);
+                SetMoveValues(3.0f, 3.0f, 4.0f, 4.0f);
                 SetShooterValues();
                 break;
             case States.GameGenre.RPG:
-                SetMoveValues(12.0f, 12.0f, 20.0f, 20.0f);
+                SetMoveValues(2.0f, 2.0f, 4.0f, 4.0f);
                 SetRPGValues();
                 break;
             default:
@@ -72,6 +72,7 @@ public class TriggerVolumeData : MonoBehaviour
         {
             playerCont.transform.position = new Vector3(playerCont.transform.position.x, transform.position.y, playerCont.transform.position.z);
         }
+        playerCont.playerRigB.velocity = Vector3.zero;
         playerCont.playerModelObj.transform.eulerAngles = modelEulers;
         playerCont.playerModelObj.transform.localScale = modelScale;
         playerCont.playerPrimaryGenre = primaryGenre;
@@ -118,5 +119,6 @@ public class TriggerVolumeData : MonoBehaviour
     {
         playerCont.playerRigB.useGravity = false;
         playerCont.controlDel = playerCont.HubMoveUpdate;
+        playerCont.GenreCosmeticUpdate(-1);
     }
 }

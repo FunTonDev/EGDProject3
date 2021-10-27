@@ -111,7 +111,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!gameMan.paused && controlDel != null) { controlDel(); } //Delegate uses current genre control schema
+        if (!gameMan.paused && controlDel != null) { controlDel(); }
+        //Delegate uses current genre control schema
+        //Actions currently use keyhold value(not KEYDOWN) since input may get dropped, might revise later
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -188,7 +190,7 @@ public class PlayerController : MonoBehaviour
             //playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
         }
 
-        float xClampVel = (!inputMan.inputX_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
+        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
     }
 
@@ -196,13 +198,21 @@ public class PlayerController : MonoBehaviour
     {
         playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
         playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
-        float xClampVel = (!inputMan.inputX_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
-        float yClampVel = (!inputMan.inputY_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+        float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+        if (xClampVel != 0 && yClampVel != 0)
+        {
+            float newVel = Mathf.Sqrt(Mathf.Pow(maxXVelocity, 2) / 2);
+            xClampVel = newVel * Mathf.Sign(xClampVel);
+            yClampVel = newVel * Mathf.Sign(yClampVel);
+        }
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
 
-        if (inputMan.inputAct7_D && rollTimer <= 0) //Roll check
+        if (inputMan.inputAct7 == 1 && rollTimer <= 0) //Roll check
         {
+
             Debug.Log("ROLL");
+            rollTimer = rollDelayTime;
         }
         //float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
         //playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
@@ -214,12 +224,12 @@ public class PlayerController : MonoBehaviour
         if (inputMan.inputX != 0)
         {
             playerRigB.AddForce(new Vector3(inputMan.inputX * xForce / 2, 0, 0), ForceMode.VelocityChange);
-            xClampVel = (!inputMan.inputX_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+            xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
         }
         else if (inputMan.inputY != 0)
         {
             playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce / 2), ForceMode.VelocityChange);
-            yClampVel = (!inputMan.inputY_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+            yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
         }
         else if (closestTile != null)
         {
@@ -232,8 +242,8 @@ public class PlayerController : MonoBehaviour
     {
         playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
         playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce, 0), ForceMode.VelocityChange);
-        float xClampVel = (!inputMan.inputX_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
-        float yClampVel = (!inputMan.inputY_D) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);  //Y move check
+        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+        float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);  //Y move check
         playerRigB.velocity = new Vector3(xClampVel, yClampVel, playerRigB.velocity.z);
     }
 
