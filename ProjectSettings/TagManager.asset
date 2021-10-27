@@ -12,6 +12,7 @@ TagManager:
   - Grid
   - EnemyUnitPrefab
   - PartyUnitPrefab
+  - Ground
   layers:
   - Default
   - TransparentFX

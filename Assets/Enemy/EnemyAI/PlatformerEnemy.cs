@@ -86,28 +86,22 @@ public class PlatformerEnemy : Enemy
             }
         }
 
-        else
-        {
-            //Flip enemy direction
-            //Make sure enemy didn't hit ground
-            if(rgbdy.velocity.y == 0.0f)
-            {                
-                Debug.Log(string.Format("{0} flipped direction", this.name));
+        //Flip enemy direction
+        //Make sure enemy didn't hit ground
+        else if(rgbdy.velocity.y <= 0.01f && collision.collider.tag != "Ground")
+        {                
+            Debug.Log(string.Format("{0} flipped direction", this.name));
 
-                Debug.Log(rgbdy.velocity.y);
-
-                facingLeft = !facingLeft;   
+            facingLeft = !facingLeft;   
                 
+            if(pathNodes.Count != 0)
+                { this.currNode = (this.currNode + 1) % pathNodes.Count;}
 
-                if(pathNodes.Count != 0)
-                    { this.currNode = (this.currNode + 1) % pathNodes.Count;}
+            else
+                {this.transform.eulerAngles += new Vector3(0, 180, 0);}
 
-                else
-                {
-                    this.transform.eulerAngles += new Vector3(0, 180, 0);
-                }
-            }
         }
+        
 
     }
 
