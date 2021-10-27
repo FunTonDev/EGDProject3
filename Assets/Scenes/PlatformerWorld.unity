@@ -4590,6 +4590,7 @@ MonoBehaviour:
   inputMan: {fileID: 0}
   playerPrefab: {fileID: 0}
   cameraTarget: {fileID: 0}
+  background: {fileID: 0}
   cam: {fileID: 0}
   mouseLeftBound: 0
   mouseRightBound: 0
@@ -4601,6 +4602,8 @@ MonoBehaviour:
   yChange: 0
   camVelX: 0
   camVelY: 0
+  bgOffsetX: 0
+  bgOffsetY: 0
   isTrackingMovement: 0
   currMode: 0
 --- !u!1 &693325866
@@ -12699,13 +12702,13 @@ MonoBehaviour:
   genreExtra1: 0
   genreExtra2: 0
   gameAudio: {fileID: 0}
-  platformerMusic1: {fileID: 0}
-  platformerMusic2: {fileID: 0}
+  platformerMusic1: {fileID: 8300000, guid: 19a15fa906f1a4444b91c38fd37a7854, type: 3}
+  platformerMusic2: {fileID: 8300000, guid: 4c52390ad2a96ad4ca35b379ca86fee9, type: 3}
   shooterMusic1: {fileID: 0}
   shooterMusic2: {fileID: 0}
   RPGMusic1: {fileID: 0}
   RPGMusic2: {fileID: 0}
-  HubMusic: {fileID: 0}
+  HubMusic: {fileID: 8300000, guid: 490c967c89489e644be9489b2dac268a, type: 3}
   duration: 0
 --- !u!4 &2011118174
 Transform:

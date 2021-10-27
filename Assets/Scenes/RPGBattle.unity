@@ -1739,7 +1739,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+    m_Font: {fileID: 12800000, guid: fd79ccac2f7efb24d996df88cb00d3c4, type: 3}
     m_FontSize: 55
     m_FontStyle: 0
     m_BestFit: 0
@@ -3648,6 +3648,10 @@ MonoBehaviour:
   cursor_positions: []
   DisplayText: {fileID: 1765737274}
   actionBackground: {fileID: 987904355}
+  mainIndex: 0
+  actionIndex: 0
+  enemyIndex: 0
+  allyIndex: 0
   mainButtons:
   - {fileID: 1224189132}
   - {fileID: 915285111}
@@ -3965,7 +3969,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+    m_Font: {fileID: 12800000, guid: fd79ccac2f7efb24d996df88cb00d3c4, type: 3}
     m_FontSize: 75
     m_FontStyle: 2
     m_BestFit: 1
