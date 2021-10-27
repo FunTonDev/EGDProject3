@@ -12,7 +12,8 @@ public class ShooterEnemy : Enemy
     [SerializeField] private bool sentry;  //Doesn't move from initial spot
     private bool agroMode;                //Enemy detection radius expands after player enters it visions or attacks enemy
 
-    [SerializeField] private bool PlayerInSightRange, PlayerInAtkRange, PlayerInBufferRange;
+    private bool PlayerInSightRange, PlayerInAtkRange, PlayerInBufferRange;
+    [SerializeField] private bool turnLeft;
 
     private float detctRadius;                        //Radius of their detection Circle
     private float AtkDist;                           //Distance of attack
@@ -24,9 +25,9 @@ public class ShooterEnemy : Enemy
     [SerializeField] private float RotSpd;     //How fast enemy turns
     [SerializeField] private float AtkAngle;  //Angle of their cone of vision for attacking
     [SerializeField] private float rotAngle; //How far enemy can turn
-
-    private float timeBtwAtk;        //Time left till next attack
+        
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
+    private float timeBtwAtk;                        //Time left till next attack
 
     [SerializeField] private GameObject AttackObj;
 
@@ -34,6 +35,7 @@ public class ShooterEnemy : Enemy
     public float GetAtkDist() { return AtkDist; }
     public float GetAtkAngle() { return AtkAngle; }
     public float GetBufferDist() { return BufferDist; }
+    public float GetRotAngle() { return rotAngle; }
 
 
 
@@ -73,7 +75,7 @@ public class ShooterEnemy : Enemy
 
 
         //If enemy isn't chasing or attacking player
-        else if(!PlayerInSightRange && !PlayerInAtkRange)
+        else if(!PlayerInSightRange && !PlayerInAtkRange && !PlayerInBufferRange)
         {
             agroMode = false;
             Patroling();
@@ -102,9 +104,47 @@ public class ShooterEnemy : Enemy
         //Have Sentry enemy rotate
         if (sentry)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,
+            if (!turnLeft)
+            {
+                
+                this.transform.rotation = Quaternion.Slerp(transform.rotation,
                                         Quaternion.LookRotation(this.transform.right),
+                                                0.5f * Time.deltaTime);                
+            }
+
+            else
+            {
+                this.transform.rotation = Quaternion.Slerp(transform.rotation,
+                                        Quaternion.LookRotation(this.transform.right * -1),
                                                 0.5f * Time.deltaTime);
+               // turnLeft = true;
+            }
+
+            
+
+            if(rotAngle != 0 && rotAngle != 360)
+            {
+                Vector3 dirA = this.GetComponent<FieldOfView>().GetViewAngleA();
+                Vector3 dirB = this.GetComponent<FieldOfView>().GetViewAngleB();
+                Vector3 dir = this.GetComponent<FieldOfView>().DirFromAngle(0, false);
+
+                float angleA = Vector3.Angle(dir, dirA);
+                float angleB = Vector3.Angle(dir, dirB);
+
+                /*          
+                Debug.Log(string.Format("dir = {0}, dirA = {1}, dirB = {2}", dir, dirA, dirB));
+                Debug.Log(Vector3.Equals(dir, dirA) || Vector3.Equals(dir, dirB));  
+                Debug.Log(string.Format("AngleBtwn(dir, dirA) = {0}, AngleBtwn(dir, dirB) = {1} ", angleA, angleB));
+                Debug.Log((-1 <= angleA && angleA <= 1) || (-1 <= angleB && angleB <= 1));
+                */
+
+                if ((-1 <= angleA && angleA <= 1) || (-1 <= angleB && angleB <= 1))
+                {
+                    turnLeft = !turnLeft;
+                    //Debug.Log("turnLeft switched");
+                }
+            }
+            
             
         }
 

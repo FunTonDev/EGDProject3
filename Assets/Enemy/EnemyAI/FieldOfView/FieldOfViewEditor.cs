@@ -18,12 +18,21 @@ public class FieldOfViewEditor : Editor
         Handles.DrawWireArc(fow.transform.position, Vector3.up, Vector3.forward, 360, fow.GetBufferRadius());
 
         //Attack cone
-        Vector3 ViewAngleA = fow.DirFromAngle(-fow.GetAtkAngle() / 2, false);
-        Vector3 ViewAngleB = fow.DirFromAngle(fow.GetAtkAngle() / 2, false);
+        Vector3 ViewAngle1A = fow.DirFromAngle(-fow.GetAtkAngle() / 2, false);
+        Vector3 ViewAngle1B = fow.DirFromAngle(fow.GetAtkAngle() / 2, false);
 
         Handles.color = Color.red;
-        Handles.DrawLine(fow.transform.position, fow.transform.position + ViewAngleA * fow.GetAtkRadius());
-        Handles.DrawLine(fow.transform.position, fow.transform.position + ViewAngleB * fow.GetAtkRadius());
+        Handles.DrawLine(fow.transform.position, fow.transform.position + ViewAngle1A * fow.GetAtkRadius());
+        Handles.DrawLine(fow.transform.position, fow.transform.position + ViewAngle1B * fow.GetAtkRadius());
 
+        if(fow.GetRotAngle() != 0 && fow.GetRotAngle() != 360)
+        {
+            Vector3 ViewAngle2A = fow.GetViewAngleA();
+            Vector3 ViewAngle2B = fow.GetViewAngleB();
+
+            Handles.color = Color.blue;
+            Handles.DrawLine(fow.transform.position, fow.transform.position + ViewAngle2A * 1f);
+            Handles.DrawLine(fow.transform.position, fow.transform.position + ViewAngle2B * 1f);
+        }
     }
 }

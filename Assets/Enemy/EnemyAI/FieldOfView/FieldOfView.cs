@@ -9,11 +9,19 @@ public class FieldOfView : MonoBehaviour
     float atkRadius;
     [Range(0, 360)]
     float atkAngle;
+    [Range(0, 360)]
+    float rotAngle;
+    Vector3 initialViewAngleA;
+    Vector3 initialViewAngleB;
 
     public float GetBufferRadius() { return bufferRadius; }
     public float GetViewRadius() { return viewRadius; }
     public float GetAtkRadius() { return atkRadius; }
     public float GetAtkAngle() { return atkAngle; }
+    public float GetRotAngle() { return rotAngle; }
+    public Vector3 GetViewAngleA() { return initialViewAngleA; }
+    public Vector3 GetViewAngleB() { return initialViewAngleB; }
+
 
     public void Start()
     {
@@ -21,6 +29,9 @@ public class FieldOfView : MonoBehaviour
         viewRadius = this.GetComponent<ShooterEnemy>().GetDetctRadius();
         atkRadius = this.GetComponent<ShooterEnemy>().GetAtkDist();
         atkAngle = this.GetComponent<ShooterEnemy>().GetAtkAngle();
+        rotAngle = this.GetComponent<ShooterEnemy>().GetRotAngle();
+        initialViewAngleA = DirFromAngle(-rotAngle / 2, false);
+        initialViewAngleB = DirFromAngle(rotAngle / 2, false);
     }
 
     public void Update()
