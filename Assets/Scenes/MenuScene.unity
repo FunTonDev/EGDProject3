@@ -808,7 +808,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player_Select (Replace Later)
+  m_text: 'Project: Game_Select'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2227,18 +2227,27 @@ MonoBehaviour:
   inputCancel: 0
   inputCancel_U: 0
   inputCancel_D: 0
-  inputAlt1: 0
-  inputAlt1_U: 0
-  inputAlt1_D: 0
-  inputAlt2: 0
-  inputAlt2_U: 0
-  inputAlt2_D: 0
-  inputAlt3: 0
-  inputAlt3_U: 0
-  inputAlt3_D: 0
-  inputAlt4: 0
-  inputAlt4_U: 0
-  inputAlt4_D: 0
+  inputAct1: 0
+  inputAct1_U: 0
+  inputAct1_D: 0
+  inputAct2: 0
+  inputAct2_U: 0
+  inputAct2_D: 0
+  inputAct3: 0
+  inputAct3_U: 0
+  inputAct3_D: 0
+  inputAct4: 0
+  inputAct4_U: 0
+  inputAct4_D: 0
+  inputAct5: 0
+  inputAct5_U: 0
+  inputAct5_D: 0
+  inputAct6: 0
+  inputAct6_U: 0
+  inputAct6_D: 0
+  inputAct7: 0
+  inputAct7_U: 0
+  inputAct7_D: 0
   inputMX: 0
   inputMY: 0
   inputScroll: 0
@@ -5499,7 +5508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1866234088
 RectTransform:
   m_ObjectHideFlags: 0

@@ -90,7 +90,7 @@ public class ShooterEnemy : Enemy
 
         }
 
-        base.SetAxisLevel();
+        //base.SetAxisLevel();
 
         //Cooldown attack
         timeBtwAtk -= Time.deltaTime;

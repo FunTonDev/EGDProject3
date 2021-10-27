@@ -279,7 +279,7 @@ public class MenuManager : MonoBehaviour
             case 2:
                 break;
             case 3:
-                SceneManager.LoadScene("[Test Scene]");
+                SceneManager.LoadScene("Testing/[Test Scene]");
                 break;
         }
     }
