@@ -177,6 +177,20 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //Dash Stuff
+        if (inputMan.inputAct3 == 1 && dashCount < 1)
+        {
+            playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);
+            dashCount += 1;
+            dashDelayTime = 1.0f;
+        }
+        if (dashDelayTime > 0) dashDelayTime -= Time.deltaTime;
+        else if (dashDelayTime <= 0)
+        {
+            dashCount = 0;
+            dashDelayTime = 0;
+        }
+
         if (wallJumpTimer <= 0)    //X move check
         {
             playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
