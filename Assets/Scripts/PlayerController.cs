@@ -294,6 +294,7 @@ public class PlayerController : MonoBehaviour
      ============================================================================*/
     private bool GroundCheck()
     {
+        Debug.Log("GROUND CHECKING");
         Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
         Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
 

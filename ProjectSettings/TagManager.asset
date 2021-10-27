@@ -10,11 +10,13 @@ TagManager:
   - Control
   - Wall
   - Grid
+  - EnemyUnitPrefab
+  - PartyUnitPrefab
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
