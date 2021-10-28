@@ -5,12 +5,37 @@ using UnityEngine;
 public class PlatformerEnemy : Enemy
 {
 
-    [SerializeField] private bool facingLeft;
+    [SerializeField] private bool facingLeft;       //Direction Enemy is facing
+    [SerializeField] private bool ranged;          //If true, enemy can perform ranged attacks
+    [SerializeField] private bool fullRanged;     //If true, enemy can perform attack in any direction
+    [SerializeField] private float range;        //Dist of their attack range
+    private bool PlayerInRange;                 
+
+    [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
+    private float timeBtwAtk;                       //Time left till next attack
+
+    [SerializeField] private GameObject AttackObj;
+
+
+    public bool GetFullRanged() { return fullRanged; }
+    public float GetRange() { return range; }
 
 
     public override void ClassUpdate()
     {
+        PlayerInRange = PlayerInSight();
+        
+
+        if (PlayerInRange && ranged)
+        {
+            Attack();            
+        }
+
+       
         Move(Vector3.zero);
+
+        //Cooldown attack
+        timeBtwAtk -= Time.deltaTime;
     }
 
 
@@ -58,6 +83,31 @@ public class PlatformerEnemy : Enemy
 
         }
                 
+    }
+
+    public void Attack()
+    {
+        //If enemy attack cooldown is done
+        if (timeBtwAtk <= 0)
+        {
+            Debug.Log("Enemy performed attack");
+            if (ranged)
+            {
+                /*
+                Debug.Log("Ranged attacked called");
+                Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
+                spawnPos.y = 0.5f;
+                Instantiate(AttackObj, spawnPos, this.transform.rotation);
+                */
+            }
+
+            timeBtwAtk = StartTimeBtwAtk;
+        }
+    }
+
+    bool PlayerInSight()
+    {
+        return this.GetComponent<Platformer_FOV>().FindVisibleTargets();
     }
     
 

@@ -196,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2587144832372627837, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7050814729601768804, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1009,8 +1009,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 571907098}
     m_Modifications:
     - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
+      propertyPath: range
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
+      propertyPath: ranged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: facingLeft
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
+      propertyPath: fullRanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
+      propertyPath: StartTimeBtwAtk
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: pathNodes.Array.data[0]
@@ -1183,7 +1199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &571907098
 Transform:
   m_ObjectHideFlags: 0
@@ -1220,7 +1236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &619054570
 Transform:
   m_ObjectHideFlags: 0
@@ -2248,8 +2264,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 571907098}
     m_Modifications:
     - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
+      propertyPath: range
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
+      propertyPath: ranged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: facingLeft
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
+      propertyPath: StartTimeBtwAtk
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2587144832372627824, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: pathNodes.Array.data[0]
@@ -3179,7 +3207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2587144832372627837, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7961750512479720886, guid: 30ca0b672bf113b4fb21ba77503dc774, type: 3}
       propertyPath: m_LocalPosition.z
