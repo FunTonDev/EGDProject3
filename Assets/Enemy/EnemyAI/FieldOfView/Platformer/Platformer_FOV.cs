@@ -61,7 +61,6 @@ public class Platformer_FOV : MonoBehaviour
         }
 
         return foundTarget;
-
     }
 
 }

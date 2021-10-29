@@ -64,8 +64,8 @@ MonoBehaviour:
   ranged: 0
   fullRanged: 0
   range: 0
-  StartTimeBtwAtk: 0
-  AttackObj: {fileID: 0}
+  StartTimeBtwAtk: 2
+  AttackObj: {fileID: 2315463149150691004, guid: 5d7c506bdabf16143ac53ae6522da5cb, type: 3}
 --- !u!65 &2587144832372627825
 BoxCollider:
   m_ObjectHideFlags: 0

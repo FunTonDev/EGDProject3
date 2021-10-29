@@ -93,12 +93,24 @@ public class PlatformerEnemy : Enemy
             Debug.Log("Enemy performed attack");
             if (ranged)
             {
-                /*
-                Debug.Log("Ranged attacked called");
-                Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
-                spawnPos.y = 0.5f;
-                Instantiate(AttackObj, spawnPos, this.transform.rotation);
-                */
+                Vector3 spawnPos = this.transform.position;
+                Vector3 dirToTarget;
+                //Debug.Log("Ranged attacked called");
+                //Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
+                if (fullRanged)
+                {
+                    dirToTarget = (player.transform.position - this.transform.position).normalized;
+                }
+
+                else
+                {
+                    dirToTarget = this.transform.forward;                   
+                }
+
+                spawnPos += dirToTarget * 1;
+                               
+                Instantiate(AttackObj, spawnPos, Quaternion.identity);
+
             }
 
             timeBtwAtk = StartTimeBtwAtk;
