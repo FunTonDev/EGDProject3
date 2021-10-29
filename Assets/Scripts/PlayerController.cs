@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [Header("General Vars")]
     public float currentHP;
     public float maxHP;
+    public NPC charac;
 
     [Header("General Movement")]
     public float xForce;
@@ -106,6 +107,10 @@ public class PlayerController : MonoBehaviour
             CursorMoveUpdate();
             FireUpdate();
             TimerUpdate();
+            if (charac != null)
+            {
+                StartCoroutine(charac.displayAllText(charac.textDesc));
+            }
         }
     }
 
@@ -122,12 +127,20 @@ public class PlayerController : MonoBehaviour
         walled = WallCheck();
         jumpCount = grounded ? 0 : jumpCount;
         wallJumpCount = grounded ? 0 : wallJumpCount;
+        if (collision.gameObject.tag == "NPC")
+        {
+            charac = collision.gameObject.GetComponent<NPC>();
+        }
     }
 
     private void OnCollisionExit(Collision collision)
     {
         grounded = GroundCheck();
         walled = WallCheck();
+        if (collision.gameObject.tag == "NPC")
+        {
+            charac = null;
+        }
     }
 
     private void OnTriggerEnter(Collider trigger)
