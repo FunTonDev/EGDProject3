@@ -36,40 +36,64 @@ public class NPC : MonoBehaviour
         if (collision.gameObject.tag.Equals("Player"))
         {
             canInteract = false;
+            for (int x = 0; x < dialogueBox.transform.childCount; x++)
+            {
+                dialogueBox.transform.GetChild(x).gameObject.SetActive(false);
+                write_queue.Clear();
+                displayText.text = "";
+            }
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        npcName = "Botly";
+        inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         dialogueBox = GameObject.FindGameObjectWithTag("DialogueBox");
-        displayText = dialogueBox.transform.GetChild(1).GetComponent<TMP_Text>();
+        displayText = dialogueBox.transform.GetChild(2).GetComponent<TMP_Text>();
         textDesc = new List<string>();
-        textDesc[0] = "Testing new dialogue box functionality";
-        textDesc[1] = "Shouldn't you be doing something else right now?";
-        textDesc[2] = "Welp, not like I can stop you";
+        textDesc.Add("Testing new dialogue box functionality");
+        textDesc.Add("Shouldn't you be doing something else right now?");
+        textDesc.Add("Welp, not like I can stop you");
+        write_queue = new List<string>();
+        scroll_speed = 20;
+    }
+
+    private void Update()
+    {
+        if (canInteract && inputMan.inputSubmit_D)
+        {
+            StartCoroutine(displayAllText(textDesc));
+        }
     }
 
     public IEnumerator displayAllText(List<string> tts)
     {
-        dialogueBox.SetActive(true);
+        for (int x = 0; x < dialogueBox.transform.childCount; x++)
+        {
+            dialogueBox.transform.GetChild(x).gameObject.SetActive(true);
+        }
         for (int i = 0; i < tts.Count; i++)
         {
-            yield return textDisplay(tts[i]);
+            yield return textDisplay(npcName + ": " + tts[i]);
         }
-        dialogueBox.SetActive(false);
+        for (int x = 0; x < dialogueBox.transform.childCount; x++)
+        {
+            dialogueBox.transform.GetChild(x).gameObject.SetActive(false);
+        }
     }
 
     IEnumerator textDisplay(string tt, bool stop = false)
     {
-        scroll_speed = 20;
+        scroll_speed = 40;
         //StopCoroutine("textDisplay");
         displayText.text = "";
         write_queue.Add(tt);
         writing = true;
         for (int i = 0; i < write_queue[0].Length && writing; i++)
         {
-            if (inputMan.inputSubmit != 0.0f && stop)
+            if (inputMan.inputSubmit_D && stop)
             {
                 displayText.text = "";
                 displayText.text = tt;
@@ -90,10 +114,8 @@ public class NPC : MonoBehaviour
             write_queue.RemoveAt(0);
         }
         displayText.text = tt;
-        if (stop)
-        {
+
             yield return new WaitForSeconds(0.2f);
-            yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit != 0.0f));
-        }
+            yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit_D));
     }
 }
