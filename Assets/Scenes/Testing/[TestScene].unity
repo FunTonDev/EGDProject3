@@ -3027,7 +3027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &728747902
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6169,7 +6169,7 @@ MonoBehaviour:
   navSource: {fileID: 0}
   choiceClip: {fileID: 0}
   confirmClip: {fileID: 0}
-  loadingBack: {fileID: 0}
+  loadingGroup: {fileID: 0}
   stageIcons: []
   toSwitch: 0
 --- !u!82 &1426350754
