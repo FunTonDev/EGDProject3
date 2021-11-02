@@ -37,7 +37,10 @@ public class ShooterEnemy : Enemy
     public float GetBufferDist() { return BufferDist; }
     public float GetRotAngle() { return rotAngle; }
 
-
+    public override void ClassStart()
+    {
+        
+    }
 
     public override void ClassUpdate()
     {

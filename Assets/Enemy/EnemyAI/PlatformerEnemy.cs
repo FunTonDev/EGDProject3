@@ -16,10 +16,23 @@ public class PlatformerEnemy : Enemy
 
     [SerializeField] private GameObject AttackObj;
 
+    private SpriteRenderer sprite;
+
 
     public bool GetFullRanged() { return fullRanged; }
     public float GetRange() { return range; }
 
+
+    public override void ClassStart()
+    {
+        sprite = GetComponentInChildren<SpriteRenderer>();
+
+        if (facingLeft)
+        { Face(true); }
+
+        else
+        { Face(false); }
+    }
 
     public override void ClassUpdate()
     {
@@ -59,17 +72,13 @@ public class PlatformerEnemy : Enemy
             //Moving Right
             if (this.transform.position.x < base.PathFollow().x)
             {
-                //Debug.Log("Eneemy Moving right");
-                this.transform.eulerAngles = new Vector3(0, 90, 0);
-                facingLeft = false;
+                Face(false);
             }            
 
             //Moving left
             else
             {
-                //Debug.Log("Enemy Moving left");
-                this.transform.eulerAngles = new Vector3(0, 270, 0);
-                facingLeft = true;
+                Face(true);
             }
         }
 
@@ -121,7 +130,24 @@ public class PlatformerEnemy : Enemy
     {
         return this.GetComponent<Platformer_FOV>().FindVisibleTargets();
     }
+
     
+    void Face(bool faceLeft)
+    {
+        if (faceLeft)
+        {
+            //Debug.Log("Enemy facing left");
+            this.transform.eulerAngles = new Vector3(0, 270, 0);
+            facingLeft = true;
+        }
+
+        else
+        {
+            //Debug.Log("Eneemy Moving right");
+            this.transform.eulerAngles = new Vector3(0, 90, 0);
+            facingLeft = false;
+        }
+    }         
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -150,7 +176,8 @@ public class PlatformerEnemy : Enemy
 
         //Flip enemy direction
         //Make sure enemy didn't hit ground
-        else if(rgbdy.velocity.y <= 0.01f && collision.collider.tag != "Ground")
+        //else if(rgbdy.velocity.y <= 0.01f && collision.collider.tag != "Ground")
+        else if (collision.collider.tag != "Ground")
         {                
             Debug.Log(string.Format("{0} flipped direction", this.name));
 
