@@ -10,6 +10,9 @@ public class TransitionManager : MonoBehaviour
     public AudioClip choiceClip;
     public AudioClip confirmClip;
 
+    public GameObject loadingGroup;
+    public List<Image> stageIcons;
+
     public int toSwitch;
 
 
@@ -37,6 +40,7 @@ public class TransitionManager : MonoBehaviour
     public void SceneSwitch(string sceneStr)
     {
         Debug.Log("Go to next scene");
-        SceneManager.LoadScene(sceneStr);
+        SceneManager.LoadSceneAsync(sceneStr);
+        loadingGroup.SetActive(true);
     }
 }

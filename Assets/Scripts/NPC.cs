@@ -9,7 +9,7 @@ public class NPC : MonoBehaviour
     public string npcName;
 
     public List<string> textDesc;
-    private List<string> write_queue;
+    public List<string> write_queue;
 
     public bool canInteract;
     public bool writing;
@@ -27,6 +27,7 @@ public class NPC : MonoBehaviour
         }
         else
         {
+            StopAllCoroutines();
             canInteract = false;
         }
     }
@@ -42,6 +43,7 @@ public class NPC : MonoBehaviour
                 write_queue.Clear();
                 displayText.text = "";
             }
+            StopAllCoroutines();
         }
     }
 
@@ -64,6 +66,7 @@ public class NPC : MonoBehaviour
     {
         if (canInteract && inputMan.inputSubmit_D)
         {
+            canInteract = false;
             StartCoroutine(displayAllText(textDesc));
         }
     }
@@ -82,6 +85,7 @@ public class NPC : MonoBehaviour
         {
             dialogueBox.transform.GetChild(x).gameObject.SetActive(false);
         }
+        canInteract = true;
     }
 
     IEnumerator textDisplay(string tt, bool stop = false)
@@ -91,7 +95,7 @@ public class NPC : MonoBehaviour
         displayText.text = "";
         write_queue.Add(tt);
         writing = true;
-        for (int i = 0; i < write_queue[0].Length && writing; i++)
+        for (int i = 0; i < tt.Length && writing; i++)
         {
             if (inputMan.inputSubmit_D && stop)
             {
@@ -105,7 +109,7 @@ public class NPC : MonoBehaviour
             if (writing)
             {
                 yield return new WaitForSeconds(1f / scroll_speed);
-                displayText.text += write_queue[0][i];
+                displayText.text += tt[i];
             }
         }
         writing = false;
@@ -115,7 +119,7 @@ public class NPC : MonoBehaviour
         }
         displayText.text = tt;
 
-            yield return new WaitForSeconds(0.2f);
-            yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit_D));
+        yield return new WaitForSeconds(0.2f);
+        yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit_D));
     }
 }
