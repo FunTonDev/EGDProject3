@@ -165,9 +165,10 @@ public class BattleManager : MonoBehaviour
         {
             if (currentActionType == "Action")
             {
+                Debug.Log("Is doing action");
                 if (EnemyMembers[target] != null)
                 {
-                    actions.Add(new actionTag(currentUnit, currentActionType, currentAction, target, PartyMembers[currentUnit].spd));
+                    actions.Add(new actionTag(currentUnit, "Action", currentAction, target, PartyMembers[currentUnit].spd));
                 }
                 else
                 {
@@ -176,9 +177,10 @@ public class BattleManager : MonoBehaviour
             }
             else if (currentActionType == "Support")
             {
+                Debug.Log("Is doing support");
                 if (PartyMembers[target] != null)
                 {
-                    actions.Add(new actionTag(currentUnit, currentActionType, currentAction, target, PartyMembers[currentUnit].spd));
+                    actions.Add(new actionTag(currentUnit, "Support", currentAction, target, PartyMembers[currentUnit].spd));
                 }
                 else
                 {
@@ -202,6 +204,10 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            makeMenuVisible(0);
+            mainIndex = 0;
+            mainButtons[mainIndex].Select();
+
             playerTurn();
         }
     }
@@ -215,6 +221,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            currentAction = num;
             if (PartyMembers[currentUnit].abilities[num].type == 1)
             {
                 currentActionType = "Support";
@@ -658,7 +665,7 @@ public class BattleManager : MonoBehaviour
                 Debug.Log("Index == " + actions[z].getID());
 
                 //Use offensive ability
-                if (actions[z].getType() == "Action" && state == battleState.ATTACK)
+                if (actions[z].getType().Equals("Action") && state == battleState.ATTACK)
                 {
                     int toget = actions[z].getTarget();
                     if (EnemyMembers[toget].currentHP <= 0)
@@ -688,7 +695,7 @@ public class BattleManager : MonoBehaviour
                     yield return playerAbility(actions[z].getIndex(), toget, PartyMembers[ind], EnemyMembers[toget]);                    
                 }
                 //Use Buff/Support ability (player)
-                else if (actions[z].getType() == "Support" && state == battleState.ATTACK)
+                else if (actions[z].getType().Equals("Support") && state == battleState.ATTACK)
                 {
                     int pose = actions[z].getTarget();
                     string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
@@ -710,7 +717,7 @@ public class BattleManager : MonoBehaviour
                     }
                 }
                 //Use basic attack
-                else if (actions[z].getType() == "Attack" && state == battleState.ATTACK)
+                else if (actions[z].getType().Equals("Attack") && state == battleState.ATTACK)
                 {
                     int toget = actions[z].getTarget();
 
@@ -738,7 +745,7 @@ public class BattleManager : MonoBehaviour
                     yield return basicAttack(PartyMembers[ind], EnemyMembers[toget]);
                 }
                 //Have unit defend themselves
-                else if (actions[z].getType() == "Defend" && state == battleState.ATTACK)
+                else if (actions[z].getType().Equals("Defend") && state == battleState.ATTACK)
                 {
                     int toget = actions[z].getTarget();
                     PartyMembers[toget].defending = true;
@@ -746,7 +753,7 @@ public class BattleManager : MonoBehaviour
                     yield return textDisplay(PartyMembers[ind].unitName + " defended themself", true);
                 }
                 //Have enemy use offensive ability
-                else if (actions[z].getType() == "enemyAttack" && state == battleState.ATTACK)
+                else if (actions[z].getType().Equals("enemyAttack") && state == battleState.ATTACK)
                 {
                     Debug.Log("Enemy Attacking");
                     //EnemyMembers[ind].changeSprite(1);
@@ -806,7 +813,7 @@ public class BattleManager : MonoBehaviour
                     //EnemyMembers[ind].changeSprite(0);
                 }
                 //Enemy performs a non-offensive ability
-                else if (actions[z].getType() == "enemyAction" && state == battleState.ATTACK)
+                else if (actions[z].getType().Equals("enemyAction") && state == battleState.ATTACK)
                 {
                     //EnemyMembers[ind].changeSprite(1);
                     if (EnemyMembers[actions[z].getTarget()] != null)
@@ -942,6 +949,10 @@ public class BattleManager : MonoBehaviour
                     yield return textDisplay("It's a critical hit!", true);
                     skipper = true;
                 }
+                if (EnemyMembers[val].currentHP <= 0)
+                {
+                    yield return unitDeath(EnemyMembers[val], val);
+                }
             }
             else
             {
@@ -966,6 +977,10 @@ public class BattleManager : MonoBehaviour
                     {
                         yield return textDisplay("It's a critical hit!", true);
                         skipper = true;
+                    }
+                    if (EnemyMembers[i].currentHP <= 0)
+                    {
+                        yield return unitDeath(EnemyMembers[i], i);
                     }
                 }
             }
@@ -1101,6 +1116,7 @@ public class BattleManager : MonoBehaviour
             }
 
             target.takeDamage(dami);
+            StartCoroutine(flash(val, false, 0));
             partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[val].currentHP / PartyMembers[val].maxHP,
                 partyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
             if (crite)
@@ -1129,6 +1145,7 @@ public class BattleManager : MonoBehaviour
                             crite = false;
                         }
                         PartyMembers[i].takeDamage(dami);
+                        StartCoroutine(flash(i, false, 0));
                         partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP,
                             partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                         if (crite)
@@ -1149,6 +1166,7 @@ public class BattleManager : MonoBehaviour
         if (uni.abilities[ata].target == 0)
         {
             target.takeDamage(-uni.abilities[ata].damage);
+            StartCoroutine(flash(val, true, 1));
             enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP,
                 enemyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
         }
@@ -1161,6 +1179,7 @@ public class BattleManager : MonoBehaviour
                     if (EnemyMembers[i].currentHP > 0)
                     {
                         EnemyMembers[i].takeDamage(-uni.abilities[ata].damage);
+                        StartCoroutine(flash(i, true, 1));
                         enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
                             enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                     }
