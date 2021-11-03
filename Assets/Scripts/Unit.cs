@@ -17,15 +17,73 @@ public class Action
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
     public int damage;
 
+    public int ATKBoost;
+    public int DEFBoost;
+    public int SPDBoost;
+
     public int priority = 1;
 
     public int target;  //0 == single, 1 == AOE/All
 }
 
+public class Basic : Action
+{
+    public Basic()
+    {
+        actionName = "Basic Attack";
+        actionDesc = "A standard offensive move, deals 5 points of damage. One of the hallmarks of any RPG character.";
+        type = 0;
+        damage = 5;
+        priority = 2;
+        target = 0;
+    }
+}
+
+public class AOE : Action
+{
+    public AOE()
+    {
+        actionName = "AOE Attack";
+        actionDesc = "An attack that covers a wide area of effect. Deals less damage, but hits more than usual.";
+        type = 0;
+        damage = 3;
+        priority = 1;
+        target = 1;
+    }
+}
+
+public class BasicHeal : Action
+{
+    public BasicHeal()
+    {
+        actionName = "Basic Heal";
+        actionDesc = "A simple healing spell, solves all your problems. The hallmark of any true white mage.";
+        type = 1;
+        damage = 5;
+        priority = 1;
+        target = 0;
+    }
+}
+
+public class StatBoost : Action
+{
+    public StatBoost()
+    {
+        actionName = "Basic Heal";
+        actionDesc = "A unique support move, used to amplify an ally's abilities. Helps in a pinch.";
+        type = 1;
+        damage = 0;
+        priority = 1;
+        target = 0;
+    }
+}
+
+
 
 public class Unit
 {
     public string unitName;
+    public bool enemy;
 
     public float currentHP;
     public float maxHP;
@@ -35,6 +93,7 @@ public class Unit
     public int atk;
     public int def;
     public int spd;
+    public int lck;
     public int level;
 
     public int hpLevelBoost;
@@ -64,9 +123,7 @@ public class Unit
     {
         sprites = new Sprite[1];
         abilities = new List<Action>();
-        Action action1 = new Action();
-        action1.damage = 2;
-        abilities.Add(action1);
+        abilities.Add(new Basic());
     }
 
     public bool takeDamage(int dam)
@@ -95,6 +152,7 @@ public class Unit
                 atk = 1;
                 def = 1;
                 spd = 1;
+                lck = 1;
                 break;
             case 2:
                 break;
@@ -126,6 +184,7 @@ public class Pixal : Unit
         spriteFilePath = "Art/Placeholder/Cube.png";
         loadSprites();
         setStats(lv);
+        abilities.Add(new BasicHeal());
     }
 }
 
@@ -137,6 +196,7 @@ public class Mama : Unit
         spriteFilePath = "Art/Placeholder/mama.jfif";
         loadSprites();
         setStats(lv);
+        abilities.Add(new AOE());
     }
 }
 
@@ -148,6 +208,8 @@ public class Hound : Unit
         spriteFilePath = "Art/Placeholder/Dog.jfif";
         loadSprites();
         setStats(lv);
+        abilities.Add(new Basic());
+        abilities.Add(new StatBoost());
     }
 }
 
@@ -159,6 +221,8 @@ public class Slime : Unit
         spriteFilePath = "Art/Placeholder/BasicSlime";
         loadSprites();
         setStats(lv);
+        abilities.Add(new Basic());
+        abilities.Add(new AOE());
     }
 }
 
@@ -170,6 +234,7 @@ public class BossSlime : Unit
         spriteFilePath = "Art/Placeholder/KingSlime";
         loadSprites();
         setStats(lv);
+        abilities.Add(new Basic());
     }
 }
 
@@ -181,5 +246,7 @@ public class Skeleton : Unit
         spriteFilePath = "Art/Placeholder/Skeletoj";
         loadSprites();
         setStats(lv);
+        abilities.Add(new Basic());
+        abilities.Add(new BasicHeal());
     }
 }

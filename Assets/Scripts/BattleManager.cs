@@ -103,6 +103,13 @@ public class BattleManager : MonoBehaviour
 
     private List<actionTag> actions;
 
+    public AudioClip navigateSound;
+    public AudioClip confirmSound;
+    public AudioClip music;
+
+    public AudioSource seSource;
+    public AudioSource musicSource;
+
 
     //Int to track the number of units actually in the party
     int activeUnits = 0;
@@ -116,6 +123,8 @@ public class BattleManager : MonoBehaviour
     //Number of enemies that have died
     int enemyDeaths = 0;
 
+    bool bossBattle = false;
+
     //The current unit in the party that is choosing an action
     private int currentUnit = 0;
 
@@ -127,9 +136,7 @@ public class BattleManager : MonoBehaviour
 
     //The enemy currently being highlighted
     private int currentEnemy = 0;
-
     private int currentAction = 0;
-
     private string currentActionType = "";
 
     //Bool to check whether text is displayed that have button delays
@@ -216,7 +223,7 @@ public class BattleManager : MonoBehaviour
             else
             {
                 currentActionType = "Action";
-                makeMenuVisible(0);
+                makeMenuVisible(1);
             }
         }
     }
@@ -230,10 +237,8 @@ public class BattleManager : MonoBehaviour
             menus[1].SetActive(true);
             menus[2].SetActive(false);
             menus[3].SetActive(false);
-            Debug.Log("Ability num == " + PartyMembers[currentUnit].abilities.Count);
             if (PartyMembers[currentUnit].abilities.Count < 4)
             {
-                Debug.Log("Button 4 down");
                 actionButtons[6].gameObject.SetActive(false);
             }
             else
@@ -243,7 +248,6 @@ public class BattleManager : MonoBehaviour
             }
             if (PartyMembers[currentUnit].abilities.Count < 3)
             {
-                Debug.Log("Button 3 down");
                 actionButtons[5].gameObject.SetActive(false);
             }
             else
@@ -458,19 +462,24 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    //Setup stats/game objects for battle
     IEnumerator setupBattle()
     {
+        //Add placeholders
         currentUnit = 0;
         for (int i = 0; i < 3; i++) PartyMembers.Add(null);
         for (int i = 0; i < 3; i++) EnemyMembers.Add(null);
+
         //Load in from json file or other source. Until available, load in prefabs
         PartyMembers[0] = new Pixal();
         PartyMembers[1] = new Mama();
 
+        //Set up party unit visuals
         for (int i = 0; i < 3; i++)
         {
             if (PartyMembers[i] != null)
             {
+                PartyMembers[i].enemy = false;
                 if (PartyMembers[i].sprites[0] != null)
                 {
                     partyPrefabs[i].GetComponent<SpriteRenderer>().sprite = PartyMembers[i].sprites[0];
@@ -496,10 +505,12 @@ public class BattleManager : MonoBehaviour
         EnemyMembers[1] = new Skeleton();
         EnemyMembers[2] = new Hound();
 
+        //Set up enemy unit visuals
         for (int i = 0; i < 3; i++)
         {
             if (EnemyMembers[i] != null)
             {
+                EnemyMembers[i].enemy = true;
                 if (EnemyMembers[i].sprites[0] != null)
                 {
                     enemyPrefabs[i].GetComponent<SpriteRenderer>().sprite = EnemyMembers[i].sprites[0];
@@ -518,6 +529,18 @@ public class BattleManager : MonoBehaviour
                 enemyPrefabs[i].SetActive(false);
             }
         }
+
+        //Change music to play depending on enemies being fought (will check for boss names later)
+        if (!bossBattle)
+        {
+            music = Resources.Load<AudioClip>("Audio/Music/Fighting is not an option");
+        }
+        else
+        {
+            music = Resources.Load<AudioClip>("Audio/Music/Battle Theme");
+        }
+        musicSource.clip = music;
+        musicSource.Play();
 
         actions = new List<actionTag>();
 
@@ -543,6 +566,8 @@ public class BattleManager : MonoBehaviour
     {
         DisplayText.text = "";
     }
+
+    //Display text
     IEnumerator textDisplay(string tt, bool stop = false)
     {
         ender = stop;
@@ -593,11 +618,11 @@ public class BattleManager : MonoBehaviour
     //Perform the selected actions, after they have been selected
     public IEnumerator PerformActions()
     {
-        transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
         transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
         transform.GetChild(0).GetChild(3).gameObject.SetActive(false);
         transform.GetChild(0).GetChild(4).gameObject.SetActive(false);
         transform.GetChild(0).GetChild(5).gameObject.SetActive(false);
+        transform.GetChild(0).GetChild(6).gameObject.SetActive(false);
         enemyAttacks();
         if (state != battleState.WIN && state != battleState.LOSE && state != battleState.FLEE && EnemyMembers.Count - enemyDeaths > 0 && activeUnits - partyDeaths > 0)
         {
@@ -837,8 +862,8 @@ public class BattleManager : MonoBehaviour
                 yield return battleEnd();
             }
         }
-        transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
         transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+        transform.GetChild(0).GetChild(3).gameObject.SetActive(true);
         active_menu = 0;
     }
 
@@ -850,6 +875,79 @@ public class BattleManager : MonoBehaviour
     //target - the target of the ability
     IEnumerator playerAbility(int ata, int val, Unit uni, Unit target)
     {
+        bool crite = false;
+        bool good = false;
+        bool bad = false;
+
+        yield return new WaitForSeconds(1f);
+        int dami = uni.abilities[ata].damage * (uni.atk / target.def);
+
+        if (uni.abilities[ata].type == 0)
+        {
+            if (uni.abilities[ata].target == 0)
+            {
+                int crit = Random.Range(1, 101);
+                if (crit <= (uni.lck / 4) + 3)
+                {
+                    dami += (dami / 2);
+                    crite = true;
+                }
+
+                target.takeDamage(dami);
+                enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP, 0.2f, 0.0f);
+                if (crite)
+                {
+                    yield return textDisplay("It's a critical hit!", true);
+                    skipper = true;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                { 
+                    dami = uni.abilities[ata].damage * (uni.atk / EnemyMembers[i].def);
+                    int crit = Random.Range(1, 101);
+                    if (crit <= (uni.lck / 4) + 3)
+                    {
+                        dami += (dami / 2);
+                        crite = true;
+                    }
+                    else
+                    {
+                        crite = false;
+                    }
+                    EnemyMembers[i].takeDamage(dami);
+                    enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
+                    if (crite)
+                    {
+                        yield return textDisplay("It's a critical hit!", true);
+                        skipper = true;
+                    }
+                }
+            }
+        }
+        else if (uni.abilities[ata].type == 1)
+        {
+            if (uni.abilities[ata].target == 0)
+            {
+                target.takeDamage(-uni.abilities[ata].damage);
+                partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[val].currentHP / PartyMembers[val].maxHP, 0.2f, 0.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (PartyMembers[i] != null)
+                    {
+                        if (PartyMembers[i].currentHP > 0)
+                        {
+                            PartyMembers[i].takeDamage(-uni.abilities[ata].damage);
+                            partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 0.2f, 0.0f);
+                        }
+                    }
+                }
+            }
+        }
         yield return new WaitForSeconds(0.0f);
     }
 
@@ -862,7 +960,7 @@ public class BattleManager : MonoBehaviour
         bool bad = false;
 
         yield return new WaitForSeconds(1f);
-        int val = 5 * uni.atk;
+        int val = 5 * (uni.atk / target.def);
         //val = uni.takeDamageCalc(target, val, op);
 
         //Check if target is weak or resistant to a certain damage type
@@ -882,6 +980,11 @@ public class BattleManager : MonoBehaviour
 
         //Check if the unit gets a crit
         int crit = Random.Range(1, 101);
+        if (crit <= (uni.lck / 4) + 3)
+        {
+            val += (val / 2);
+            crite = true;
+        }
 
         int tv = 0;
         while (target != EnemyMembers[tv] && tv < EnemyMembers.Count)
@@ -890,7 +993,6 @@ public class BattleManager : MonoBehaviour
         }
         float dif = target.currentHP;
         bool dead = target.takeDamage(val);
-        dif -= target.currentHP;
 
         if (dif > 0)
         {
@@ -948,14 +1050,86 @@ public class BattleManager : MonoBehaviour
     //target - target of attack
     IEnumerator enemyAttack(int ata, int val, Unit uni, Unit target)
     {
-        target.takeDamage(uni.abilities[ata].damage);
-        partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[val].currentHP / PartyMembers[val].maxHP, 0.2f, 0.0f);
+        bool crite = false;
+        bool good = false;
+        bool bad = false;
+
+        yield return new WaitForSeconds(1f);
+        int dami = uni.abilities[ata].damage * (uni.atk / target.def);
+
+
+        if (uni.abilities[ata].target == 0)
+        {
+            int crit = Random.Range(1, 101);
+            if (crit <= (uni.lck / 4) + 3)
+            {
+                dami += (dami / 2);
+                crite = true;
+            }
+
+            target.takeDamage(dami);
+            partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[val].currentHP / PartyMembers[val].maxHP, 0.2f, 0.0f);
+            if (crite)
+            {
+                yield return textDisplay("It's a critical hit!", true);
+                skipper = true;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (PartyMembers[i] != null)
+                {
+                    if (PartyMembers[i].currentHP > 0)
+                    {
+                        dami = uni.abilities[ata].damage * (uni.atk / PartyMembers[i].def);
+                        int crit = Random.Range(1, 101);
+                        if (crit <= (uni.lck / 4) + 3)
+                        {
+                            dami += (dami / 2);
+                            crite = true;
+                        }
+                        else
+                        {
+                            crite = false;
+                        }
+                        PartyMembers[i].takeDamage(dami);
+                        partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 0.2f, 0.0f);
+                        if (crite)
+                        {
+                            yield return textDisplay("It's a critical hit!", true);
+                            skipper = true;
+                        }
+                    }
+                }
+            }
+        }
         yield return new WaitForSeconds(0);
     }
 
     //An enemy uses a non-offensive ability
     IEnumerator enemyAbility(int ata, int val, Unit uni, Unit target)
     {
+        if (uni.abilities[ata].target == 0)
+        {
+            target.takeDamage(-uni.abilities[ata].damage);
+            enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP, 0.2f, 0.0f);
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (EnemyMembers[i] != null)
+                {
+                    if (EnemyMembers[i].currentHP > 0)
+                    {
+                        EnemyMembers[i].takeDamage(-uni.abilities[ata].damage);
+                        enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
+                    }
+                }
+            }
+        }
         yield return new WaitForSeconds(0);
     }
 
@@ -965,7 +1139,10 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(textDisplay(bot.unitName + " has been defeated"));
         yield return new WaitForSeconds(1f);
 
-        enemyPrefabs[ind].SetActive(false);
+        if (bot.enemy)
+            enemyPrefabs[ind].SetActive(false);
+        else
+            partyPrefabs[ind].SetActive(false);
         
         /*
         if (bot.enemy)
@@ -1001,7 +1178,7 @@ public class BattleManager : MonoBehaviour
         }
         */
 
-        yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit != 0));
+        yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit_D));
     }
 
     //Fade into the battle scene (from black to screen)
@@ -1030,9 +1207,14 @@ public class BattleManager : MonoBehaviour
         StopCoroutine("playerAttack");
         StopCoroutine("basicAttack");
         StopCoroutine("enemyAttack");
+
         //If win, display text and give money (and rewards after rolling chances)
         if (state == battleState.WIN)
         {
+            musicSource.Stop();
+            musicSource.clip = Resources.Load<AudioClip>("Audio/Music/Victory");
+            musicSource.loop = false;
+            musicSource.Play();
             if (EnemyMembers.Count == 1)
             {
                 yield return textDisplay("The " + EnemyMembers[0].unitName + " has been defeated", true);
@@ -1059,6 +1241,10 @@ public class BattleManager : MonoBehaviour
         }
         else if (state == battleState.LOSE)
         {
+            musicSource.Stop();
+            musicSource.clip = Resources.Load<AudioClip>("Audio/Music/Retro_No hope");
+            musicSource.loop = false;
+            musicSource.Play();
             yield return textDisplay("You Died", true);
             for (int i = 0; i < 4; i++)
             {
@@ -1114,6 +1300,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    //Borrows code from menu manager script
     private void NavUpdate()
     {
         int navDiff = (inputMan.inputY > 0) ? -1 : 0 + ((inputMan.inputY < 0) ? 1 : 0);
@@ -1161,7 +1348,7 @@ public class BattleManager : MonoBehaviour
         inputMan = GetComponent<InputManager>();
 
         menus = new List<GameObject>();
-        for (int i = 2; i < transform.GetChild(0).childCount-1; i++)
+        for (int i = 3; i < transform.GetChild(0).childCount-1; i++)
         {
             menus.Add(transform.GetChild(0).GetChild(i).gameObject);
         }
@@ -1172,7 +1359,7 @@ public class BattleManager : MonoBehaviour
         PartyMembers = new List<Unit>();
         EnemyMembers = new List<Unit>();
 
-        dialogue = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        dialogue = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
         write_queue = new List<string>();
         scroll_speed = 20;
 
@@ -1188,6 +1375,13 @@ public class BattleManager : MonoBehaviour
             if (inputMan.inputY_D)
             {
                 NavUpdate();
+                seSource.clip = Resources.Load<AudioClip>("Audio/Sound Effects/vgmenuhighlight");
+                seSource.Play();
+            }
+            else if (inputMan.inputSubmit_D)
+            {
+                seSource.clip = Resources.Load<AudioClip>("Audio/Sound Effects/Completetask_0");
+                seSource.Play();
             }
         }
     }

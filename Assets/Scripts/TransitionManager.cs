@@ -14,6 +14,7 @@ public class TransitionManager : MonoBehaviour
     public List<Image> stageIcons;
 
     public int toSwitch;
+    public bool isCompleted = false;
 
 
     public void MouseAudioTrigger(AudioClip tClip)
@@ -41,6 +42,45 @@ public class TransitionManager : MonoBehaviour
     {
         Debug.Log("Go to next scene");
         SceneManager.LoadSceneAsync(sceneStr);
+        string sceneText = "Loading ";
+        switch (sceneText)
+        {
+            case "HubWorld":
+                sceneText += "Central Hub";
+                break;
+            case "RPGWorld":
+                sceneText += "Fantasy Plains";
+                break;
+            case "ShooterWorld":
+                sceneText += "Shooter Jungle";
+                break;
+            case "PlatformerWorld":
+                sceneText += "Platformer Kingdom";
+                break;
+            case "MenuScene":
+                sceneText = "Leaving the System";
+                break;
+        }
+
+        loadingGroup.transform.GetChild(1).GetComponent<Text>().text = sceneText;
         loadingGroup.SetActive(true);
+        StartCoroutine(TextUpdater(sceneText));
+    }
+
+    public IEnumerator TextUpdater(string ori)
+    {
+        int initLen = ori.Length;
+        while (!isCompleted)
+        {
+            if (loadingGroup.transform.GetChild(1).GetComponent<Text>().text.Length >= ori.Length + 3)
+            {
+                loadingGroup.transform.GetChild(1).GetComponent<Text>().text = loadingGroup.transform.GetChild(1).GetComponent<Text>().text.Remove(ori.Length);
+            }
+            else
+            {
+                loadingGroup.transform.GetChild(1).GetComponent<Text>().text += ".";
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }
