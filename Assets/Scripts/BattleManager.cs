@@ -305,6 +305,23 @@ public class BattleManager : MonoBehaviour
             menus[2].SetActive(false);
             menus[3].SetActive(true);
         }
+        else if (num == 3)
+        {
+            actions.Add(new actionTag(currentUnit, "Defend", currentAction, currentUnit, PartyMembers[currentUnit].spd));
+            currentUnit += 1;
+            currentActionType = "";
+            currentAction = 0;
+            if (currentUnit >= activeUnits)
+            {
+                state = battleState.ATTACK;
+                //Calculate enemy actions, then go to perform actions
+                StartCoroutine(PerformActions());
+            }
+            else
+            {
+                playerTurn();
+            }
+        }
         else
         {
             actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Battling Time";
@@ -434,7 +451,7 @@ public class BattleManager : MonoBehaviour
                         }
 
                         int speed = EnemyMembers[i].spd;
-                        actionTag now = new actionTag(i, "enemyAbility", x, r, speed);
+                        actionTag now = new actionTag(i, "enemyAction", x, r, speed);
                         actions.Add(now);
                     }
                     //If self-buff ability is chosen
@@ -486,12 +503,14 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
+                    //partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
                 }
                 partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
-                    new Vector3(0.5f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 0.2f, 0.0f);
+                    new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 
+                    partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                 partyPrefabs[i].transform.GetChild(1).GetComponent<SpriteRenderer>().transform.localScale =
-                    new Vector3(0.5f * PartyMembers[i].currentStamina / PartyMembers[i].maxStamina, 0.2f, 0.0f);
+                    new Vector3(1.0f * PartyMembers[i].currentStamina / PartyMembers[i].maxStamina,
+                    partyPrefabs[i].transform.GetChild(1).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                 activeUnits += 1;
             }
             else
@@ -517,10 +536,11 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    enemyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
+                   // enemyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
                 }
                 enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
-                    new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
+                    new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
+                    enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                 activeEnemies += 1;
             }
             else
@@ -717,6 +737,15 @@ public class BattleManager : MonoBehaviour
                     yield return textDisplay(PartyMembers[ind].unitName + " attacked the enemy", true);
                     yield return basicAttack(PartyMembers[ind], EnemyMembers[toget]);
                 }
+                //Have unit defend themselves
+                else if (actions[z].getType() == "Defend" && state == battleState.ATTACK)
+                {
+                    int toget = actions[z].getTarget();
+                    PartyMembers[toget].defending = true;
+                    partyPrefabs[toget].GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1.0f);
+                    yield return textDisplay(PartyMembers[ind].unitName + " defended themself", true);
+                }
+                //Have enemy use offensive ability
                 else if (actions[z].getType() == "enemyAttack" && state == battleState.ATTACK)
                 {
                     Debug.Log("Enemy Attacking");
@@ -847,6 +876,17 @@ public class BattleManager : MonoBehaviour
                 }
             }
 
+            for (int i = 0; i < 3; i++)
+            {
+                if (PartyMembers[i] != null)
+                {
+                    if (PartyMembers[i].currentHP > 0)
+                    {
+                        PartyMembers[i].defending = false;
+                        partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
+                    }
+                }
+            }
             actions.Clear();
 
             if (state != battleState.WIN && state != battleState.LOSE && state != battleState.FLEE && enemyDeaths < EnemyMembers.Count && partyDeaths < activeUnits)
@@ -893,8 +933,10 @@ public class BattleManager : MonoBehaviour
                     crite = true;
                 }
 
+                StartCoroutine(flash(val, true, 0));
                 target.takeDamage(dami);
-                enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP, 0.2f, 0.0f);
+                enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP,
+                    enemyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                 if (crite)
                 {
                     yield return textDisplay("It's a critical hit!", true);
@@ -916,8 +958,10 @@ public class BattleManager : MonoBehaviour
                     {
                         crite = false;
                     }
+                    StartCoroutine(flash(i, true, 0));
                     EnemyMembers[i].takeDamage(dami);
-                    enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
+                    enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
+                        enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                     if (crite)
                     {
                         yield return textDisplay("It's a critical hit!", true);
@@ -930,8 +974,10 @@ public class BattleManager : MonoBehaviour
         {
             if (uni.abilities[ata].target == 0)
             {
+                StartCoroutine(flash(val, false, 1));
                 target.takeDamage(-uni.abilities[ata].damage);
-                partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[val].currentHP / PartyMembers[val].maxHP, 0.2f, 0.0f);
+                partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[val].currentHP / PartyMembers[val].maxHP,
+                    partyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
             }
             else
             {
@@ -941,8 +987,10 @@ public class BattleManager : MonoBehaviour
                     {
                         if (PartyMembers[i].currentHP > 0)
                         {
+                            StartCoroutine(flash(i, false, 1));
                             PartyMembers[i].takeDamage(-uni.abilities[ata].damage);
-                            partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 0.2f, 0.0f);
+                            partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP,
+                                partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                         }
                     }
                 }
@@ -963,21 +1011,6 @@ public class BattleManager : MonoBehaviour
         int val = 5 * (uni.atk / target.def);
         //val = uni.takeDamageCalc(target, val, op);
 
-        //Check if target is weak or resistant to a certain damage type
-
-        /*
-        if (target.weaknesses[op] == true)
-        {
-            val = (int)(val * 1.5);
-            good = true;
-        }
-        else if (target.resistances[op] == true)
-        {
-            val = (int)(val * 0.5);
-            bad = true;
-        }
-        */
-
         //Check if the unit gets a crit
         int crit = Random.Range(1, 101);
         if (crit <= (uni.lck / 4) + 3)
@@ -992,6 +1025,7 @@ public class BattleManager : MonoBehaviour
             tv++;
         }
         float dif = target.currentHP;
+        StartCoroutine(flash(tv, true, 0));
         bool dead = target.takeDamage(val);
 
         if (dif > 0)
@@ -1001,11 +1035,10 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < EnemyMembers.Count; i++)
         {
             if (EnemyMembers[i].currentHP < 0) EnemyMembers[i].currentHP = 0;
-            enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
+            enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
+                enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
         }
         //uni.setSP(uni.currentSP - 2);
-        //StartCoroutine(flashDamage(target));
-        //yield return flashDealDamage(uni);
 
         if (crite)
         {
@@ -1068,7 +1101,8 @@ public class BattleManager : MonoBehaviour
             }
 
             target.takeDamage(dami);
-            partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[val].currentHP / PartyMembers[val].maxHP, 0.2f, 0.0f);
+            partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[val].currentHP / PartyMembers[val].maxHP,
+                partyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
             if (crite)
             {
                 yield return textDisplay("It's a critical hit!", true);
@@ -1095,7 +1129,8 @@ public class BattleManager : MonoBehaviour
                             crite = false;
                         }
                         PartyMembers[i].takeDamage(dami);
-                        partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 0.2f, 0.0f);
+                        partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP,
+                            partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                         if (crite)
                         {
                             yield return textDisplay("It's a critical hit!", true);
@@ -1114,7 +1149,8 @@ public class BattleManager : MonoBehaviour
         if (uni.abilities[ata].target == 0)
         {
             target.takeDamage(-uni.abilities[ata].damage);
-            enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP, 0.2f, 0.0f);
+            enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP,
+                enemyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
         }
         else
         {
@@ -1125,7 +1161,8 @@ public class BattleManager : MonoBehaviour
                     if (EnemyMembers[i].currentHP > 0)
                     {
                         EnemyMembers[i].takeDamage(-uni.abilities[ata].damage);
-                        enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(0.5f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP, 0.2f, 0.0f);
+                        enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
+                            enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                     }
                 }
             }
@@ -1198,6 +1235,41 @@ public class BattleManager : MonoBehaviour
         Color ori = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         //transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
         transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
+    }
+
+    //Cause unit to flash a color (0 == damage/red, 1 == healing/green)
+    IEnumerator flash(int index, bool enemy, int ver = 0)
+    {
+        Debug.Log("Index for flash == " + index);
+        Color ori;
+        GameObject uni;
+        if (enemy)
+        {
+            uni = enemyPrefabs[index];
+            ori = enemyPrefabs[index].GetComponent<SpriteRenderer>().color;
+        }
+        else
+        {
+            uni = partyPrefabs[index];
+            ori = partyPrefabs[index].GetComponent<SpriteRenderer>().color;
+        }
+        switch (ver)
+        {
+            case 0:
+                yield return new WaitForSeconds(0.5f);
+                uni.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
+                yield return new WaitForSeconds(0.5f);
+                break;
+
+            case 1:
+                yield return new WaitForSeconds(0.5f);
+                uni.GetComponent<SpriteRenderer>().color = new Color(0.5f, 1.0f, 0.5f);
+                yield return new WaitForSeconds(0.5f);
+                break;
+
+        }
+        uni.GetComponent<SpriteRenderer>().color = ori;
+        yield return new WaitForSeconds(0.0f);
     }
 
     //Display relevant text based on who wins the battle
@@ -1384,5 +1456,6 @@ public class BattleManager : MonoBehaviour
                 seSource.Play();
             }
         }
+
     }
 }

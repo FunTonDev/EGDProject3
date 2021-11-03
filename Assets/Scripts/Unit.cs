@@ -96,6 +96,8 @@ public class Unit
     public int lck;
     public int level;
 
+    public bool defending = false;
+
     public int hpLevelBoost;
     public int stmLevelBoost;
     public int atkLevelBoost;
@@ -128,7 +130,11 @@ public class Unit
 
     public bool takeDamage(int dam)
     {
-        currentHP -= dam;
+        if (!defending)
+            currentHP -= dam;
+        else
+            currentHP -= dam / 2;
+
         if (currentHP <= 0)
         {
             currentHP = 0;

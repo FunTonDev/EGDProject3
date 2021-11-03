@@ -11,6 +11,8 @@ public class NPC : MonoBehaviour
     public List<string> textDesc;
     public List<string> write_queue;
 
+    public float dialogueTimer;
+
     public bool canInteract;
     public bool writing;
     public float scroll_speed;
@@ -60,15 +62,17 @@ public class NPC : MonoBehaviour
         textDesc.Add("Welp, not like I can stop you");
         write_queue = new List<string>();
         scroll_speed = 20;
+        dialogueTimer = 0.0f;
     }
 
     private void Update()
     {
-        if (canInteract && inputMan.inputSubmit_D)
+        if (canInteract && inputMan.inputSubmit_D && dialogueTimer <= 0.0f)
         {
             canInteract = false;
             StartCoroutine(displayAllText(textDesc));
         }
+        if (dialogueTimer > 0.0f) dialogueTimer -= Time.deltaTime;
     }
 
     public IEnumerator displayAllText(List<string> tts)
@@ -85,6 +89,7 @@ public class NPC : MonoBehaviour
         {
             dialogueBox.transform.GetChild(x).gameObject.SetActive(false);
         }
+        dialogueTimer = 1.0f;
         canInteract = true;
     }
 
