@@ -14,12 +14,6 @@ public class Bullet : MonoBehaviour
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
-    void Start()
-    {
-        bulletRigB = GetComponent<Rigidbody>();
-        bulletSphereC = GetComponent<SphereCollider>();
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (gameObject.tag != collision.gameObject.tag)
@@ -46,6 +40,8 @@ public class Bullet : MonoBehaviour
 
     public void Init(string sourceTag, float sourceForce = 25.0f)
     {
+        bulletRigB = GetComponent<Rigidbody>();
+        bulletSphereC = GetComponent<SphereCollider>();
         gameObject.tag = sourceTag;
         bulletForce = sourceForce;
         bulletRigB.AddForce(transform.forward * bulletForce, ForceMode.VelocityChange);

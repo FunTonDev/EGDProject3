@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
     public float shootDelayTime;
     public float rollTimer;
     public float rollDelayTime;
+    public float damageTimer;
+    public float damageDelayTime;
 
     [Header("Genre-Control Data")]
     public States.GameGenre playerPrimaryGenre;
@@ -95,19 +97,19 @@ public class PlayerController : MonoBehaviour
         SetDefaultValues();
     }
 
-    private void Update()
+    private void Update()       //Handles live/uneven changes
     {
         if (!gameMan.paused)
         {
-            CursorMoveUpdate();
-            FireUpdate();
             TimerUpdate();
+            CursorUpdate();
         }
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate()  //Handles steady/stable changes
     {
         if (!gameMan.paused && !gameMan.dead && controlDel != null) { controlDel(); }
+        MiscFUpdate();
         //Delegate uses current genre control schema
         //Actions currently use keyhold value(not KEYDOWN) since input may get dropped, might revise later
     }
@@ -158,18 +160,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //Dash Stuff
-        if (inputMan.inputAct3 == 1 && dashCount < 1)
+        if (inputMan.inputAct3 == 1 && dashCount < 1)   //Dash check
         {
             playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);
-            dashCount += 1;
-            dashDelayTime = 1.0f;
-        }
-        if (dashDelayTime > 0) dashDelayTime -= Time.deltaTime;
-        else if (dashDelayTime <= 0)
-        {
-            dashCount = 0;
-            dashDelayTime = 0;
+            dashCount++;
+            dashTimer = dashDelayTime;
         }
 
         if (wallJumpTimer <= 0)    //X move check
@@ -187,12 +182,7 @@ public class PlayerController : MonoBehaviour
         playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
         float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
-        if (xClampVel != 0 && yClampVel != 0)
-        {
-            float newVel = Mathf.Sqrt(Mathf.Pow(maxXVelocity, 2) / 2);
-            xClampVel = newVel * Mathf.Sign(xClampVel);
-            yClampVel = newVel * Mathf.Sign(yClampVel);
-        }
+        Utils.XYMoveRecalc(ref xClampVel, ref yClampVel, maxXVelocity);
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
 
         if (inputMan.inputAct7 == 1 && rollTimer <= 0) //Roll check
@@ -231,29 +221,26 @@ public class PlayerController : MonoBehaviour
         playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce, 0), ForceMode.VelocityChange);
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
         float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);  //Y move check
+        Utils.XYMoveRecalc(ref xClampVel, ref yClampVel, maxXVelocity);
         playerRigB.velocity = new Vector3(xClampVel, yClampVel, playerRigB.velocity.z);
-    }
-
-    private void CursorMoveUpdate()
-    {
-        float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
-        secondaryAxis.transform.localEulerAngles = (playerPrimaryGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
     }
 
     /*============================================================================
      * GAMEPLAY UPDATE METHODS
      ============================================================================*/
-    private void FireUpdate()
+    private void CursorUpdate() //Cursor related changes
     {
+        float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
+        secondaryAxis.transform.localEulerAngles = (playerPrimaryGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
         if (inputMan.inputFire1 == 1 && shootTimer <= 0 && playerPrimaryGenre == States.GameGenre.Shooter)
         {
             playerAudS.PlayOneShot(playerClips[4]);
-            Instantiate(bulletPrefab, transform.position, secondaryAxis.transform.rotation);
+            Instantiate(bulletPrefab, transform.position, secondaryAxis.transform.rotation).GetComponent<Bullet>().Init(gameObject.tag);
             shootTimer = shootDelayTime;
         }
     }
 
-    private void TimerUpdate()
+    private void TimerUpdate()  //Timer related changes
     {
         jumpTimer -= jumpTimer > 0 ? Time.deltaTime : 0;
         wallJumpTimer -= wallJumpTimer > 0 ? Time.deltaTime : 0;
@@ -261,15 +248,28 @@ public class PlayerController : MonoBehaviour
         shootTimer -= shootTimer > 0 ? Time.deltaTime : 0;
         rollTimer -= rollTimer > 0 ? Time.deltaTime : 0;
         toggleTimer -= toggleTimer > 0 ? Time.deltaTime : 0;
+        dashTimer -= dashTimer > 0 ? Time.deltaTime : 0;
+        damageTimer -= damageTimer > 0 ? Time.deltaTime : 0;
+
+        dashCount = dashTimer <= 0 ? 0 : dashCount;
     }
 
-    public void GenreCosmeticUpdate(int index)
+    private void MiscFUpdate()   //Misc changes
+    {
+        if( playerPrimaryGenre == States.GameGenre.Shooter && damageTimer <= 0 && currentHP < maxHP)
+        {
+            currentHP += 0.01f;
+            currentHP = currentHP > maxHP ? maxHP : currentHP;
+        }
+    }
+
+    public void GenreCosmeticUpdate(int index)  //Cosmetic changes
     {
         foreach (GameObject g in genreCosmetics) { g.SetActive(false); }
         if (index > -1 && index < genreCosmetics.Count) { genreCosmetics[index].SetActive(true); }
     }
 
-    public float HealthUpdate(float change)
+    public float HealthUpdate(float change) //Health changes
     {
         currentHP += change;
         if (currentHP <=  0 && !gameMan.dead)
@@ -282,6 +282,7 @@ public class PlayerController : MonoBehaviour
             playerAudS.PlayOneShot(playerClips[6]);
             Destroy(Instantiate(deathPrefab, transform.position, transform.rotation), 4.0f);
         }
+        damageTimer = change < 0 ? damageDelayTime : damageTimer;
         return currentHP;
     }
 
@@ -365,6 +366,8 @@ public class PlayerController : MonoBehaviour
         toggleDelayTime = 1.0f;
         rollTimer = 0;
         rollDelayTime = 2.0f;
+        damageTimer = 0;
+        damageDelayTime = 3.0f;
 
         grounded = false;
         walled = false;

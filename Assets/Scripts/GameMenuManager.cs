@@ -13,10 +13,9 @@ public class GameMenuManager : MonoBehaviour
     public List<Button> optionButtons;
 
     [Header("Variables")]
-    public int mainIndex;
-    public int optionsIndex;
-
-    public States.MenuSection currentSection;
+    [HideInInspector] public int mainIndex;
+    [HideInInspector] public int optionsIndex;
+    [HideInInspector] public States.MenuSection currentSection;
 
     /*============================================================================
      * DEFAULT UNITY METHODS
