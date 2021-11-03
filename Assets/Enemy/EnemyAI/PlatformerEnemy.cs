@@ -115,8 +115,7 @@ public class PlatformerEnemy : Enemy
                     dirToTarget = this.transform.forward;                   
                 }
 
-                spawnPos += dirToTarget * 1;
-                               
+                spawnPos += dirToTarget * 1;                               
                 Instantiate(AttackObj, spawnPos, Quaternion.identity);
 
             }
@@ -176,7 +175,7 @@ public class PlatformerEnemy : Enemy
         //Flip enemy direction
         //Make sure enemy didn't hit ground
         //else if(rgbdy.velocity.y <= 0.01f && collision.collider.tag != "Ground")
-        else if (collision.collider.tag != "Ground")
+        else if (collision.collider.tag != "Ground" && rgbdy.velocity.y < 1f)
         {                
             Debug.Log(string.Format("{0} flipped direction", this.name));
 

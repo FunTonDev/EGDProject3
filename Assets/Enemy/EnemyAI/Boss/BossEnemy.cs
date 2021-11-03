@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class BossEnemy : MonoBehaviour
+public class BossEnemy : MonoBehaviour
 {
     [SerializeField] protected string type;                     //Name (Ex: TestBox)
 
@@ -15,8 +15,6 @@ public abstract class BossEnemy : MonoBehaviour
     protected float currArmor;
     
     protected Rigidbody rgbdy;
-    protected GameObject player;
-
 
 
     // Start is called before the first frame update
@@ -25,9 +23,7 @@ public abstract class BossEnemy : MonoBehaviour
         Introduction();
         rgbdy = this.GetComponent<Rigidbody>();
 
-        phase = 1;
-
-        player = GameObject.FindGameObjectWithTag("Player");
+        phase = 1;              
     }
 
 
@@ -47,6 +43,7 @@ public abstract class BossEnemy : MonoBehaviour
         currHealth = health[phase-1];
         currArmor = armor[phase - 1];
     }
+
 
 
     public void TakeDamage(float damage)

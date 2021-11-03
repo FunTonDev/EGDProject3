@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class BossPlatformerMovement : MonoBehaviour
 {
-    [SerializeField] private bool facingLeft;       //Direction Enemy is facing
+    [SerializeField] private bool isFlipped;       
 
     [SerializeField] protected float moveSpd;
     private List<Transform> pathNodes;
     private int currNode;
 
+    private float axisLvl;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        axisLvl = GameObject.FindGameObjectWithTag("Player").transform.position.y;
     }
 
     // Update is called once per frame
@@ -27,6 +29,12 @@ public class BossPlatformerMovement : MonoBehaviour
 
     public void SetPathNodes(List<Transform> pts)
         { pathNodes = pts; currNode = 0;}
+
+    public virtual void Move(Vector3 Pos)
+    {
+        transform.position = Vector3.MoveTowards(this.transform.position, Pos, moveSpd * Time.deltaTime);
+        SetAxisLevel();
+    }
 
     //Gets the transform of the current node
     public Vector3 PathFollow()
@@ -44,4 +52,38 @@ public class BossPlatformerMovement : MonoBehaviour
 
         return newPos;
     }
+
+    public void SetAxisLevel()
+    {
+        Vector3 temp = this.transform.position;
+        temp.z = axisLvl;
+
+        this.transform.position = temp;
+        this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
+    }
+
+    public void LookAtPlayer(Transform player)
+    {
+        Vector3 flipped = this.transform.localScale;
+        flipped.y *= -1f;
+
+        if((this.transform.position.x > player.position.x) && isFlipped)
+        {
+            this.transform.localScale = flipped;
+            transform.Rotate(0f, 180f, 0f);
+            //this.transform.eulerAngles = new Vector3(0, 270, 0);
+            isFlipped = false;
+        }
+
+        else if((this.transform.position.x < player.position.x) && isFlipped)
+        {
+            this.transform.localScale = flipped;
+            transform.Rotate(0f, 180f, 0f);
+            isFlipped = true;
+        }
+    }
+
+
+
+
 }

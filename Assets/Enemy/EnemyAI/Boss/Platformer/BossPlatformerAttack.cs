@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BossPlatformerAttack : MonoBehaviour
-{
-
-    [SerializeField] private float atkDamage;
+{   
 
 
     // Start is called before the first frame update
@@ -21,7 +19,21 @@ public class BossPlatformerAttack : MonoBehaviour
     }
 
 
-    public void Attack()
+    //Shoot projectiles in all directions
+    public void Attack1()
+    {
+
+    }
+
+    //perform a dash that does damage on contact 
+    public void Attack2()
+    {
+
+    }
+
+
+    //Launch slime projectiles in an arc towards player
+    public void Attack3()
     {
 
     }
