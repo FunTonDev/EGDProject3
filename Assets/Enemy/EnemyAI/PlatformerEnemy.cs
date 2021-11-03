@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlatformerEnemy : Enemy
 {
-
     [SerializeField] private bool facingLeft;       //Direction Enemy is facing
     [SerializeField] private bool ranged;          //If true, enemy can perform ranged attacks
     [SerializeField] private bool fullRanged;     //If true, enemy can perform attack in any direction
