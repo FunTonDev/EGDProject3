@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2587144832372627824}
   - component: {fileID: 2587144832372627825}
   - component: {fileID: 2587144832372627827}
+  - component: {fileID: 2594880234117798930}
   m_Layer: 0
   m_Name: PlatformerTestEnemy
   m_TagString: Enemy
@@ -60,6 +61,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   facingLeft: 1
+  ranged: 0
+  fullRanged: 0
+  range: 0
+  StartTimeBtwAtk: 2
+  AttackObj: {fileID: 2315463149150691004, guid: 5d7c506bdabf16143ac53ae6522da5cb, type: 3}
 --- !u!65 &2587144832372627825
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89,6 +95,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!114 &2594880234117798930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587144832372627837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d09af99e3a62a45b68a820aa217d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5800400776428413095
 GameObject:
   m_ObjectHideFlags: 0

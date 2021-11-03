@@ -32,6 +32,8 @@ public abstract class Enemy : MonoBehaviour
     void Start()
     {
         Introduction();
+        ClassStart();
+
         rgbdy = this.GetComponent<Rigidbody>();
 
         player = GameObject.FindGameObjectWithTag("Player");
@@ -56,6 +58,12 @@ public abstract class Enemy : MonoBehaviour
         ClassUpdate();
     }
 
+    //A start function for each specfic class to be define behaviours specific to them
+    public virtual void ClassStart()
+    {
+
+    }
+
     //An update function for each specfic class to be define behaviours specific to them
     public virtual void ClassUpdate()
     {
@@ -78,7 +86,7 @@ public abstract class Enemy : MonoBehaviour
     //Gets the transform of the current node
     public Vector3 PathFollow()
     {
-        Vector3 newPos = Vector3.zero;
+        Vector3 newPos = this.transform.position;
 
         if (1 < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
         { newPos = pathNodes[this.currNode].GetComponent<Transform>().position; }

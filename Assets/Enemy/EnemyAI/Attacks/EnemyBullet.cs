@@ -8,6 +8,8 @@ public class EnemyBullet : MonoBehaviour
 
     [SerializeField] private bool tracking;
 
+    [SerializeField] private bool platformer;
+
     private Transform playerPos;
     private Vector3 target;
 
@@ -21,7 +23,7 @@ public class EnemyBullet : MonoBehaviour
 
         if (tracking)
         {
-            Invoke("SelfDestruct", 6.0f);
+            Invoke("SelfDestruct", 8.0f);
         }
 
         else
@@ -40,10 +42,15 @@ public class EnemyBullet : MonoBehaviour
             transform.position = Vector3.MoveTowards(this.transform.position, playerPos.position, speed * Time.deltaTime);
         }
 
+        else if(platformer)
+        {
+            transform.position = Vector3.MoveTowards(this.transform.position, target, speed * Time.deltaTime);
+        }
+
         else
         {
             transform.Translate(Vector3.forward * Time.deltaTime * speed);
-            //transform.position = Vector3.MoveTowards(this.transform.position, target, speed * Time.deltaTime);
+            
         }
         
     }
@@ -56,8 +63,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
-
+        
         SelfDestruct();
     }
 }
