@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Variables")]
     public bool paused;
+    public bool dead;
     public States.GameGenre genreMain;
     public States.GameGenre genreExtra1;
     public States.GameGenre genreExtra2;
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         pMode = States.GameMode.Game;
         backgroundIndex = 0;
         paused = false;
+        dead = false;
         genreMain = States.GameGenre.Platformer;
         duration = 0.0f;
         DontDestroyOnLoad(gameObject);

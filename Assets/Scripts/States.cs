@@ -8,4 +8,5 @@ public static class States
     public enum MenuSection { Main, Play, Options, Help, Credits, Quit };
     public enum GameMode { Game, UI, Cinematic };
     public enum GameGenre { None, Platformer, Shooter, RPG };
+    public enum VolumeType { Control, Transition, Damage };
 }

@@ -7,18 +7,17 @@ public class PlayerController : MonoBehaviour
     private GameManager gameMan;
     private InputManager inputMan;
     private TransitionManager tranMan;
-    private RectTransform cursorRecT;
-    private AudioSource playerAudS;
+    private AudioSource playerAudS; 
+    private GameObject secondaryAxis;
+    private List<GameObject> genreCosmetics;
     [HideInInspector] public Rigidbody playerRigB;
-    [HideInInspector] public GameObject playerModelObj;
     [HideInInspector] public MeshFilter playerMeshF;
     [HideInInspector] public MeshRenderer playerMeshR;
-    private GameObject secondaryAxis;
-    private GameObject closestTile;
-    private List<GameObject> genreCosmetics;
+    [HideInInspector] public GameObject closestTile;
 
     [Header("Components")]
     public GameObject bulletPrefab;
+    public GameObject deathPrefab;
     public List<AudioClip> playerClips;
 
     [Header("General Vars")]
@@ -61,8 +60,6 @@ public class PlayerController : MonoBehaviour
     [Header("Platformer Data")]
     public bool grounded;
     public bool walled;
-    public bool canClimb;
-    public bool climbing;
     public LayerMask groundingMask;
 
     [Header("Shooter Timers")]
@@ -85,10 +82,8 @@ public class PlayerController : MonoBehaviour
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
-        cursorRecT = GameObject.Find("Canvas/GamePanel/Cursor").GetComponent<RectTransform>();
         playerAudS = GetComponent<AudioSource>();
         playerRigB = GetComponent<Rigidbody>();
-        playerModelObj = gameObject.transform.GetChild(0).gameObject;
         playerMeshF = gameObject.transform.GetChild(0).GetComponent<MeshFilter>();
         playerMeshR = gameObject.transform.GetChild(0).GetComponent<MeshRenderer>();
         secondaryAxis = gameObject.transform.GetChild(1).gameObject;
@@ -111,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!gameMan.paused && controlDel != null) { controlDel(); }
+        if (!gameMan.paused && !gameMan.dead && controlDel != null) { controlDel(); }
         //Delegate uses current genre control schema
         //Actions currently use keyhold value(not KEYDOWN) since input may get dropped, might revise later
     }
@@ -130,27 +125,12 @@ public class PlayerController : MonoBehaviour
         walled = WallCheck();
     }
 
-    private void OnTriggerEnter(Collider trigger)
-    {
-        TriggerCheck(trigger, true);
-    }
-
-    private void OnTriggerStay(Collider trigger)
-    {
-        TriggerCheck(trigger, false);
-    }
-
-    private void OnTriggerExit(Collider trigger)
-    {
-        TriggerCheck(trigger, false);
-    }
-
     /*============================================================================
      * MOVEMENT UPDATE METHODS
      ============================================================================*/
     public void PlatformerMoveUpdate()
     {
-        if (!grounded && !climbing)  //Airborne check
+        if (!grounded)  //Airborne check
         {
             playerRigB.AddForce(Physics.gravity, ForceMode.Force);
             if (playerRigB.velocity.y < maxFallVelocity) { playerRigB.velocity = new Vector3(playerRigB.velocity.x, maxFallVelocity, playerRigB.velocity.z); }
@@ -194,14 +174,6 @@ public class PlayerController : MonoBehaviour
         if (wallJumpTimer <= 0)    //X move check
         {
             playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
-        }
-
-        if (canClimb)       //Y move check
-        {
-            //WORK ON LATER
-            //playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce, 0), ForceMode.VelocityChange);
-            //float yClampVel = inputMan.inputY == 0 ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);
-            //playerRigB.velocity = new Vector3(playerRigB.velocity.x, yClampVel, playerRigB.velocity.z);
         }
 
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
@@ -263,7 +235,6 @@ public class PlayerController : MonoBehaviour
 
     private void CursorMoveUpdate()
     {
-        cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
         float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
         secondaryAxis.transform.localEulerAngles = (playerPrimaryGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
     }
@@ -300,15 +271,24 @@ public class PlayerController : MonoBehaviour
     public float HealthUpdate(float change)
     {
         currentHP += change;
+        if (currentHP <=  0 && !gameMan.dead)
+        {
+            currentHP = 0;
+            gameMan.dead = true;
+            playerRigB.constraints = RigidbodyConstraints.FreezeAll;
+            playerMeshF.mesh = null;
+            GenreCosmeticUpdate(-1);
+            playerAudS.PlayOneShot(playerClips[6]);
+            Instantiate(deathPrefab, transform.position, transform.rotation);
+        }
         return currentHP;
     }
 
     /*============================================================================
-     * COLLISION/TRIGGER METHODS
+     * COLLISION METHODS
      ============================================================================*/
     private bool GroundCheck()
     {
-        Debug.Log("GROUND CHECKING");
         Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
         Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
 
@@ -345,27 +325,6 @@ public class PlayerController : MonoBehaviour
             }
         }
         return wallNorm != Vector3.zero;
-    }
-
-    private void TriggerCheck(Collider trigger, bool entered)
-    {
-        switch (trigger.gameObject.tag)
-        {
-            case "Control":
-                if (entered) { trigger.gameObject.GetComponent<TriggerVolumeData>().PlayerModeUpdate(); }
-                break;
-            case "Grid":
-                closestTile = (closestTile == null ||
-                    Vector3.Distance(transform.position, trigger.transform.position) < Vector3.Distance(transform.position, closestTile.transform.position)) 
-                    ? trigger.gameObject : closestTile;
-                break;
-            case "TransitionArea":
-                tranMan.SceneSwitch(trigger.gameObject.name.Substring(10));
-                break;
-            case "Climbable":
-                canClimb = entered;
-                break;
-        }
     }
 
     /*============================================================================
@@ -409,7 +368,5 @@ public class PlayerController : MonoBehaviour
 
         grounded = false;
         walled = false;
-        canClimb = false;
-        climbing = false;
     }
 }

@@ -2,41 +2,96 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerVolumeData : MonoBehaviour
+public class TriggerVolume : MonoBehaviour
 {
     private PlayerController playerCont;
     private CameraController camCont;
+    private TransitionManager tranMan;
 
-    [Header("Components")]
+    [Header("SELECT VOLUME TYPE")]
+    public States.VolumeType volumeType;
+
+    [Header("Control Data")]
     public Mesh playerMesh;
     public Material playerMaterial;
-
-    [Header("Variables")]
     public States.GameGenre primaryGenre;   //Primary -> Controls/Position/Orientation
     public States.GameGenre subGenre;       //Secondary -> Camera
-
     private Vector3 modelEulers;
     private Vector3 modelScale;
     private RigidbodyConstraints constraint;
 
+    [Header("Transition Data")]
+    public string targetScene;
+
+    [Header("Damage Data")]
+    public bool isKillVolume;
+    public float damage;
+    public float damageTimer;
+    public float damageDelay;
+
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
-    void Start()
+    private void Start()
     {
         playerCont = GameObject.Find("PlayerPrefab").GetComponent<PlayerController>();
-        camCont = GameObject.Find("Main Camera").GetComponent<CameraController>();
-        if (primaryGenre == States.GameGenre.Platformer || primaryGenre == States.GameGenre.None)
+        switch (volumeType)
         {
-            modelEulers = new Vector3(90, 180, 0);
-            modelScale = new Vector3(0.1f, 0.1f, 0.1f);
-            constraint = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+            case States.VolumeType.Control:
+                camCont = GameObject.Find("Main Camera").GetComponent<CameraController>();
+                modelEulers = Vector3.zero;
+                modelScale = Vector3.one;
+                constraint = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                if (primaryGenre == States.GameGenre.Platformer || primaryGenre == States.GameGenre.None)
+                {
+                    modelEulers = new Vector3(90, 180, 0);
+                    modelScale = new Vector3(0.1f, 0.1f, 0.1f);
+                    constraint = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+                }
+                break;
+            case States.VolumeType.Damage:
+                damage = -Mathf.Abs(isKillVolume ? float.MaxValue : damage);
+                damageTimer = 0;
+                break;
+            case States.VolumeType.Transition:
+                tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
+                break;
+        } 
+    }
+
+    private void Update()
+    {
+        if (volumeType == States.VolumeType.Damage && !isKillVolume)
+        {
+            damageTimer -= damageTimer > 0 ? Time.deltaTime : 0;
         }
-        else
+    }
+
+    private void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
         {
-            modelEulers = Vector3.zero;
-            modelScale = Vector3.one;
-            constraint = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            switch (volumeType)
+            {
+                case States.VolumeType.Control:
+                    PlayerModeUpdate();
+                    break;
+                case States.VolumeType.Transition:
+                    tranMan.SceneSwitch(targetScene);
+                    break;
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider coll)
+    {
+        if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
+        {
+            if (volumeType == States.VolumeType.Damage && damageTimer <= 0)
+            {
+                playerCont.HealthUpdate(damage);
+                damageTimer = !isKillVolume ? damageDelay : 0;
+            }
         }
     }
 
@@ -73,8 +128,8 @@ public class TriggerVolumeData : MonoBehaviour
             playerCont.transform.position = new Vector3(playerCont.transform.position.x, transform.position.y, playerCont.transform.position.z);
         }
         playerCont.playerRigB.velocity = Vector3.zero;
-        playerCont.playerModelObj.transform.eulerAngles = modelEulers;
-        playerCont.playerModelObj.transform.localScale = modelScale;
+        playerCont.playerMeshF.gameObject.transform.eulerAngles = modelEulers;
+        playerCont.playerMeshF.gameObject.transform.localScale = modelScale;
         playerCont.playerPrimaryGenre = primaryGenre;
         playerCont.playerSubGenre = subGenre;
         playerCont.playerMeshF.mesh = playerMesh;

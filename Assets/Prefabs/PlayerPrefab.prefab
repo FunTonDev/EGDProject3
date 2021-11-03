@@ -245,10 +245,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRigB: {fileID: 0}
-  playerModelObj: {fileID: 0}
   playerMeshF: {fileID: 0}
   playerMeshR: {fileID: 0}
+  closestTile: {fileID: 0}
   bulletPrefab: {fileID: 8752199938233944868, guid: 771dca5dd3ded244ea1a616ae56e838f, type: 3}
+  deathPrefab: {fileID: 3475676780394863179, guid: 1dcf930eba7418945a8182f9e3d7be5a, type: 3}
   playerClips:
   - {fileID: 8300000, guid: 94ef65e9b2e04244ba95dfbb0a175362, type: 3}
   - {fileID: 8300000, guid: b688a7168a24bb24aa42d52ba8976bc4, type: 3}
@@ -283,8 +284,6 @@ MonoBehaviour:
   dashDelayTime: 1
   grounded: 0
   walled: 0
-  canClimb: 0
-  climbing: 0
   groundingMask:
     serializedVersion: 2
     m_Bits: 8

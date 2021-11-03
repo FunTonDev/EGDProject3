@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private InputManager inputMan;
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private Transform cameraTarget;
+    private InputManager inputMan;
+    private GameObject playerPrefab;
+    private Transform cameraTarget;
+    private RectTransform cursorRecT;
+    private Image hpBar;
 
-    public Camera cam;
+    [HideInInspector] public Camera cam;
 
     [Header("Variables")]
     public float mouseLeftBound;
@@ -37,11 +40,20 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
+        cursorRecT = GameObject.Find("Canvas/GamePanel/Cursor").GetComponent<RectTransform>();
+        hpBar = GameObject.Find("Canvas/GamePanel/HealthBase/HealthBar").GetComponent<Image>();
         cam = GetComponent<Camera>();
         playerPrefab = GameObject.Find("PlayerPrefab");
         SetCameraTarget("PlayerPrefab");
         SyncScreen();
         SetCameraMode(States.GameGenre.Platformer);
+    }
+
+    private void Update()
+    {
+        cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
+        PlayerController playerCont = playerPrefab.GetComponent<PlayerController>();
+        hpBar.fillAmount = playerCont.currentHP / playerCont.maxHP;
     }
 
     private void FixedUpdate()
@@ -163,15 +175,5 @@ public class CameraController : MonoBehaviour
         mouseRightBound = Screen.width/2 + xShift;
         mouseUpBound = Screen.height/2 + yShift;
         mouseDownBound = Screen.height/2 - yShift;
-    }
-
-    public Vector3 PlayerPosWorldToScreen()
-    {
-        return cam.WorldToScreenPoint(playerPrefab.transform.position);
-    }
-
-    public void SetPlayerMode(States.GameGenre mode)
-    {
-        
     }
 }

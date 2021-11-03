@@ -57,3 +57,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d406f9419976299418cc149f7e3e64c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMesh: {fileID: 0}
+  playerMaterial: {fileID: 0}
+  primaryGenre: 0
+  subGenre: 0
+  isKillVolume: 0
+  damage: 0
+  damageTimer: 0
+  damageDelay: 0
