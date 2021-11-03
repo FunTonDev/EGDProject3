@@ -20,6 +20,8 @@ public class MenuManager : MonoBehaviour
     public List<GameObject> panels;
     public AudioClip choiceClip;
     public AudioClip confirmClip;
+    public AudioSource seSource;
+    public AudioSource musicSource;
     
 
     [Header("Variables")]
@@ -50,11 +52,23 @@ public class MenuManager : MonoBehaviour
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         SetActiveMenuPanel(States.MenuSection.Main);
         mainIndex = 0;
+        musicSource.clip = Resources.Load<AudioClip>("Audio/Music/doodle");
+        musicSource.Play();
     }
 
     private void Update()
     {
-        if (inputMan.inputY_D) { NavUpdate(); }
+        if (inputMan.inputY_D || inputMan.inputCancel_D)
+        {
+            NavUpdate();
+            seSource.clip = choiceClip;
+            seSource.Play();
+        }
+        if (inputMan.inputSubmit_D)
+        {
+            seSource.clip = confirmClip;
+            seSource.Play();
+        }
         ButtonUpdate();
         /*
         if (currentSection == States.MenuSection.Main)
