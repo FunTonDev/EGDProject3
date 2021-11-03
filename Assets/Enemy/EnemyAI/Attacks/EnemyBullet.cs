@@ -42,10 +42,12 @@ public class EnemyBullet : MonoBehaviour
             transform.position = Vector3.MoveTowards(this.transform.position, playerPos.position, speed * Time.deltaTime);
         }
 
+        /*
         else if(platformer)
         {
             transform.position = Vector3.MoveTowards(this.transform.position, target, speed * Time.deltaTime);
         }
+        */
 
         else
         {

@@ -6,9 +6,21 @@ public class Player_EnemyAI : MonoBehaviour
 {
     public float speed = 1;
 
+    public bool platformer;
+
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Input.GetAxisRaw("Horizontal") * speed, 0f, Input.GetAxisRaw("Vertical") * speed);       
+        if (platformer)
+        {
+            transform.Translate(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed, 0f);
+        }
+
+        else
+        {
+            transform.Translate(Input.GetAxisRaw("Horizontal") * speed, 0f, Input.GetAxisRaw("Vertical") * speed);
+        }
     }
+
+
 }

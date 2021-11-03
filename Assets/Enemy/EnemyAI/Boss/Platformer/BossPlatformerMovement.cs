@@ -15,7 +15,7 @@ public class BossPlatformerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        axisLvl = GameObject.FindGameObjectWithTag("Player").transform.position.y;
+        axisLvl = GameObject.FindGameObjectWithTag("Player").transform.position.z;
     }
 
     // Update is called once per frame

@@ -115,8 +115,10 @@ public class PlatformerEnemy : Enemy
                     dirToTarget = this.transform.forward;                   
                 }
 
+                Quaternion rotation = Quaternion.LookRotation(dirToTarget);
+
                 spawnPos += dirToTarget * 1;                               
-                Instantiate(AttackObj, spawnPos, Quaternion.identity);
+                Instantiate(AttackObj, spawnPos, rotation);
 
             }
 
