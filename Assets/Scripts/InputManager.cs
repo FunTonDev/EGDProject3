@@ -9,38 +9,38 @@ public class InputManager : MonoBehaviour
     * => [0, 1]*/
     [Header("Button Input")]
     [SerializeField] public float inputX;      //A-D
-    [SerializeField] public bool inputX_U;
-    [SerializeField] public bool inputX_D;
+    [HideInInspector] public bool inputX_U;
+    [HideInInspector] public bool inputX_D;
     [SerializeField] public float inputY;      //W-S
-    [SerializeField] public bool inputY_U;
-    [SerializeField] public bool inputY_D;
+    [HideInInspector] public bool inputY_U;
+    [HideInInspector] public bool inputY_D;
     [SerializeField] public float inputSubmit; //Enter
-    [SerializeField] public bool inputSubmit_U;
-    [SerializeField] public bool inputSubmit_D;
+    [HideInInspector] public bool inputSubmit_U;
+    [HideInInspector] public bool inputSubmit_D;
     [SerializeField] public float inputCancel; //Escape
-    [SerializeField] public bool inputCancel_U;
-    [SerializeField] public bool inputCancel_D;
+    [HideInInspector] public bool inputCancel_U;
+    [HideInInspector] public bool inputCancel_D;
     [SerializeField] public float inputAct1;   //E
-    [SerializeField] public bool inputAct1_U;
-    [SerializeField] public bool inputAct1_D;
+    [HideInInspector] public bool inputAct1_U;
+    [HideInInspector] public bool inputAct1_D;
     [SerializeField] public float inputAct2;   //R
-    [SerializeField] public bool inputAct2_U;
-    [SerializeField] public bool inputAct2_D;
+    [HideInInspector] public bool inputAct2_U;
+    [HideInInspector] public bool inputAct2_D;
     [SerializeField] public float inputAct3;   //Q
-    [SerializeField] public bool inputAct3_U;
-    [SerializeField] public bool inputAct3_D;
+    [HideInInspector] public bool inputAct3_U;
+    [HideInInspector] public bool inputAct3_D;
     [SerializeField] public float inputAct4;   //Space
-    [SerializeField] public bool inputAct4_U;
-    [SerializeField] public bool inputAct4_D;
+    [HideInInspector] public bool inputAct4_U;
+    [HideInInspector] public bool inputAct4_D;
     [SerializeField] public float inputAct5;   //Tab
-    [SerializeField] public bool inputAct5_U;
-    [SerializeField] public bool inputAct5_D;
+    [HideInInspector] public bool inputAct5_U;
+    [HideInInspector] public bool inputAct5_D;
     [SerializeField] public float inputAct6;   //LShift
-    [SerializeField] public bool inputAct6_U;
-    [SerializeField] public bool inputAct6_D;
+    [HideInInspector] public bool inputAct6_U;
+    [HideInInspector] public bool inputAct6_D;
     [SerializeField] public float inputAct7;   //LCtrl
-    [SerializeField] public bool inputAct7_U;
-    [SerializeField] public bool inputAct7_D;
+    [HideInInspector] public bool inputAct7_U;
+    [HideInInspector] public bool inputAct7_D;
 
     /*Input values:
      inputMX => [0, screen width]
@@ -51,17 +51,17 @@ public class InputManager : MonoBehaviour
     [SerializeField] public float inputMX;     //Cursor X/Y Pos
     [SerializeField] public float inputMY;
     [SerializeField] public float inputScroll; //"Scroll"
-    [SerializeField] public bool inputScroll_U;
-    [SerializeField] public bool inputScroll_D;
+    [HideInInspector] public bool inputScroll_U;
+    [HideInInspector] public bool inputScroll_D;
     [SerializeField] public float inputFire1;  //LMB
-    [SerializeField] public bool inputFire1_U;
-    [SerializeField] public bool inputFire1_D;
+    [HideInInspector] public bool inputFire1_U;
+    [HideInInspector] public bool inputFire1_D;
     [SerializeField] public float inputFire2;  //RMB
-    [SerializeField] public bool inputFire2_U;
-    [SerializeField] public bool inputFire2_D;
+    [HideInInspector] public bool inputFire2_U;
+    [HideInInspector] public bool inputFire2_D;
     [SerializeField] public float inputFire3;  //MMB
-    [SerializeField] public bool inputFire3_U;
-    [SerializeField] public bool inputFire3_D;
+    [HideInInspector] public bool inputFire3_U;
+    [HideInInspector] public bool inputFire3_D;
 
     /*============================================================================
      * DEFAULT UNITY METHODS

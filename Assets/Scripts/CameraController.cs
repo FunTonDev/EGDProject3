@@ -11,7 +11,6 @@ public class CameraController : MonoBehaviour
     private Transform cameraTarget;
     private RectTransform cursorRecT;
     private Image hpBar;
-
     [HideInInspector] public Camera cam;
 
     [Header("Variables")]
@@ -47,6 +46,13 @@ public class CameraController : MonoBehaviour
         SetCameraTarget("PlayerPrefab");
         SyncScreen();
         SetCameraMode(States.GameGenre.Platformer);
+        isTrackingMovement = true;
+        moveAheadMax = 15.0f;
+        mouseAheadMax = 450.0f;
+        xChange = 0.0f;
+        yChange = 0.0f;
+        camVelX = 0.1f;
+        camVelY = 0.1f;
     }
 
     private void Update()
@@ -155,19 +161,6 @@ public class CameraController : MonoBehaviour
     /*============================================================================
      * MISC METHODS
      ============================================================================*/
-    [ContextMenu("Reset to Default")]
-    private void SetDefaultValues()
-    {
-        moveAheadMax = 15.0f;
-        mouseAheadMax = 450.0f;
-        xChange = 0.0f;
-        yChange = 0.0f;
-        camVelX = 0.1f;
-        camVelY = 0.1f;
-
-        isTrackingMovement = true;
-    }
-
     private void SyncScreen()
     {
         int xShift = 500, yShift = 300;

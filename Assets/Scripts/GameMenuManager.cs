@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class GameMenuManager : MonoBehaviour
 {
+    private GameManager gameMan;
+    private InputManager inputMan;
+
     [Header("Components")]
-    [SerializeField] private GameManager gameMan;
-    [SerializeField] private InputManager inputMan;
     public List<GameObject> panels;
     public List<Button> mainButtons;
     public List<Button> optionButtons;
@@ -24,6 +25,9 @@ public class GameMenuManager : MonoBehaviour
     {
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
+        mainIndex = 0;
+        optionsIndex = 0;
+        currentSection = States.MenuSection.Main;
         Cursor.visible = false;
     }
 
@@ -105,16 +109,5 @@ public class GameMenuManager : MonoBehaviour
                 optionButtons[optionsIndex].Select();
                 break;
         }
-    }
-
-    /*============================================================================
-     * MISC METHODS
-     ============================================================================*/
-    [ContextMenu("Reset to Default")]
-    private void SetDefaultValues()
-    {
-        mainIndex = 0;
-        optionsIndex = 0;
-        currentSection = States.MenuSection.Main;
     }
 }

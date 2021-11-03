@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
         {
             genreCosmetics.Add(gameObject.transform.GetChild(2).GetChild(i).gameObject);
         }
+        SetDefaultValues();
     }
 
     private void Update()
@@ -279,7 +280,7 @@ public class PlayerController : MonoBehaviour
             playerMeshF.mesh = null;
             GenreCosmeticUpdate(-1);
             playerAudS.PlayOneShot(playerClips[6]);
-            Instantiate(deathPrefab, transform.position, transform.rotation);
+            Destroy(Instantiate(deathPrefab, transform.position, transform.rotation), 4.0f);
         }
         return currentHP;
     }
@@ -330,7 +331,6 @@ public class PlayerController : MonoBehaviour
     /*============================================================================
      * MISC METHODS
      ============================================================================*/
-    [ContextMenu("Reset to Default")]
     private void SetDefaultValues()
     {
         maxHP = 10.0f;
