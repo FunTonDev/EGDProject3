@@ -70,6 +70,9 @@ public class PlayerController : MonoBehaviour
     public float damageTimer;
     public float damageDelayTime;
 
+    [Header("Shooter Data")]
+    public float rollMultiplier;
+
     [Header("Genre-Control Data")]
     public States.GameGenre playerPrimaryGenre;
     public States.GameGenre playerSubGenre;
@@ -178,21 +181,21 @@ public class PlayerController : MonoBehaviour
 
     public void ShooterMoveUpdate()
     {
-        playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
-        playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
+        if (inputMan.inputAct7 == 1 && rollTimer <= 0) //Roll check
+        {
+            rollTimer = rollDelayTime;
+            StartCoroutine(Roll());
+        }
+        /*else if (rollX != 0 || rollY != 0)  //IMPLEMENT ASAP TO FOLLOW SINGLE ROLL DIRECTION
+        {
+
+        }*/
+        playerRigB.AddForce(new Vector3(inputMan.inputX * xForce * rollMultiplier, 0, 0), ForceMode.VelocityChange);
+        playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce * rollMultiplier), ForceMode.VelocityChange);
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
         float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
         Utils.XYMoveRecalc(ref xClampVel, ref yClampVel, maxXVelocity);
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
-
-        if (inputMan.inputAct7 == 1 && rollTimer <= 0) //Roll check
-        {
-
-            Debug.Log("ROLL");
-            rollTimer = rollDelayTime;
-        }
-        //float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
-        //playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, playerRigB.velocity.z);
     }
 
     public void RPGMoveUpdate()
@@ -238,6 +241,7 @@ public class PlayerController : MonoBehaviour
             Instantiate(bulletPrefab, transform.position, secondaryAxis.transform.rotation).GetComponent<Bullet>().Init(gameObject.tag);
             shootTimer = shootDelayTime;
         }
+
     }
 
     private void TimerUpdate()  //Timer related changes
@@ -330,6 +334,24 @@ public class PlayerController : MonoBehaviour
     }
 
     /*============================================================================
+     * COROUTINES
+     ============================================================================*/
+    private IEnumerator Roll()
+    {
+        float tempMaxX = maxXVelocity, tempMaxY = maxXVelocity;
+        maxXVelocity /= 4;
+        maxYVelocity /= 4;
+        yield return new WaitForSeconds(0.5f);
+        //rollX = inputMan.inputX;
+        //rollY = inputMan.inputY;
+        maxXVelocity = tempMaxX * 4;
+        maxYVelocity = tempMaxY * 4;
+        yield return new WaitForSeconds(0.25f);
+        maxXVelocity = tempMaxX;
+        maxYVelocity = tempMaxY;
+    }
+
+    /*============================================================================
      * MISC METHODS
      ============================================================================*/
     private void SetDefaultValues()
@@ -368,6 +390,8 @@ public class PlayerController : MonoBehaviour
         rollDelayTime = 2.0f;
         damageTimer = 0;
         damageDelayTime = 3.0f;
+
+        rollMultiplier = 1.0f;
 
         grounded = false;
         walled = false;

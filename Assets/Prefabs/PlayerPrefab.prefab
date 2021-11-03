@@ -291,6 +291,9 @@ MonoBehaviour:
   shootDelayTime: 0.5
   rollTimer: 0
   rollDelayTime: 2
+  damageTimer: 0
+  damageDelayTime: 0
+  rollMultiplier: 0
   playerPrimaryGenre: 0
   playerSubGenre: 0
 --- !u!54 &6677177545914274471
@@ -465,7 +468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1464362847226412766
 Transform:
   m_ObjectHideFlags: 0
