@@ -8,20 +8,30 @@ public class EnemyBullet : MonoBehaviour
 
     [SerializeField] private bool tracking;
 
-    [SerializeField] private bool platformer;
+    //[SerializeField] private bool shooter;
+    //[SerializeField] private bool PlatformerEnemy;
+    [SerializeField] private bool PlatformerBossAtk3;
 
     private Transform playerPos;
     private Vector3 target;
+    private Vector3 origin;
+
+    //For the slime projectile attack for the PlatformerBoss
+    private float x1;
+    private float targetX;
+    private float dist;
+    private float nextX;
+    private float baseY;
+    private float height;
 
 
     void Start()
     {
-
+        origin = this.transform.position;
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
-
         target = new Vector3(playerPos.position.x, playerPos.position.y, playerPos.position.z);
 
-        if (tracking)
+        if (tracking || PlatformerBossAtk3)
         {
             Invoke("SelfDestruct", 8.0f);
         }
@@ -36,25 +46,39 @@ public class EnemyBullet : MonoBehaviour
 
     void Update()
     {
-       
-        if (tracking)
+        if (PlatformerBossAtk3)
+        {
+            float x1 = origin.x;
+            float targetX = target.x;
+
+            float dist = targetX - x1;
+            nextX = Mathf.MoveTowards(this.transform.position.x, targetX, speed * Time.deltaTime);
+            baseY = Mathf.Lerp(origin.x, target.y, (nextX - x1)/dist); 
+            height = 2 * (nextX - x1) * (nextX - targetX) / (-0.25f * dist * dist);
+
+            Vector3 movePos = new Vector3(nextX, baseY + height, this.transform.position.z);
+            this.transform.rotation = LookAtTarget(movePos - this.transform.position);
+            this.transform.position = movePos;
+
+            if (this.transform.position == target) { SelfDestruct(); }
+
+        }
+
+
+        else if (tracking)
         {            
             transform.position = Vector3.MoveTowards(this.transform.position, playerPos.position, speed * Time.deltaTime);
         }
 
-        /*
-        else if(platformer)
-        {
-            transform.position = Vector3.MoveTowards(this.transform.position, target, speed * Time.deltaTime);
-        }
-        */
-
         else
         {
             transform.Translate(Vector3.forward * Time.deltaTime * speed);
-            
         }
-        
+    }
+
+    public static Quaternion LookAtTarget(Vector3 rotation)
+    {
+        return Quaternion.Euler(0, 0, Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg);
     }
 
     private void SelfDestruct()

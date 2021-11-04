@@ -1205,11 +1205,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2587144832372627826, guid: 72c5d8ed6d550fd4fb2d7ea87f3e7cb2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 11.04
       objectReference: {fileID: 0}
     - target: {fileID: 2587144832372627826, guid: 72c5d8ed6d550fd4fb2d7ea87f3e7cb2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.06
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2587144832372627826, guid: 72c5d8ed6d550fd4fb2d7ea87f3e7cb2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3166,7 +3166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eae8860b062aac4ca7ea450af7a65ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackObj: {fileID: 2315463149150691004, guid: 5d7c506bdabf16143ac53ae6522da5cb, type: 3}
+  Atk1Obj: {fileID: 2315463149150691004, guid: 5d7c506bdabf16143ac53ae6522da5cb, type: 3}
+  Atk3Obj: {fileID: 2315463149150691004, guid: 13bb9249385550e4595d94f2ece2fd03, type: 3}
 --- !u!114 &1454748733
 MonoBehaviour:
   m_ObjectHideFlags: 0
