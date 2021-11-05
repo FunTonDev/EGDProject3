@@ -17,6 +17,7 @@ public class EnemyBullet : MonoBehaviour
     private Vector3 origin;
 
     //For the slime projectile attack for the PlatformerBoss
+    private float arcHeight = 1;
     private float x1;
     private float targetX;
     private float dist;
@@ -39,29 +40,26 @@ public class EnemyBullet : MonoBehaviour
         else
         {
             Invoke("SelfDestruct", 4.0f);
-        }     
+        }
 
-        
     }
 
     void Update()
     {
         if (PlatformerBossAtk3)
         {
-            float x1 = origin.x;
-            float targetX = target.x;
+            // Compute the next position, with arc added in
+            float x0 = origin.x;
+            float x1 = target.x;
+            float dist = x1 - x0;
+            float nextX = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
+            float baseY = Mathf.Lerp(origin.y, target.y, (nextX - x0) / dist);
+            float arc = arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
+            Vector3 nextPos = new Vector3(nextX, baseY + arc, transform.position.z);
 
-            float dist = targetX - x1;
-            nextX = Mathf.MoveTowards(this.transform.position.x, targetX, speed * Time.deltaTime);
-            baseY = Mathf.Lerp(origin.x, target.y, (nextX - x1)/dist); 
-            height = 2 * (nextX - x1) * (nextX - targetX) / (-0.25f * dist * dist);
-
-            Vector3 movePos = new Vector3(nextX, baseY + height, this.transform.position.z);
-            this.transform.rotation = LookAtTarget(movePos - this.transform.position);
-            this.transform.position = movePos;
-
-            if (this.transform.position == target) { SelfDestruct(); }
-
+            // Rotate to face the next position, and then move there
+            this.transform.rotation = LookAtTarget(nextPos - transform.position);
+            this.transform.position = nextPos;
         }
 
 
@@ -88,8 +86,7 @@ public class EnemyBullet : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
-        
+    {        
         SelfDestruct();
     }
 }
