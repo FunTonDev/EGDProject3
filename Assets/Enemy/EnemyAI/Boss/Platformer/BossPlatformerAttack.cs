@@ -14,7 +14,7 @@ public class BossPlatformerAttack : MonoBehaviour
     void Start()
     {
         //Attack1();
-        //Attack3();
+        Attack3();
     }
 
     // Update is called once per frame

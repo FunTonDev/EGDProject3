@@ -231,7 +231,7 @@ public class ShooterEnemy : Enemy
                 Debug.Log("Ranged attacked called");
 
                 Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
-                spawnPos.y = 0.5f;
+                
                 Instantiate(AttackObj, spawnPos, this.transform.rotation);                    
             }
 
