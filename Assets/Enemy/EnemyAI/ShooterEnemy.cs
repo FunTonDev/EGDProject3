@@ -154,7 +154,7 @@ public class ShooterEnemy : Enemy
         //Follow path if one given
         else if (pathNodes.Count != 0)
         {
-            Vector3 newPos = PathFollow();
+            Vector3 newPos = base.PathFollow();
             this.transform.LookAt(new Vector3(newPos.x, this.transform.position.y, newPos.z));
             NavAgent.SetDestination(newPos);
             //base.Move(newPos);
@@ -177,7 +177,7 @@ public class ShooterEnemy : Enemy
         else if (!follow)
         {
             this.transform.LookAt(player.transform.position);
-            NavAgent.SetDestination(PathFollow());
+            NavAgent.SetDestination(base.PathFollow());
         }
 
         //Enemy follows player to chase him down if they are not within buffer dist
@@ -201,7 +201,7 @@ public class ShooterEnemy : Enemy
         if (pathNodes.Count != 0 && !follow)
         {
             this.transform.LookAt(player.transform.position);
-            NavAgent.SetDestination(PathFollow());
+            NavAgent.SetDestination(base.PathFollow());
         }
 
         //If sentry enemy, contine to rotate towards player

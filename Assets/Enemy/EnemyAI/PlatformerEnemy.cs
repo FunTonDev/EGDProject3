@@ -66,7 +66,7 @@ public class PlatformerEnemy : Enemy
         {
             //Debug.Log(this.transform.eulerAngles);
 
-            base.Move(PathFollow());
+            base.Move(base.PathFollow());
 
             //Moving Right
             if (this.transform.position.x < base.PathFollow().x)

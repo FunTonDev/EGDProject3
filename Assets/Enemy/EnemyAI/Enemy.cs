@@ -41,8 +41,12 @@ public abstract class Enemy : MonoBehaviour
         if (shooter || rpg)
         {
             axisLevel = player.transform.position.y;
-            NavAgent = GetComponent<NavMeshAgent>();
-            NavAgent.speed = moveSpd;
+            if (shooter)
+            {
+                NavAgent = GetComponent<NavMeshAgent>();
+                NavAgent.speed = moveSpd;
+            }
+            
         }
 
         else
@@ -56,6 +60,22 @@ public abstract class Enemy : MonoBehaviour
     void Update()
     {
         ClassUpdate();
+
+        if (shooter || rpg)
+        {
+            axisLevel = player.transform.position.y;
+            if (shooter)
+            {
+                NavAgent = GetComponent<NavMeshAgent>();
+                NavAgent.speed = moveSpd;
+            }
+
+        }
+
+        else
+        {
+            axisLevel = player.transform.position.z;
+        }
     }
 
     //A start function for each specfic class to be define behaviours specific to them
@@ -84,7 +104,7 @@ public abstract class Enemy : MonoBehaviour
     }
     
     //Gets the transform of the current node
-    public Vector3 PathFollow()
+    public virtual Vector3 PathFollow()
     {
         Vector3 newPos = this.transform.position;
 
@@ -104,23 +124,18 @@ public abstract class Enemy : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, Pos, moveSpd * Time.deltaTime);
         SetAxisLevel();
-
-        //rgbdy.AddForce(Vector3.MoveTowards(transform.position, PathFollow(), moveSpd * Time.deltaTime));
     }
 
     public void SetAxisLevel()
     {
         Vector3 temp = this.transform.position;
-        if (shooter)
+        if (shooter || rpg)
         { temp.y = axisLevel; }
 
         else if (platformer)
         { temp.z = axisLevel; }
-
-
-
+                
         this.transform.position = temp;
-
         this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
     }
 

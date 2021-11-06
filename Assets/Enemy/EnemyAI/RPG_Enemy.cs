@@ -2,23 +2,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RPG_Enemy : MonoBehaviour
+public class RPG_Enemy : Enemy
 {
     [SerializeField] private int TileVisionRange;   //How many tiles they can see in front of them
 
+    
     [HideInInspector] public GameObject closestTile;
 
+    private bool pathForward;
 
-    // Start is called before the first frame update
-    void Start()
+    public override void ClassStart()
     {
-        
+        pathForward = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void ClassUpdate()
     {
-        
+        Move(Vector3.zero);
+    }
+
+    public override Vector3 PathFollow()
+    {
+        int nodeDir = 0;
+
+        if (pathForward)
+        { nodeDir = 1; }
+
+        else { nodeDir = -1; }
+
+        Vector3 newPos = this.transform.position;
+
+        //Continue towards node
+        //if (.1 < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
+        if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position)
+        { newPos = pathNodes[this.currNode].GetComponent<Transform>().position; }
+
+        //Find next node
+        else
+        {
+            this.currNode = (this.currNode + nodeDir);
+
+            if (currNode == -1 || currNode == pathNodes.Count)
+            {
+                pathForward = !pathForward;
+                this.currNode = (this.currNode + nodeDir * -2);
+            }
+
+            newPos = pathNodes[this.currNode].GetComponent<Transform>().position;
+        }
+
+        return newPos;
+    }
+
+    public override void Move(Vector3 Pos)
+    {
+        //Enemy on a path
+        if (pathNodes.Count != 0)
+        {
+            //Debug.Log(this.transform.eulerAngles);
+
+            this.transform.LookAt(PathFollow());
+            base.Move(PathFollow());
+            /*
+            this.transform.position += this.transform.forward * moveSpd * Time.deltaTime;
+            base.SetAxisLevel();
+            */
+            
+        }
     }
 
     public bool CheckForPlayer()
@@ -36,6 +86,7 @@ public class RPG_Enemy : MonoBehaviour
         return false;
     }
 
+    
     /*
     public void RPGMoveUpdate()
     {
