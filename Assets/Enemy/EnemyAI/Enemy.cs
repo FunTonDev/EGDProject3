@@ -143,7 +143,7 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-    public void Death()
+    private void Death()
     {
         Debug.Log(string.Format("Enemy {0} destroyed", type));
         Destroy(this.gameObject);

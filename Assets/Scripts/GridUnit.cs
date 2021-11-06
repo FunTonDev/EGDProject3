@@ -14,5 +14,14 @@ public class GridUnit : MonoBehaviour
                 playerCont.closestTile = gameObject;
             }
         }
+
+        if (coll.gameObject.tag == "Enemy")
+        {
+            RPG_Enemy enemy = coll.GetComponent<RPG_Enemy>();
+            if (enemy.closestTile == null || Vector3.Distance(this.transform.position, coll.transform.position) < Vector3.Distance(this.transform.position, enemy.closestTile.transform.position))
+            {
+                enemy.closestTile = gameObject;
+            }
+        }
     }
 }

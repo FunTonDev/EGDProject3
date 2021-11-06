@@ -35,6 +35,7 @@ public class EnemyBullet : MonoBehaviour
         if (tracking || PlatformerBossAtk3)
         {
             Invoke("SelfDestruct", 8.0f);
+            target.y = 0;
         }
 
         else
@@ -60,6 +61,8 @@ public class EnemyBullet : MonoBehaviour
             // Rotate to face the next position, and then move there
             this.transform.rotation = LookAtTarget(nextPos - transform.position);
             this.transform.position = nextPos;
+
+
         }
 
 
