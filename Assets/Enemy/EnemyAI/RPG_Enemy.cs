@@ -10,15 +10,28 @@ public class RPG_Enemy : Enemy
     [HideInInspector] public GameObject closestTile;
 
     private bool pathForward;
+    private bool lookingInDir;
 
     public override void ClassStart()
     {
         pathForward = true;
+        lookingInDir = false;
     }
 
     public override void ClassUpdate()
     {
-        Move(Vector3.zero);
+        //When arriving at a node, looking in specific directions   
+        if (this.transform.position == pathNodes[this.currNode].GetComponent<Transform>().position && !lookingInDir)
+        {
+            lookingInDir = true;
+            StartCoroutine(LookInAllDir());            
+        }
+
+        else if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position)
+        {
+            Move(Vector3.zero);            
+        }
+
     }
 
     public override Vector3 PathFollow()
@@ -35,11 +48,11 @@ public class RPG_Enemy : Enemy
         //Continue towards node
         //if (.1 < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
         if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position)
-        { newPos = pathNodes[this.currNode].GetComponent<Transform>().position; }
+        { newPos = pathNodes[this.currNode].GetComponent<Transform>().position;}
 
         //Find next node
         else
-        {
+        {                    
             this.currNode = (this.currNode + nodeDir);
 
             if (currNode == -1 || currNode == pathNodes.Count)
@@ -59,15 +72,8 @@ public class RPG_Enemy : Enemy
         //Enemy on a path
         if (pathNodes.Count != 0)
         {
-            //Debug.Log(this.transform.eulerAngles);
-
             this.transform.LookAt(PathFollow());
-            base.Move(PathFollow());
-            /*
-            this.transform.position += this.transform.forward * moveSpd * Time.deltaTime;
-            base.SetAxisLevel();
-            */
-            
+            base.Move(PathFollow());            
         }
     }
 
@@ -86,7 +92,56 @@ public class RPG_Enemy : Enemy
         return false;
     }
 
-    
+    void LookInDir(char dir)
+    {
+        //Look north/up
+        if (dir == 'n' || dir == 'u')
+        { this.transform.eulerAngles = new Vector3(0, 0, 0); }
+
+        //look east/right
+        else if (dir == 'e' || dir == 'r')
+        { this.transform.eulerAngles = new Vector3(0, 90, 0); }
+
+        //look west/left
+        else if (dir == 'w' || dir == 'l')
+        { this.transform.eulerAngles = new Vector3(0, -90, 0); }
+
+        //look south/down
+        else if (dir == 's' || dir == 'd')
+        { this.transform.eulerAngles = new Vector3(0, 180, 0); }
+    }
+
+
+    IEnumerator LookInAllDir()
+    {
+        Debug.Log("LookInAllDir() called");
+
+        //Debug.Log("Looking north");
+        LookInDir('n');
+        yield return new WaitForSeconds(2);
+
+        //Debug.Log("Looking east");
+        LookInDir('e');
+        yield return new WaitForSeconds(2);
+
+        //Debug.Log("Looking south");
+        LookInDir('s');
+        yield return new WaitForSeconds(2);
+
+        //Debug.Log("Looking west");
+        LookInDir('w');
+        yield return new WaitForSeconds(2);
+
+        Debug.Log("LookInAllDir() finished");
+        lookingInDir = false;
+        Move(Vector3.zero);
+    }
+
+
+
+
+
+
     /*
     public void RPGMoveUpdate()
     {

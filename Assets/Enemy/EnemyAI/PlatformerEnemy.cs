@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlatformerEnemy : Enemy
 {
     [SerializeField] private bool facingLeft;       //Direction Enemy is facing
-    [SerializeField] private bool ranged;          //If true, enemy can perform ranged attacks
-    [SerializeField] private bool fullRanged;     //If true, enemy can perform attack in any direction
-    [SerializeField] private float range;        //Dist of their attack range
+    [SerializeField] private bool vertical;        //Is their path vertical
+    [SerializeField] private bool ranged;         //If true, enemy can perform ranged attacks
+    [SerializeField] private bool fullRanged;    //If true, enemy can perform attack in any direction
+    [SerializeField] private float range;       //Dist of their attack range
     private bool PlayerInRange;                 
 
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
@@ -40,6 +41,10 @@ public class PlatformerEnemy : Enemy
 
         if (PlayerInRange && ranged)
         {
+            //Look at player wheen shooting
+            if (vertical)
+            { this.transform.LookAt(player.transform);}
+            
             Attack();            
         }
 

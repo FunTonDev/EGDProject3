@@ -61,8 +61,6 @@ public class EnemyBullet : MonoBehaviour
             // Rotate to face the next position, and then move there
             this.transform.rotation = LookAtTarget(nextPos - transform.position);
             this.transform.position = nextPos;
-
-
         }
 
 
