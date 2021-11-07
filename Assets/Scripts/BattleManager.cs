@@ -152,6 +152,27 @@ public class BattleManager : MonoBehaviour
     private bool active;
     private bool writing;
     private bool ender = false;
+    
+    //Play Sound effects --- 0 = Hit/Damage, 1 = Heal, 2 = Dead
+    public void playSound(int num)
+    {
+        switch (num)
+        {
+            case 0:
+                seSource.clip = Resources.Load<AudioClip>("Audio/Sound Effects/Hit 1");
+                seSource.Play();
+                break;
+            case 1:
+                seSource.clip = Resources.Load<AudioClip>("Audio/Sound Effects/healspell1");
+                seSource.Play();
+                break;
+            case 2:
+                seSource.clip = Resources.Load<AudioClip>("Audio/Sound Effects/whoosh1");
+                seSource.Play();
+                break;
+        }
+
+    }
 
     public void playerTurn()
     {
@@ -887,6 +908,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (PartyMembers[i] != null)
                 {
+                    Debug.Log("Party - " + PartyMembers[i].unitName + " HP == " + PartyMembers[i].currentHP);
                     if (PartyMembers[i].currentHP > 0)
                     {
                         PartyMembers[i].defending = false;
@@ -951,7 +973,13 @@ public class BattleManager : MonoBehaviour
                 }
                 if (EnemyMembers[val].currentHP <= 0)
                 {
-                    yield return unitDeath(EnemyMembers[val], val);
+                    enemyDeaths++;
+                    yield return unitDeath(EnemyMembers[val]);                   
+                    if (enemyDeaths >= EnemyMembers.Count)
+                    {
+                        state = battleState.WIN;
+                        yield return battleEnd();
+                    }
                 }
             }
             else
@@ -980,7 +1008,13 @@ public class BattleManager : MonoBehaviour
                     }
                     if (EnemyMembers[i].currentHP <= 0)
                     {
-                        yield return unitDeath(EnemyMembers[i], i);
+                        enemyDeaths++;
+                        yield return unitDeath(EnemyMembers[i]);
+                        if (enemyDeaths >= EnemyMembers.Count)
+                        {
+                            state = battleState.WIN;
+                            yield return battleEnd();
+                        }
                     }
                 }
             }
@@ -1115,7 +1149,7 @@ public class BattleManager : MonoBehaviour
                 crite = true;
             }
 
-            target.takeDamage(dami);
+            bool dead = target.takeDamage(dami);
             StartCoroutine(flash(val, false, 0));
             partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[val].currentHP / PartyMembers[val].maxHP,
                 partyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1124,6 +1158,18 @@ public class BattleManager : MonoBehaviour
                 yield return textDisplay("It's a critical hit!", true);
                 skipper = true;
             }
+            if (dead)
+            {
+                partyDeaths++;
+                yield return unitDeath(target);
+                //yield return levelUp(target.giveEXP());
+                if (partyDeaths >= PartyMembers.Count)
+                {
+                    state = battleState.LOSE;
+                    yield return battleEnd();
+                }
+            }
+
         }
         else
         {
@@ -1144,7 +1190,7 @@ public class BattleManager : MonoBehaviour
                         {
                             crite = false;
                         }
-                        PartyMembers[i].takeDamage(dami);
+                        bool dead = PartyMembers[i].takeDamage(dami);
                         StartCoroutine(flash(i, false, 0));
                         partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP,
                             partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1152,6 +1198,17 @@ public class BattleManager : MonoBehaviour
                         {
                             yield return textDisplay("It's a critical hit!", true);
                             skipper = true;
+                        }
+                        if (dead)
+                        {
+                            partyDeaths++;
+                            yield return unitDeath(PartyMembers[i]);
+                            //yield return levelUp(target.giveEXP());
+                            if (partyDeaths >= PartyMembers.Count)
+                            {
+                                state = battleState.LOSE;
+                                yield return battleEnd();
+                            }
                         }
                     }
                 }
@@ -1190,15 +1247,37 @@ public class BattleManager : MonoBehaviour
     }
 
     //Fade out a unit from the screen when they die
-    IEnumerator unitDeath(Unit bot, int ind = 0)
+    IEnumerator unitDeath(Unit bot)
     {
         StartCoroutine(textDisplay(bot.unitName + " has been defeated"));
         yield return new WaitForSeconds(1f);
 
+        playSound(2);
+
+        int ind = 0;
+
         if (bot.enemy)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (bot == EnemyMembers[i])
+                {
+                    ind = i;
+                }
+            }
             enemyPrefabs[ind].SetActive(false);
+        }
         else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (bot == PartyMembers[i])
+                {
+                    ind = i;
+                }
+            }
             partyPrefabs[ind].SetActive(false);
+        }
         
         /*
         if (bot.enemy)
@@ -1256,7 +1335,7 @@ public class BattleManager : MonoBehaviour
         transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
     }
 
-    //Cause unit to flash a color (0 == damage/red, 1 == healing/green)
+    //Cause unit to flash a color (ver: 0 == damage/red, 1 == healing/green)
     IEnumerator flash(int index, bool enemy, int ver = 0)
     {
         Debug.Log("Index for flash == " + index);
@@ -1277,12 +1356,14 @@ public class BattleManager : MonoBehaviour
             case 0:
                 yield return new WaitForSeconds(0.5f);
                 uni.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
+                playSound(0);
                 yield return new WaitForSeconds(0.5f);
                 break;
 
             case 1:
                 yield return new WaitForSeconds(0.5f);
                 uni.GetComponent<SpriteRenderer>().color = new Color(0.5f, 1.0f, 0.5f);
+                playSound(1);
                 yield return new WaitForSeconds(0.5f);
                 break;
 

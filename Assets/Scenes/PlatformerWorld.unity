@@ -8815,7 +8815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputMan: {fileID: 0}
   pla: {fileID: 0}
-  moveSpeed: 2
+  moveSpeed: 0
   offset: 9.8
 --- !u!1 &1260411938
 GameObject:
