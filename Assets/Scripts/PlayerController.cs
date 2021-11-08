@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,13 +19,10 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject deathPrefab;
     public List<AudioClip> playerClips;
-    public GameObject dashEffect;
 
     [Header("General Vars")]
     public float currentHP;
     public float maxHP;
-    public Image hpBar;
-    public Image extraBar;
 
     [Header("General Movement")]
     public float xForce;
@@ -91,8 +87,6 @@ public class PlayerController : MonoBehaviour
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
-        hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(0).GetComponent<Image>();
-        extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(0).GetComponent<Image>();
         playerAudS = GetComponent<AudioSource>();
         playerRigB = GetComponent<Rigidbody>();
         playerMeshF = gameObject.transform.GetChild(0).GetComponent<MeshFilter>();
@@ -171,12 +165,10 @@ public class PlayerController : MonoBehaviour
 
         if (inputMan.inputAct3 == 1 && dashCount < 1)   //Dash check
         {
-            GameObject temp = Instantiate(dashEffect, transform.position, transform.rotation);
             playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);
             dashCount++;
             dashTimer = dashDelayTime;
         }
-        extraBar.fillAmount = -(dashTimer - dashDelayTime) / dashDelayTime;
 
         if (wallJumpTimer <= 0)    //X move check
         {
@@ -260,6 +252,7 @@ public class PlayerController : MonoBehaviour
         shootTimer -= shootTimer > 0 ? Time.deltaTime : 0;
         rollTimer -= rollTimer > 0 ? Time.deltaTime : 0;
         toggleTimer -= toggleTimer > 0 ? Time.deltaTime : 0;
+        dashTimer -= dashTimer > 0 ? Time.deltaTime : 0;
         damageTimer -= damageTimer > 0 ? Time.deltaTime : 0;
 
         dashCount = dashTimer <= 0 ? 0 : dashCount;
@@ -294,7 +287,6 @@ public class PlayerController : MonoBehaviour
             Destroy(Instantiate(deathPrefab, transform.position, transform.rotation), 4.0f);
         }
         damageTimer = change < 0 ? damageDelayTime : damageTimer;
-        hpBar.fillAmount = currentHP / maxHP;
         return currentHP;
     }
 
