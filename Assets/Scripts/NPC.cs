@@ -52,14 +52,15 @@ public class NPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        npcName = "Botly";
+        //npcName = "Botly";
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         dialogueBox = GameObject.FindGameObjectWithTag("DialogueBox");
         displayText = dialogueBox.transform.GetChild(2).GetComponent<TMP_Text>();
-        textDesc = new List<string>();
-        textDesc.Add("Testing new dialogue box functionality");
-        textDesc.Add("Shouldn't you be doing something else right now?");
-        textDesc.Add("Welp, not like I can stop you");
+        if (textDesc == null)
+            textDesc = new List<string>();
+        //textDesc.Add("Testing new dialogue box functionality");
+        //textDesc.Add("Shouldn't you be doing something else right now?");
+        //textDesc.Add("Welp, not like I can stop you");
         write_queue = new List<string>();
         scroll_speed = 20;
         dialogueTimer = 0.0f;
