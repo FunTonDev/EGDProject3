@@ -1,0 +1,1 @@
+{"lastGenre":1,"lastPosition":{"x":0.0,"y":0.0,"z":0.0},"lastScene":"Testing/[Test Scene]","lastHP":1.0,"platStart":false,"platDone":false,"platCollect":false,"shotStart":false,"shotDone":false,"shotCollect":false,"rpgStart":false,"rpgDone":false,"rpgCollect":false,"playerMana":0.0,"mamaGot":false,"mamaMana":0.0,"helperGot":false,"helperMana":0.0,"goldGot":0,"gameDone":false}

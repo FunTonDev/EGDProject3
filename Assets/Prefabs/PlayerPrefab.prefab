@@ -258,8 +258,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fcf6b4f9545418641bfdcb2dd57f8e1a, type: 3}
   - {fileID: 8300000, guid: eabced4a033850c42a7e25490bd9c615, type: 3}
   - {fileID: 8300000, guid: 34725ae148f7f5a498d960cf09df7cd8, type: 3}
+  dashEffect: {fileID: 3259782854905644983, guid: 9d1694fa12d42014fa1ed8c44893323c, type: 3}
   currentHP: 6
   maxHP: 10
+  hpBar: {fileID: 0}
+  extraBar: {fileID: 0}
   xForce: 4
   yForce: 4
   maxXVelocity: 6

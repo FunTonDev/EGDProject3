@@ -284,16 +284,26 @@ public class MenuManager : MonoBehaviour
 
     public void openSaveSlot(int save)
     {
+        SaveFile tmp;
         switch (save)
         {
             case 0:
+                PlayerPrefs.SetInt("SaveNum", 1);
+                tmp = SaveManager.Load();
+                SceneManager.LoadScene(tmp.lastScene);
                 break;
             case 1:
+                PlayerPrefs.SetInt("SaveNum", 2);
+                tmp = SaveManager.Load();
+                SceneManager.LoadScene(tmp.lastScene);
                 break;
             case 2:
+                PlayerPrefs.SetInt("SaveNum", 3);
+                tmp = SaveManager.Load();
+                SceneManager.LoadScene(tmp.lastScene);
                 break;
             case 3:
-                SceneManager.LoadScene("Testing/[Test Scene]");
+                SceneManager.LoadScene("Testing/[TestScene]");
                 break;
         }
     }

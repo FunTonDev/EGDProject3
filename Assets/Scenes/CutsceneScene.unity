@@ -448,7 +448,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -697,6 +697,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431ac368a5f9ce245a1f4e03f4d2037b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMan: {fileID: 0}
+  seSource: {fileID: 0}
+  musicSource: {fileID: 0}
+  story1: {fileID: 0}
+  story2: {fileID: 0}
+  storyText: {fileID: 0}
+  dialogueText: []
+  scroll_speed: 0
 --- !u!4 &524479390
 Transform:
   m_ObjectHideFlags: 0
