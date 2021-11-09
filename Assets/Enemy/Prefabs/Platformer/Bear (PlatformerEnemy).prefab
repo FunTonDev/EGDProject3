@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2587144832372627827}
   - component: {fileID: 2562017655331462741}
   m_Layer: 0
-  m_Name: Bear(PlatformerEnemy)
+  m_Name: Bear (PlatformerEnemy)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,10 +56,9 @@ MonoBehaviour:
   platformer: 1
   shooter: 0
   rpg: 0
-  pathNodes:
-  - {fileID: 0}
-  - {fileID: 0}
+  pathNodes: []
   facingLeft: 1
+  vertical: 0
   ranged: 0
   fullRanged: 0
   range: 0
