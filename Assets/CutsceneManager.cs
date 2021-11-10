@@ -46,7 +46,13 @@ public class CutsceneManager : MonoBehaviour
             case 0:         //Hub events
                 if (!so.gameStart)
                 {
+                    
+                    for (int i = 0; i < 4; i++)
+                    {
+                        right_queue.Add(null);
+                        upperRight_queue.Add(null);
 
+                    }
                 }
                 break;
             case 1:         //Platformer events
