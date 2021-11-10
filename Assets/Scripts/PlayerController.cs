@@ -361,8 +361,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
             Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
-            if(Physics.Raycast(rightPos, -transform.up, 0.2f, hazardMask)   //RIGHT CAST
-                                        | Physics.Raycast(leftPos, -transform.up, 0.2f, hazardMask))   //LEFT CAST
+            if(Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
+                                        | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))   //LEFT CAST
             {
                 try
                 {
@@ -385,7 +385,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                try
+                /*try
                 {
                     PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
                     HealthUpdate(-pScript.GetAtkDamage());
@@ -411,7 +411,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Vector3 pushDir = (5 * -Vector3.right + Vector3.up).normalized;
                     playerRigB.AddForce(pushDir * 30000.0f, ForceMode.Force);
-                }
+                }*/
             }
             return true;
         }
