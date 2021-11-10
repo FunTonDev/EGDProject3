@@ -32,6 +32,7 @@ public class RPG_Enemy : Enemy
             Move(Vector3.zero);            
         }
 
+        closestTile.GetComponent<GridUnit>().occupied = rgbdy.velocity.magnitude == 0;
     }
 
     public override Vector3 PathFollow()

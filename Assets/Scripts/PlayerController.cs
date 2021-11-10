@@ -232,6 +232,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = closestTile.transform.position;//.new Vector3(position.x, transform.position.y, closestTile.transform.position.z);
         }
+        closestTile.GetComponent<GridUnit>().occupied = inputMan.inputX == 0 && inputMan.inputY == 0;
         playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
     }
 

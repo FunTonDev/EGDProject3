@@ -26,6 +26,7 @@ public class CameraController : MonoBehaviour
     public float camVelY;
 
     public bool isTrackingMovement;
+    public bool shaking;
     public States.GameGenre currMode;
 
     private Vector3 mousePos;
@@ -47,6 +48,7 @@ public class CameraController : MonoBehaviour
         SyncScreen();
         SetCameraMode(States.GameGenre.Platformer);
         isTrackingMovement = true;
+        shaking = false;
         moveAheadMax = 15.0f;
         mouseAheadMax = 450.0f;
         xChange = 0.0f;
@@ -60,6 +62,10 @@ public class CameraController : MonoBehaviour
         cursorRecT.position = new Vector3(inputMan.inputMX, inputMan.inputMY, 0);
         PlayerController playerCont = playerPrefab.GetComponent<PlayerController>();
         hpBar.fillAmount = playerCont.currentHP / playerCont.maxHP;
+        if (playerCont.shootTimer > 0 && !shaking)
+        {
+            StartCoroutine(CamEffectShake(0.1f, new Vector3(0.25f, 0, 0.25f)));
+        }
     }
 
     private void FixedUpdate()
@@ -82,7 +88,7 @@ public class CameraController : MonoBehaviour
         CursorBiasUpdate();
         //CharMoveBiasUpdate()
         Vector3 playerADSDir = ADSBiasUpdate();
-        transform.position = targetPos + genrePos + playerADSDir;
+        transform.position = targetPos + genrePos + playerADSDir;// + shotShake;
         transform.rotation = targetRot;
         //Incorporate averaging of mouse position, movement, character position later using x/y change //Vector3(xChange, yChange, 0);
     }
@@ -159,9 +165,39 @@ public class CameraController : MonoBehaviour
     }
 
     /*============================================================================
+     * COROUTINES
+     ============================================================================*/
+    private IEnumerator CamEffectShake(float time, Vector3 magnitude)
+    {
+        shaking = true;
+        float timer = 0;
+        float interval = 0.05f;
+        Vector3 sPos = Vector3.zero;
+        while (timer < time)
+        {
+            if (sPos == Vector3.zero)
+            {
+                sPos = new Vector3(Random.value * magnitude.x, Random.value * magnitude.y, Random.value * magnitude.z);
+                transform.position += sPos;
+                yield return new WaitForSeconds(interval);
+                timer += interval;
+                transform.position -= sPos;
+                sPos = Vector3.zero;
+            }
+            else
+            {
+                yield return null;
+                timer += Time.deltaTime;
+            }
+            Debug.Log(timer);
+        }
+        shaking = false;
+    }
+
+    /*============================================================================
      * MISC METHODS
      ============================================================================*/
-    private void SyncScreen()
+        private void SyncScreen()
     {
         int xShift = 500, yShift = 300;
         mouseLeftBound = Screen.width/2 - xShift;
