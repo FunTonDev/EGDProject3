@@ -22,6 +22,11 @@ public class CutsceneManager : MonoBehaviour
 
     private List<string> write_queue;
     private List<string> image_queue;
+    private List<string> left_queue;
+    private List<string> right_queue;
+    private List<string> center_queue;
+    private List<string> upperLeft_queue;
+    private List<string> upperRight_queue;
     public List<string> dialogueText;
     public float scroll_speed;
     private bool active;
@@ -39,12 +44,40 @@ public class CutsceneManager : MonoBehaviour
         switch (so.currentGenre)
         {
             case 0:         //Hub events
+                if (!so.gameStart)
+                {
+
+                }
                 break;
             case 1:         //Platformer events
+                if (!so.platStart)
+                {
+
+                }
+                else
+                {
+
+                }
                 break;
             case 2:         //Shooter events
+                if (!so.shotStart)
+                {
+
+                }
+                else
+                {
+
+                }
                 break;
             case 3:         //RPG events
+                if (!so.rpgStart)
+                {
+
+                }
+                else
+                {
+
+                }
                 break;
         }
 

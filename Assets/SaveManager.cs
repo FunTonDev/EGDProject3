@@ -52,6 +52,7 @@ public static class SaveManager
 //Save Data object
 public class SaveFile
 {
+
     public int currentGenre = 1;
     public int lastGenre = 1;               //0 - HUB, 1 - Plat, 2 - Shot, 3 - RPG
 
@@ -61,6 +62,8 @@ public class SaveFile
 
     public float lastHP = 1.0f;                //Last known hp value
 
+
+    public bool gameStart;
 
     public bool platStart;              //Whether platformer stage started (whether to display cutscene)
 
