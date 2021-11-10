@@ -5586,6 +5586,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bear&Path
       objectReference: {fileID: 0}
+    - target: {fileID: 4517326605162541236, guid: f2894a88ef66fd645aead345f879c48c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4517326605162541239, guid: f2894a88ef66fd645aead345f879c48c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.28

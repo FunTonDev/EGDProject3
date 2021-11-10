@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   facingLeft: 1
+  vertical: 0
   ranged: 1
   fullRanged: 0
   range: 5
@@ -117,7 +118,7 @@ GameObject:
   - component: {fileID: 4473703490069860702}
   - component: {fileID: 7170428651872165169}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
