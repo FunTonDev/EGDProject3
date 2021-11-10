@@ -385,7 +385,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                /*try
+                try
                 {
                     PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
                     HealthUpdate(-pScript.GetAtkDamage());
@@ -411,7 +411,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Vector3 pushDir = (5 * -Vector3.right + Vector3.up).normalized;
                     playerRigB.AddForce(pushDir * 30000.0f, ForceMode.Force);
-                }*/
+                }
             }
             return true;
         }
