@@ -5,8 +5,10 @@ using UnityEngine;
 public class RPG_Enemy : Enemy
 {
     [SerializeField] private int TileVisionRange;   //How many tiles they can see in front of them
-
+    [SerializeField] private List<bool> directions;
+    [SerializeField] private int minLookTime, maxLookTime; //How short and long an emeny can look in a specific direction
     
+
     [HideInInspector] public GameObject closestTile;
 
     private bool pathForward;
@@ -112,26 +114,54 @@ public class RPG_Enemy : Enemy
         { this.transform.eulerAngles = new Vector3(0, 180, 0); }
     }
 
+    float RandomTime()
+    {
+        return Random.RandomRange(minLookTime, maxLookTime);
+    }
+
 
     IEnumerator LookInAllDir()
     {
         Debug.Log("LookInAllDir() called");
 
-        //Debug.Log("Looking north");
-        LookInDir('n');
-        yield return new WaitForSeconds(2);
 
-        //Debug.Log("Looking east");
-        LookInDir('e');
-        yield return new WaitForSeconds(2);
+       
+        //Can look north
+        if (directions[0])
+        {
+            LookInDir('n');
+            float sec = RandomTime();
+            Debug.Log("Looking north for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
 
-        //Debug.Log("Looking south");
-        LookInDir('s');
-        yield return new WaitForSeconds(2);
 
-        //Debug.Log("Looking west");
-        LookInDir('w');
-        yield return new WaitForSeconds(2);
+        //Can look east
+        if (directions[1])
+        {
+            LookInDir('e');
+            float sec = RandomTime();
+            Debug.Log("Looking east for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
+
+        //Can look south
+        if (directions[2])
+        {
+            LookInDir('s');
+            float sec = RandomTime();
+            Debug.Log("Looking south for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
+
+        //Can look west
+        if (directions[3])
+        {
+            LookInDir('w');
+            float sec = RandomTime();
+            Debug.Log("Looking west for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
 
         Debug.Log("LookInAllDir() finished");
         lookingInDir = false;
