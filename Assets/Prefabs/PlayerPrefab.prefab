@@ -266,7 +266,7 @@ MonoBehaviour:
   extraBar: {fileID: 0}
   hazardMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
   xForce: 4
   yForce: 4
   maxXVelocity: 6
