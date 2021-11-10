@@ -10312,6 +10312,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6677177545914274470, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
+      propertyPath: currentHP
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677177545914274470, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: dashEffect
       value: 
       objectReference: {fileID: 3259782854905644983, guid: 9d1694fa12d42014fa1ed8c44893323c, type: 3}

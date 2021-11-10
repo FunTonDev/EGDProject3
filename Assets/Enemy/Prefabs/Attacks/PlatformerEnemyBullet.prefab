@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6364899394991486964}
   m_Layer: 0
   m_Name: PlatformerEnemyBullet
-  m_TagString: Untagged
+  m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,4 +127,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   tracking: 0
-  platformer: 1
+  PlatformerBossAtk3: 0

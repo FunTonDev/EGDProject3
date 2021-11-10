@@ -14,6 +14,7 @@ TagManager:
   - PartyUnitPrefab
   - Ground
   - DialogueBox
+  - EnemyAttack
   layers:
   - Default
   - TransparentFX

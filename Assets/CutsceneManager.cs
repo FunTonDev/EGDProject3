@@ -36,6 +36,18 @@ public class CutsceneManager : MonoBehaviour
         seSource = tmp[0];
         musicSource = tmp[1];
         so = SaveManager.Load();
+        switch (so.currentGenre)
+        {
+            case 0:         //Hub events
+                break;
+            case 1:         //Platformer events
+                break;
+            case 2:         //Shooter events
+                break;
+            case 3:         //RPG events
+                break;
+        }
+
     }
 
     // Update is called once per frame
