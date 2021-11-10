@@ -20,4 +20,13 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/PlatformerWorld.unity
+    guid: 6438a1e61ddb8f349a737be1d60b1da3
+  - enabled: 1
+    path: Assets/Scenes/ShooterWorld.unity
+    guid: 0029346094a7222449f27755c305f74d
+  - enabled: 1
+    path: Assets/Scenes/RPGBattle.unity
+    guid: 0b4d7dd059013ce44a3a2608acbbb6cc
   m_configObjects: {}
