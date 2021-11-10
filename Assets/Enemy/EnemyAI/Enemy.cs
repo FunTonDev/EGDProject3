@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public abstract class Enemy : MonoBehaviour
 {
+    [Header("Enemy Base Class Variables")]
     [SerializeField] protected string type;                     //Name (Ex: TestBox)
 
     [SerializeField] protected float health;
@@ -16,6 +17,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected int detectionLvl;                // 0,1,2
     protected float axisLevel;
 
+    [Header("Genre")]
     [SerializeField] protected bool platformer, shooter, rpg;   //Genre
     
     [SerializeField] protected List<Transform> pathNodes;
@@ -24,9 +26,7 @@ public abstract class Enemy : MonoBehaviour
     protected Rigidbody rgbdy;
     protected GameObject player;
 
-    protected NavMeshAgent NavAgent;
-
-    
+    protected NavMeshAgent NavAgent;    
 
     // Start is called before the first frame update
     void Start()
@@ -60,18 +60,13 @@ public abstract class Enemy : MonoBehaviour
     void Update()
     {
         ClassUpdate();
-
-        /*
+                
         if (shooter )
         {
             axisLevel = player.transform.position.y;
-            if (shooter)
-            {
-                NavAgent = GetComponent<NavMeshAgent>();
-                NavAgent.speed = moveSpd;
-            }
         }
 
+        /*
         else
         {
             axisLevel = player.transform.position.z;

@@ -18,7 +18,7 @@ public class PlatformerEnemy : Enemy
 
     private SpriteRenderer sprite;
 
-
+    //For the FOV Script
     public bool GetFullRanged() { return fullRanged; }
     public float GetRange() { return range; }
 
