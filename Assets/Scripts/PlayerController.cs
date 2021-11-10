@@ -361,8 +361,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
             Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
-            if(Physics.Raycast(rightPos, -transform.up, 0.2f, hazardMask)   //RIGHT CAST
-                                        | Physics.Raycast(leftPos, -transform.up, 0.2f, hazardMask))   //LEFT CAST
+            if(Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
+                                        | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))   //LEFT CAST
             {
                 try
                 {

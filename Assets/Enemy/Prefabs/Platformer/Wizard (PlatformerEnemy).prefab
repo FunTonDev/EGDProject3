@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4020347514955282329}
   - component: {fileID: 4020347514955282331}
   - component: {fileID: 4008866934468243645}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wizard (PlatformerEnemy)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4032131195397010948}
   - component: {fileID: 7665886005450078827}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

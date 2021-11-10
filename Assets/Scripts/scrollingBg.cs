@@ -33,9 +33,11 @@ public class scrollingBg : MonoBehaviour
 
     private void Update()
     {
+        if (pla.playerRigB.velocity.x != 0)
         neXPosition = pla.transform.position.x * 0.3f;
+        if (pla.playerRigB.velocity.y != 0)
         neYPosition = pla.transform.position.y * 0.8f;
-        transform.position = startPosition + (Vector3.right * neXPosition * inputMan.inputX) + (Vector3.up * neYPosition);
+        transform.position = startPosition + (Vector3.right * neXPosition * (pla.playerRigB.velocity.x)/6) + (Vector3.up * neYPosition);
         transform.rotation = startRotation;
     }
 }
