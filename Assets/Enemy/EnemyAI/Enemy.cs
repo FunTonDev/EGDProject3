@@ -139,6 +139,16 @@ public abstract class Enemy : MonoBehaviour
         this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
     }
 
+    public float GetAtkDamage()
+    {
+        return atkDamage;
+    }
+
+    public float GetHealth()
+    {
+        return health;
+    }
+
     public void TakeDamage(float damage)
     {
         if(armor > 0)

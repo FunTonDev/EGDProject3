@@ -30,6 +30,7 @@ public class ShooterEnemy : Enemy
     private float timeBtwAtk;                        //Time left till next attack
 
     [SerializeField] private GameObject AttackObj;
+    [SerializeField] private GameObject AttackObj2;
 
     public float GetDetctRadius() { return detctRadius; }
     public float GetAtkDist() { return AtkDist; }
@@ -231,8 +232,9 @@ public class ShooterEnemy : Enemy
                 Debug.Log("Ranged attacked called");
 
                 Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
-                
-                Instantiate(AttackObj, spawnPos, this.transform.rotation);                    
+
+                //Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver
+                Instantiate(AttackObj2, spawnPos, transform.rotation).GetComponent<Bullet>().Init(gameObject.tag, 10.0f);   
             }
 
             //Melee attack

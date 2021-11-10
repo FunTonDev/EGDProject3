@@ -16,13 +16,13 @@ public static class Utils
     //"Normalizes" ints between -1 and 1
     public static int NormalizeNum(int i) { return i == 0 ? 0 : i / Mathf.Abs(i); }
 
-    public static void XYMoveRecalc(ref float a, ref float b, float c)
+    public static void XYMoveRecalc(ref float x, ref float y)
     {
-        if (a != 0 && b != 0)
+        if (x != 0 && y != 0)
         {
-            float newVel = Mathf.Sqrt(Mathf.Pow(c, 2) / 2);
-            a = newVel * Mathf.Sign(a);
-            b = newVel * Mathf.Sign(b);
+            float newVel = Mathf.Sqrt(Mathf.Pow(Mathf.Abs(x), 2) / 2);
+            x = newVel * Mathf.Sign(x);
+            y = newVel * Mathf.Sign(y);
         }
     }
 }

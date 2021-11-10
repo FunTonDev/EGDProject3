@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6625932939615670206}
   m_Layer: 0
   m_Name: TriggerVolume
-  m_TagString: Control
+  m_TagString: Volume
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,10 +57,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d406f9419976299418cc149f7e3e64c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeType: 0
   playerMesh: {fileID: 0}
   playerMaterial: {fileID: 0}
   primaryGenre: 0
   subGenre: 0
+  targetScene: 
   isKillVolume: 0
   damage: 0
   damageTimer: 0

@@ -156,7 +156,7 @@ public class PlatformerEnemy : Enemy
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Checks to see if 
+/*        //Checks to see if 
         if(collision.collider.tag == "Player")
         {
             float xDiff = Mathf.Abs(this.transform.position.x - collision.collider.transform.position.x);
@@ -178,11 +178,11 @@ public class PlatformerEnemy : Enemy
                 Debug.Log(string.Format("Enemy {0} hit Player", type));
             }
         }
-
+*/
         //Flip enemy direction
         //Make sure enemy didn't hit ground
         //else if(rgbdy.velocity.y <= 0.01f && collision.collider.tag != "Ground")
-        else if (collision.collider.tag != "Ground" && rgbdy.velocity.y < 1f)
+        if (collision.collider.tag != "Ground" && rgbdy.velocity.y < 1f)
         {                
             Debug.Log(string.Format("{0} flipped direction", this.name));
 

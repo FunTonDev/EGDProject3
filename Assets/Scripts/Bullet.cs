@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Bullet : MonoBehaviour
 {
@@ -14,18 +15,35 @@ public class Bullet : MonoBehaviour
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider coll)
     {
-        if (gameObject.tag != collision.gameObject.tag)
+        if (gameObject.tag != coll.gameObject.tag && coll.gameObject.name.Substring(0, 6) != "Bullet"
+            && (gameObject.layer == coll.gameObject.layer || coll.gameObject.tag == "Player"))
         {
             SelfDestruct();
-            if (gameObject.tag == "Player" && collision.gameObject.tag == "Enemy")
+            if (gameObject.tag == "Player" && coll.gameObject.tag == "Enemy")
             {
-                
+                try
+                {
+                    PlatformerEnemy pScript = coll.GetComponent<PlatformerEnemy>();
+                    pScript.TakeDamage(10);
+                }
+                catch(Exception e1)
+                {
+                    try
+                    {
+                        ShooterEnemy sScript = coll.GetComponent<ShooterEnemy>();
+                        sScript.TakeDamage(10);
+                    }
+                    catch (Exception e2)
+                    {
+
+                    }
+                }
             }
-            else if (gameObject.tag == "Enemy" && collision.gameObject.tag == "Player")
+            else if (gameObject.tag == "Enemy" && coll.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<PlayerController>().HealthUpdate(-1.0f);
+                coll.gameObject.GetComponent<PlayerController>().HealthUpdate(-1.0f);
             }
         }
     }

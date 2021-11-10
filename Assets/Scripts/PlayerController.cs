@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 public class PlayerController : MonoBehaviour
 {
     private GameManager gameMan;
     private InputManager inputMan;
     private TransitionManager tranMan;
+    private BoxCollider playerColl;
     private AudioSource playerAudS; 
     private GameObject secondaryAxis;
     private List<GameObject> genreCosmetics;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public float maxHP;
     public Image hpBar;
     public Image extraBar;
+    public LayerMask hazardMask;
 
     [Header("General Movement")]
     public float xForce;
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Shooter Data")]
     public float rollMultiplier;
+    public bool rolling;
 
     [Header("Genre-Control Data")]
     public States.GameGenre playerPrimaryGenre;
@@ -91,6 +94,7 @@ public class PlayerController : MonoBehaviour
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
+        playerColl = GetComponent<BoxCollider>();
         hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(0).GetComponent<Image>();
         extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(0).GetComponent<Image>();
         playerAudS = GetComponent<AudioSource>();
@@ -127,6 +131,7 @@ public class PlayerController : MonoBehaviour
     {
         grounded = GroundCheck();
         walled = WallCheck();
+        EnemyCheck(collision);
         jumpCount = grounded ? 0 : jumpCount;
         wallJumpCount = grounded ? 0 : wallJumpCount;
     }
@@ -198,12 +203,16 @@ public class PlayerController : MonoBehaviour
         {
 
         }*/
-        playerRigB.AddForce(new Vector3(inputMan.inputX * xForce * rollMultiplier, 0, 0), ForceMode.VelocityChange);
-        playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce * rollMultiplier), ForceMode.VelocityChange);
-        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
-        float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
-        Utils.XYMoveRecalc(ref xClampVel, ref yClampVel, maxXVelocity);
-        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
+        if (!rolling)
+        {
+        
+            playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
+            playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
+            float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+            float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+            Utils.XYMoveRecalc(ref xClampVel, ref yClampVel);
+            playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
+        }
     }
 
     public void RPGMoveUpdate()
@@ -232,7 +241,7 @@ public class PlayerController : MonoBehaviour
         playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce, 0), ForceMode.VelocityChange);
         float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
         float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.y);  //Y move check
-        Utils.XYMoveRecalc(ref xClampVel, ref yClampVel, maxXVelocity);
+        Utils.XYMoveRecalc(ref xClampVel, ref yClampVel);
         playerRigB.velocity = new Vector3(xClampVel, yClampVel, playerRigB.velocity.z);
     }
 
@@ -241,8 +250,12 @@ public class PlayerController : MonoBehaviour
      ============================================================================*/
     private void CursorUpdate() //Cursor related changes
     {
-        float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
-        secondaryAxis.transform.localEulerAngles = (playerPrimaryGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
+        if (playerPrimaryGenre == States.GameGenre.Shooter)
+        {
+            float aimAngle = ((Mathf.Atan2(inputMan.inputMY - Screen.height / 2, inputMan.inputMX - Screen.width / 2) * Mathf.Rad2Deg) + 360) % 360;
+            transform.eulerAngles = (playerPrimaryGenre == States.GameGenre.Platformer) ? new Vector3(-aimAngle, 90, -90) : new Vector3(0, -aimAngle + 90, 0);
+
+        }
         if (inputMan.inputFire1 == 1 && shootTimer <= 0 && playerPrimaryGenre == States.GameGenre.Shooter)
         {
             playerAudS.PlayOneShot(playerClips[4]);
@@ -341,20 +354,90 @@ public class PlayerController : MonoBehaviour
         return wallNorm != Vector3.zero;
     }
 
+    private bool EnemyCheck(Collision coll)
+    {
+        if(coll.gameObject.tag == "Enemy")
+        {
+            Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
+            Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
+            if(Physics.Raycast(rightPos, -transform.up, 0.2f, hazardMask)   //RIGHT CAST
+                                        | Physics.Raycast(leftPos, -transform.up, 0.2f, hazardMask))   //LEFT CAST
+            {
+                try
+                {
+                    PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
+                    pScript.TakeDamage(pScript.GetHealth());
+                }
+                catch (Exception e1)
+                {
+                    try
+                    {
+                        ShooterEnemy sScript = coll.collider.GetComponent<ShooterEnemy>();
+                        sScript.TakeDamage(sScript.GetHealth());
+                    }
+                    catch (Exception e2)
+                    {
+
+                    }
+                }
+                playerRigB.AddForce(transform.up * 25000.0f, ForceMode.Force);
+            }
+            else
+            {
+                try
+                {
+                    PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
+                    HealthUpdate(-pScript.GetAtkDamage());
+                }
+                catch (Exception e1)
+                {
+                    try
+                    {
+                        ShooterEnemy sScript = coll.collider.GetComponent<ShooterEnemy>();
+                        HealthUpdate(-sScript.GetAtkDamage());
+                    }
+                    catch (Exception e2)
+                    {
+
+                    }
+                }
+                if (transform.position.x >= coll.transform.position.x)
+                {
+                    Vector3 pushDir = (5 * Vector3.right + Vector3.up).normalized;
+                    playerRigB.AddForce(pushDir * 30000.0f, ForceMode.Force);
+                }
+                else
+                {
+                    Vector3 pushDir = (5 * -Vector3.right + Vector3.up).normalized;
+                    playerRigB.AddForce(pushDir * 30000.0f, ForceMode.Force);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     /*============================================================================
      * COROUTINES
      ============================================================================*/
     private IEnumerator Roll()
     {
         float tempMaxX = maxXVelocity, tempMaxY = maxXVelocity;
-        maxXVelocity /= 4;
-        maxYVelocity /= 4;
+        maxXVelocity /= rollMultiplier;
+        maxYVelocity /= rollMultiplier;
         yield return new WaitForSeconds(0.5f);
-        //rollX = inputMan.inputX;
-        //rollY = inputMan.inputY;
-        maxXVelocity = tempMaxX * 4;
-        maxYVelocity = tempMaxY * 4;
+        rolling = true;
+        maxXVelocity = tempMaxX * rollMultiplier;
+        maxYVelocity = tempMaxY * rollMultiplier;
+
+        playerRigB.AddForce(new Vector3(inputMan.inputX * xForce * rollMultiplier, 0, 0), ForceMode.VelocityChange);
+        playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce * rollMultiplier), ForceMode.VelocityChange);
+        float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);
+        float yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);
+        Utils.XYMoveRecalc(ref xClampVel, ref yClampVel);
+        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
         yield return new WaitForSeconds(0.25f);
+        rolling = false;
         maxXVelocity = tempMaxX;
         maxYVelocity = tempMaxY;
     }
@@ -399,7 +482,8 @@ public class PlayerController : MonoBehaviour
         damageTimer = 0;
         damageDelayTime = 3.0f;
 
-        rollMultiplier = 1.0f;
+        rollMultiplier = 4.0f;
+        rolling = false;
 
         grounded = false;
         walled = false;
