@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
 
     public void ShooterMoveUpdate()
     {
-        if (inputMan.inputAct7 == 1 && rollTimer <= 0) //Roll check
+        if (inputMan.inputAct3 == 1 && rollTimer <= 0) //Roll check (current mapping == q)
         {
             rollTimer = rollDelayTime;
             StartCoroutine(Roll());

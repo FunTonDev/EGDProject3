@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   facingLeft: 1
+  vertical: 0
   ranged: 1
   fullRanged: 0
   range: 5
@@ -77,7 +78,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.3, y: 1.2, z: 1.4219621}
-  m_Center: {x: -1.9380834e-16, y: 0.09910795, z: 0.13863802}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4479934465076515009
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -117,7 +118,7 @@ GameObject:
   - component: {fileID: 4473703490069860702}
   - component: {fileID: 7170428651872165169}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
