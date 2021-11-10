@@ -205,7 +205,7 @@ public class PlayerController : MonoBehaviour
         }*/
         if (!rolling)
         {
-        
+            extraBar.fillAmount = -(rollTimer - rollDelayTime) / rollDelayTime;
             playerRigB.AddForce(new Vector3(inputMan.inputX * xForce, 0, 0), ForceMode.VelocityChange);
             playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce), ForceMode.VelocityChange);
             float xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check

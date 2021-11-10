@@ -621,7 +621,7 @@ public class BattleManager : MonoBehaviour
         ender = stop;
         if (!stop && state != battleState.START)
         {
-            scroll_speed = 40;
+            scroll_speed = 20;
         }
         else
         {
@@ -688,108 +688,142 @@ public class BattleManager : MonoBehaviour
                 //Use offensive ability
                 if (actions[z].getType().Equals("Action") && state == battleState.ATTACK)
                 {
-                    int toget = actions[z].getTarget();
-                    if (EnemyMembers[toget].currentHP <= 0)
+                    if (PartyMembers[ind].currentHP > 0)
                     {
-                        while (EnemyMembers[toget].currentHP <= 0 && toget > 0)
-                        {
-                            toget--;
-                        }
-                        if (toget == 0 && EnemyMembers[toget].currentHP <= 0)
-                        {
-                            while (EnemyMembers[toget].currentHP <= 0 && toget < EnemyMembers.Count - 1)
-                            {
-                                toget++;
-                            }
-                        }
+                        int toget = actions[z].getTarget();
                         if (EnemyMembers[toget].currentHP <= 0)
                         {
-                            state = battleState.WIN;
-                            yield return battleEnd();
+                            while (EnemyMembers[toget].currentHP <= 0 && toget > 0)
+                            {
+                                toget--;
+                            }
+                            if (toget == 0 && EnemyMembers[toget].currentHP <= 0)
+                            {
+                                while (EnemyMembers[toget].currentHP <= 0 && toget < EnemyMembers.Count - 1)
+                                {
+                                    toget++;
+                                }
+                            }
+                            if (EnemyMembers[toget].currentHP <= 0)
+                            {
+                                state = battleState.WIN;
+                                yield return battleEnd();
+                            }
                         }
+
+                        string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
+
+
+                        yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName, true);
+                        yield return playerAbility(actions[z].getIndex(), toget, PartyMembers[ind], EnemyMembers[toget]);
                     }
-
-                    string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
-
-
-                    yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName, true);
-                    yield return playerAbility(actions[z].getIndex(), toget, PartyMembers[ind], EnemyMembers[toget]);                    
                 }
                 //Use Buff/Support ability (player)
                 else if (actions[z].getType().Equals("Support") && state == battleState.ATTACK)
                 {
-                    int pose = actions[z].getTarget();
-                    string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
-                    if (PartyMembers[pose] != null)
+                    if (PartyMembers[ind].currentHP > 0)
                     {
-                        if (PartyMembers[pose].currentHP > 0)
+                        int pose = actions[z].getTarget();
+                        string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
+                        if (PartyMembers[pose] != null)
                         {
-                            yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName);
-                            yield return playerAbility(actions[z].getIndex(), pose, PartyMembers[ind], PartyMembers[pose]);
+                            if (PartyMembers[pose].currentHP > 0)
+                            {
+                                yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName);
+                                yield return playerAbility(actions[z].getIndex(), pose, PartyMembers[ind], PartyMembers[pose]);
+                            }
+                            else
+                            {
+                                StartCoroutine(textDisplay(PartyMembers[ind].unitName + " used " + abiName + ", but they were too late"));
+                            }
                         }
                         else
                         {
-                            StartCoroutine(textDisplay(PartyMembers[ind].unitName + " used " + abiName + ", but they were too late"));
+                            StartCoroutine(textDisplay(PartyMembers[ind].unitName + " used " + abiName + ", but nobody was there"));
                         }
-                    }
-                    else
-                    {
-                        StartCoroutine(textDisplay(PartyMembers[ind].unitName + " used " + abiName + ", but nobody was there"));
                     }
                 }
                 //Use basic attack
                 else if (actions[z].getType().Equals("Attack") && state == battleState.ATTACK)
                 {
-                    int toget = actions[z].getTarget();
-
-                    if (EnemyMembers[toget].currentHP <= 0)
+                    if (PartyMembers[ind].currentHP > 0)
                     {
-                        while (EnemyMembers[toget].currentHP <= 0 && toget > 0)
-                        {
-                            toget--;
-                        }
-                        if (toget == 0 && EnemyMembers[toget].currentHP <= 0)
-                        {
-                            while (EnemyMembers[toget].currentHP <= 0 && toget < EnemyMembers.Count - 1)
-                            {
-                                toget++;
-                            }
-                        }
+                        int toget = actions[z].getTarget();
+
                         if (EnemyMembers[toget].currentHP <= 0)
                         {
-                            state = battleState.WIN;
-                            yield return battleEnd();
+                            while (EnemyMembers[toget].currentHP <= 0 && toget > 0)
+                            {
+                                toget--;
+                            }
+                            if (toget == 0 && EnemyMembers[toget].currentHP <= 0)
+                            {
+                                while (EnemyMembers[toget].currentHP <= 0 && toget < EnemyMembers.Count - 1)
+                                {
+                                    toget++;
+                                }
+                            }
+                            if (EnemyMembers[toget].currentHP <= 0)
+                            {
+                                state = battleState.WIN;
+                                yield return battleEnd();
+                            }
                         }
+
+                        yield return textDisplay(PartyMembers[ind].unitName + " attacked the enemy", true);
+                        yield return basicAttack(PartyMembers[ind], EnemyMembers[toget]);
                     }
-                    
-                    yield return textDisplay(PartyMembers[ind].unitName + " attacked the enemy", true);
-                    yield return basicAttack(PartyMembers[ind], EnemyMembers[toget]);
                 }
                 //Have unit defend themselves
                 else if (actions[z].getType().Equals("Defend") && state == battleState.ATTACK)
                 {
-                    int toget = actions[z].getTarget();
-                    PartyMembers[toget].defending = true;
-                    partyPrefabs[toget].GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1.0f);
-                    yield return textDisplay(PartyMembers[ind].unitName + " defended themself", true);
+                    if (PartyMembers[ind].currentHP > 0)
+                    {
+                        int toget = actions[z].getTarget();
+                        PartyMembers[toget].defending = true;
+                        partyPrefabs[toget].GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1.0f);
+                        yield return textDisplay(PartyMembers[ind].unitName + " defended themself", true);
+                    }
                 }
                 //Have enemy use offensive ability
                 else if (actions[z].getType().Equals("enemyAttack") && state == battleState.ATTACK)
                 {
-                    Debug.Log("Enemy Attacking");
-                    //EnemyMembers[ind].changeSprite(1);
-                    int toget = actions[z].getTarget();
-                    if (PartyMembers[toget] != null)
+                    if (EnemyMembers[ind].currentHP > 0)
                     {
-                        Debug.Log("Party " + toget + " not null");
-                        if (PartyMembers[toget].currentHP > 0)
+                        Debug.Log("Enemy Attacking");
+                        //EnemyMembers[ind].changeSprite(1);
+                        int toget = actions[z].getTarget();
+                        if (PartyMembers[toget] != null)
                         {
-                            Debug.Log("Party has HP");
-                            yield return textDisplay(EnemyMembers[ind].unitName + " used " +
-                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName, true);
-                            yield return enemyAttack(actions[z].getIndex(), toget, EnemyMembers[ind], PartyMembers[toget]);
+                            Debug.Log("Party " + toget + " not null");
+                            if (PartyMembers[toget].currentHP > 0)
+                            {
+                                Debug.Log("Party has HP");
+                                yield return textDisplay(EnemyMembers[ind].unitName + " used " +
+                                    EnemyMembers[ind].abilities[actions[z].getIndex()].actionName, true);
+                                yield return enemyAttack(actions[z].getIndex(), toget, EnemyMembers[ind], PartyMembers[toget]);
+                            }
+                            //If dead unit at position
+                            else
+                            {
+                                if (partyDeaths < activeUnits)
+                                {
+                                    int baseNum = toget;
+                                    while (PartyMembers[toget] == null || PartyMembers[toget].currentHP <= 0 || toget == baseNum)
+                                    {
+                                        toget = Random.Range(0, PartyMembers.Count);
+                                    }
+                                    yield return textDisplay(EnemyMembers[ind].unitName + " used " +
+                                    EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
+                                    yield return enemyAttack(actions[z].getIndex(), toget, EnemyMembers[ind], PartyMembers[toget]);
+                                }
+                                else
+                                {
+                                    state = battleState.WIN;
+                                    yield return battleEnd();
+                                }
+                            }
                         }
-                        //If dead unit at position
                         else
                         {
                             if (partyDeaths < activeUnits)
@@ -800,8 +834,9 @@ public class BattleManager : MonoBehaviour
                                     toget = Random.Range(0, PartyMembers.Count);
                                 }
                                 yield return textDisplay(EnemyMembers[ind].unitName + " used " +
-                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
-                                yield return enemyAttack(actions[z].getIndex(), toget, EnemyMembers[ind], PartyMembers[toget]);
+                                    EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
+                                yield return enemyAttack(actions[z].getIndex(), toget,
+                                    EnemyMembers[ind], PartyMembers[toget]);
                             }
                             else
                             {
@@ -809,56 +844,39 @@ public class BattleManager : MonoBehaviour
                                 yield return battleEnd();
                             }
                         }
+                        yield return new WaitForSeconds(0.5f);
+                        //EnemyMembers[ind].changeSprite(0);
                     }
-                    else
-                    {
-                        if (partyDeaths < activeUnits)
-                        {
-                            int baseNum = toget;
-                            while (PartyMembers[toget] == null || PartyMembers[toget].currentHP <= 0 || toget == baseNum)
-                            {
-                                toget = Random.Range(0, PartyMembers.Count);
-                            }
-                            yield return textDisplay(EnemyMembers[ind].unitName + " used " +
-                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
-                            yield return enemyAttack(actions[z].getIndex(), toget,
-                                EnemyMembers[ind], PartyMembers[toget]);
-                        }
-                        else
-                        {
-                            state = battleState.WIN;
-                            yield return battleEnd();
-                        }
-                    }
-                    yield return new WaitForSeconds(0.5f);
-                    //EnemyMembers[ind].changeSprite(0);
                 }
                 //Enemy performs a non-offensive ability
                 else if (actions[z].getType().Equals("enemyAction") && state == battleState.ATTACK)
                 {
-                    //EnemyMembers[ind].changeSprite(1);
-                    if (EnemyMembers[actions[z].getTarget()] != null)
+                    if (EnemyMembers[ind].currentHP > 0)
                     {
-                        if (EnemyMembers[actions[z].getTarget()].currentHP > 0)
+                        //EnemyMembers[ind].changeSprite(1);
+                        if (EnemyMembers[actions[z].getTarget()] != null)
                         {
-                            yield return textDisplay(EnemyMembers[ind].unitName + " used " +
-                                EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
-                            yield return enemyAbility(actions[z].getIndex(), actions[z].getTarget(),
-                                EnemyMembers[ind], EnemyMembers[actions[z].getTarget()]);
+                            if (EnemyMembers[actions[z].getTarget()].currentHP > 0)
+                            {
+                                yield return textDisplay(EnemyMembers[ind].unitName + " used " +
+                                    EnemyMembers[ind].abilities[actions[z].getIndex()].actionName);
+                                yield return enemyAbility(actions[z].getIndex(), actions[z].getTarget(),
+                                    EnemyMembers[ind], EnemyMembers[actions[z].getTarget()]);
+                            }
+                            else
+                            {
+                                yield return textDisplay(EnemyMembers[ind].unitName + " tried supporting " +
+                                    EnemyMembers[actions[z].getTarget()].unitName + ", but they weren't there");
+                            }
                         }
                         else
                         {
-                            yield return textDisplay(EnemyMembers[ind].unitName + " tried supporting " +
-                                EnemyMembers[actions[z].getTarget()].unitName + ", but they weren't there");
+                            yield return textDisplay(EnemyMembers[ind].unitName + " tried using ability," +
+                                " but nobody was there");
                         }
+                        yield return new WaitForSeconds(0.5f);
+                        //EnemyMembers[ind].changeSprite(0);
                     }
-                    else
-                    {
-                        yield return textDisplay(EnemyMembers[ind].unitName + " tried using ability," +
-                            " but nobody was there");
-                    }
-                    yield return new WaitForSeconds(0.5f);
-                    //EnemyMembers[ind].changeSprite(0);
                 }
                 else
                 {
