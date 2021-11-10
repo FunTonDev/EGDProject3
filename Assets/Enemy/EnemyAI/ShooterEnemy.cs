@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ShooterEnemy : Enemy
 {
+    [Header("Shooter Enemey Class")]
 
     //[SerializeField] private NavMeshAgent agent;
 
+    [Header("Enemey Type")]
     [SerializeField] private bool ranged;    //Melee or ranged attacked
     [SerializeField] private bool follow;   //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
     [SerializeField] private bool sentry;  //Doesn't move from initial spot
@@ -15,6 +17,7 @@ public class ShooterEnemy : Enemy
     private bool PlayerInSightRange, PlayerInAtkRange, PlayerInBufferRange;
     [SerializeField] private bool turnLeft;
 
+    [Header("Detection and movement values")]
     private float detctRadius;                        //Radius of their detection Circle
     private float AtkDist;                           //Distance of attack
     [SerializeField] private float mindetctRadius;  //minRadius of their detection Circle
@@ -32,6 +35,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private GameObject AttackObj;
     [SerializeField] private GameObject AttackObj2;
 
+    //For FoV script
     public float GetDetctRadius() { return detctRadius; }
     public float GetAtkDist() { return AtkDist; }
     public float GetAtkAngle() { return AtkAngle; }

@@ -18,8 +18,11 @@ public abstract class Enemy : MonoBehaviour
     protected float axisLevel;
 
     [Header("Genre")]
-    [SerializeField] protected bool platformer, shooter, rpg;   //Genre
+    [SerializeField] protected bool platformer;
+    [SerializeField] protected bool shooter;
+    [SerializeField] protected bool rpg;
     
+
     [SerializeField] protected List<Transform> pathNodes;
     protected int currNode = 0;
 
