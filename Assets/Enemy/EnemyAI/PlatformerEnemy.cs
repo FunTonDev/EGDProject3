@@ -103,7 +103,7 @@ public class PlatformerEnemy : Enemy
         //If enemy attack cooldown is done
         if (timeBtwAtk <= 0)
         {
-            Debug.Log("Enemy performed attack");
+            //Debug.Log("Enemy performed attack");
             if (ranged)
             {
                 Vector3 spawnPos = this.transform.position;
@@ -184,7 +184,7 @@ public class PlatformerEnemy : Enemy
         //else if(rgbdy.velocity.y <= 0.01f && collision.collider.tag != "Ground")
         else if (collision.collider.tag != "Ground" && rgbdy.velocity.y < 1f)
         {                
-            Debug.Log(string.Format("{0} flipped direction", this.name));
+            //Debug.Log(string.Format("{0} flipped direction", this.name));
 
             facingLeft = !facingLeft;   
                 
