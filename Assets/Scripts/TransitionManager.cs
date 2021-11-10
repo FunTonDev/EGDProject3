@@ -16,7 +16,6 @@ public class TransitionManager : MonoBehaviour
     public int toSwitch;
     public bool isCompleted = false;
 
-
     public void MouseAudioTrigger(AudioClip tClip)
     {
         navSource.PlayOneShot(tClip);
@@ -41,7 +40,6 @@ public class TransitionManager : MonoBehaviour
     public void SceneSwitch(string sceneStr)
     {
         Debug.Log("Go to next scene");
-        SceneManager.LoadSceneAsync(sceneStr);
         string sceneText = "Loading ";
         switch (sceneText)
         {
@@ -65,6 +63,7 @@ public class TransitionManager : MonoBehaviour
         loadingGroup.transform.GetChild(1).GetComponent<Text>().text = sceneText;
         loadingGroup.SetActive(true);
         StartCoroutine(TextUpdater(sceneText));
+        SceneManager.LoadScene(sceneStr);
     }
 
     public IEnumerator TextUpdater(string ori)
