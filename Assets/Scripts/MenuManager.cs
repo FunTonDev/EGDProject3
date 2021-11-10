@@ -405,5 +405,21 @@ public class MenuManager : MonoBehaviour
     {
         menuSource.PlayOneShot(tClip);
     }
+
+    public void testSceneLoader(int num)
+    {
+        switch(num)
+        {
+            case 0:
+                SceneManager.LoadScene("PlatformerWorld");
+                break;
+            case 1:
+                SceneManager.LoadScene("ShooterWorld");
+                break;
+            case 2:
+                SceneManager.LoadScene("RPGBattle");
+                break;
+        }
+    }
 }
 

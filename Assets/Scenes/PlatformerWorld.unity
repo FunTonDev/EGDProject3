@@ -5663,6 +5663,7 @@ MonoBehaviour:
   camVelX: 0
   camVelY: 0
   isTrackingMovement: 0
+  shaking: 0
   currMode: 0
 --- !u!114 &692213420
 MonoBehaviour:
@@ -11326,6 +11327,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6677177545914274467, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
+      propertyPath: m_Volume
+      value: 0.65
+      objectReference: {fileID: 0}
     - target: {fileID: 6677177545914274468, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: m_RootOrder
       value: 3
