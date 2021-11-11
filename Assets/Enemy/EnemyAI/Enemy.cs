@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public abstract class Enemy : MonoBehaviour
 {
+    [Header("Enemy Base Class Variables")]
     [SerializeField] protected string type;                     //Name (Ex: TestBox)
 
     [SerializeField] protected float health;
@@ -16,17 +17,19 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected int detectionLvl;                // 0,1,2
     protected float axisLevel;
 
-    [SerializeField] protected bool platformer, shooter, rpg;   //Genre
+    [Header("Genre")]
+    [SerializeField] protected bool platformer;
+    [SerializeField] protected bool shooter;
+    [SerializeField] protected bool rpg;
     
+
     [SerializeField] protected List<Transform> pathNodes;
     protected int currNode = 0;
 
     protected Rigidbody rgbdy;
     protected GameObject player;
 
-    protected NavMeshAgent NavAgent;
-
-    
+    protected NavMeshAgent NavAgent;    
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +41,7 @@ public abstract class Enemy : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
 
-        if (shooter || rpg)
+        if (shooter || rpg )
         {
             axisLevel = player.transform.position.y;
             if (shooter)
@@ -60,22 +63,18 @@ public abstract class Enemy : MonoBehaviour
     void Update()
     {
         ClassUpdate();
-
-        if (shooter || rpg)
+                
+        if (shooter )
         {
             axisLevel = player.transform.position.y;
-            if (shooter)
-            {
-                NavAgent = GetComponent<NavMeshAgent>();
-                NavAgent.speed = moveSpd;
-            }
-
         }
 
+        /*
         else
         {
             axisLevel = player.transform.position.z;
         }
+        */
     }
 
     //A start function for each specfic class to be define behaviours specific to them
@@ -172,5 +171,25 @@ public abstract class Enemy : MonoBehaviour
     {
         Debug.Log(string.Format("Enemy {0} destroyed", type));
         Destroy(this.gameObject);
+    }
+
+    private void OnTriggerStay(Collider coll)
+    {
+        if(coll.tag == "Volume")
+        {
+            TriggerVolume tV = coll.GetComponent<TriggerVolume>();
+            if(tV.primaryGenre == States.GameGenre.Platformer)
+            {
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, tV.transform.position.z);
+                axisLevel = tV.transform.position.z;
+            }
+
+            else if (tV.primaryGenre == States.GameGenre.RPG)
+            {
+                this.transform.position = new Vector3(this.transform.position.x, tV.transform.position.y, this.transform.position.z);
+                axisLevel = tV.transform.position.y;
+            }
+
+        }
     }
 }

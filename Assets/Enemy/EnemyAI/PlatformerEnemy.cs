@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlatformerEnemy : Enemy
 {
+    [Header("Platformer Enemey Class")]
+
     [SerializeField] private bool facingLeft;       //Direction Enemy is facing
     [SerializeField] private bool vertical;        //Is their path vertical
     [SerializeField] private bool ranged;         //If true, enemy can perform ranged attacks
@@ -18,7 +20,7 @@ public class PlatformerEnemy : Enemy
 
     private SpriteRenderer sprite;
 
-
+    //For the FOV Script
     public bool GetFullRanged() { return fullRanged; }
     public float GetRange() { return range; }
 

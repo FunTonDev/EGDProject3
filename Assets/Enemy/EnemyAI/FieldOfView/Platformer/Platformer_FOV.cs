@@ -13,8 +13,8 @@ public class Platformer_FOV : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        fullRanged = this.GetComponent<PlatformerEnemy>().GetFullRanged(); ;
-        radius = this.GetComponent<PlatformerEnemy>().GetRange(); ;
+        fullRanged = this.GetComponent<PlatformerEnemy>().GetFullRanged(); 
+        radius = this.GetComponent<PlatformerEnemy>().GetRange(); 
     }
 
     public bool FindVisibleTargets()

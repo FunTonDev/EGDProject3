@@ -198,7 +198,7 @@ public class Mama : Unit
 {
     public Mama(int lv = 1)
     {
-        unitName = "Mama";
+        unitName = "Knight";
         spriteFilePath = "Art/Placeholder/mama.jfif";
         loadSprites();
         setStats(lv);
@@ -210,7 +210,7 @@ public class Hound : Unit
 {
     public Hound(int lv = 1)
     {
-        unitName = "Hound";
+        unitName = "Bear";
         spriteFilePath = "Art/Placeholder/Dog.jfif";
         loadSprites();
         setStats(lv);
@@ -223,7 +223,7 @@ public class Slime : Unit
 {
     public Slime(int lv = 1)
     {
-        unitName = "Slime";
+        unitName = "Soldier";
         spriteFilePath = "Art/Placeholder/BasicSlime";
         loadSprites();
         setStats(lv);
@@ -248,7 +248,7 @@ public class Skeleton : Unit
 {
     public Skeleton(int lv = 1)
     {
-        unitName = "Skeleton";
+        unitName = "Wizard";
         spriteFilePath = "Art/Placeholder/Skeletoj";
         loadSprites();
         setStats(lv);

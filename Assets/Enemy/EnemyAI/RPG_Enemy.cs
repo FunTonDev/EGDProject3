@@ -4,13 +4,27 @@ using UnityEngine;
 
 public class RPG_Enemy : Enemy
 {
-    [SerializeField] private int TileVisionRange;   //How many tiles they can see in front of them
+    [Header("RPG Enemey Class")]
 
-    
+    [SerializeField] private int TileVisionRange;               //How many tiles they can see in front of them
+
+    [Header("Looking Around (directions index is north, east, south, and west)")]    
+    [SerializeField] [Range(0.0f, 1.01f)] private float chanceToLook;   //Compared to random number from 0-1, if Random # is <= chanceToLook, look in dir  
+    [SerializeField] private int minLookTime, maxLookTime;             //How short and long an emeny can look in a specific direction
+    [SerializeField] private List<bool> directions;                   //Which directions the enemy can look in. Index 0-3 for north, east, south, west respectively
+   
+
+
     [HideInInspector] public GameObject closestTile;
 
     private bool pathForward;
     private bool lookingInDir;
+    private bool playerSpotted;
+
+    //For the FOV Script
+    public int GetTileVisionRange() { return TileVisionRange; }
+    public int GetPathNodeCount() { return pathNodes.Count; }
+    public Transform GetPathNode(int index) {return pathNodes[index];}
 
     public override void ClassStart()
     {
@@ -20,14 +34,25 @@ public class RPG_Enemy : Enemy
 
     public override void ClassUpdate()
     {
+        playerSpotted = CheckForPlayer();
+
+        /*
+        //Stop Coroutine
+        if(playerSpotted && lookingInDir)
+        {
+            StopCoroutine("LookInAllDir");
+        }
+        */
+
         //When arriving at a node, looking in specific directions   
         if (this.transform.position == pathNodes[this.currNode].GetComponent<Transform>().position && !lookingInDir)
         {
             lookingInDir = true;
-            StartCoroutine(LookInAllDir());            
+            
+            StartCoroutine("LookInAllDir");            
         }
 
-        else if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position)
+        else if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position && !lookingInDir)
         {
             Move(Vector3.zero);            
         }
@@ -80,67 +105,110 @@ public class RPG_Enemy : Enemy
 
     public bool CheckForPlayer()
     {
-        RaycastHit hitInfo;
-        if(Physics.Raycast(this.transform.position, this.transform.forward, out hitInfo, TileVisionRange))
-                    {
-            if (hitInfo.collider.tag == "Player")
-            {
-                Debug.Log("Player spotted!");
-                return true;
-            }
-        }
-
-        return false;
+        return this.GetComponent<RPG_FOV>().FindVisibleTarget(); 
     }
 
     void LookInDir(char dir)
     {
-        //Look north/up
-        if (dir == 'n' || dir == 'u')
+        //Relative to player
+        //Look forward
+        if (dir == 'n' || dir == 'f')
+        { this.transform.Rotate(0, 0, 0); }// this.transform.eulerAngles = new Vector3(0, 0, 0); }
+
+        //look right
+        else if (dir == 'r')
+        { this.transform.Rotate(0, 90, 0); }//this.transform.eulerAngles = new Vector3(0, 90, 0); }
+
+        //look left
+        else if ( dir == 'l')
+        { this.transform.Rotate(0, 90, 0); } //this.transform.eulerAngles = new Vector3(0, -90, 0); }
+
+        //look behind
+        else if ( dir == 'b')
+        { this.transform.Rotate(0, 90, 0); } //this.transform.eulerAngles = new Vector3(0, 180, 0); }
+
+        //Relative to Map
+        //Look north
+        if (dir == 'n' )
         { this.transform.eulerAngles = new Vector3(0, 0, 0); }
 
-        //look east/right
-        else if (dir == 'e' || dir == 'r')
+        //look east
+        else if (dir == 'e')
         { this.transform.eulerAngles = new Vector3(0, 90, 0); }
 
-        //look west/left
-        else if (dir == 'w' || dir == 'l')
+        //look west
+        else if (dir == 'w' )
         { this.transform.eulerAngles = new Vector3(0, -90, 0); }
 
-        //look south/down
-        else if (dir == 's' || dir == 'd')
+        //look south
+        else if (dir == 's')
         { this.transform.eulerAngles = new Vector3(0, 180, 0); }
+    }
+
+    float RandomTime()
+    {
+        return Random.RandomRange(minLookTime, maxLookTime);
+    }
+
+    bool ChanceToLookInDir()
+    {
+        if(chanceToLook > Random.Range(0.0f, 1.0f))
+        {return true;}
+
+        return false;
     }
 
 
     IEnumerator LookInAllDir()
     {
         Debug.Log("LookInAllDir() called");
+        /*
+        Vector3 nextspot = PathFollow();
+        if (currNode != 0 || currNode != pathNodes.Count)
+        { this.transform.LookAt(nextspot); }
+        */
+       
+        //Can look foward
+        if (directions[0] && ChanceToLookInDir())
+        {
+            LookInDir('n');
+            float sec = RandomTime();
+            //Debug.Log("Looking north for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
 
-        //Debug.Log("Looking north");
-        LookInDir('n');
-        yield return new WaitForSeconds(2);
 
-        //Debug.Log("Looking east");
-        LookInDir('e');
-        yield return new WaitForSeconds(2);
+        //Can look right
+        if (directions[1] && ChanceToLookInDir())
+        {
+            LookInDir('e');
+            float sec = RandomTime();
+            //Debug.Log("Looking east for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
 
-        //Debug.Log("Looking south");
-        LookInDir('s');
-        yield return new WaitForSeconds(2);
+        //Can look behind
+        if (directions[2] && ChanceToLookInDir())
+        {
+            LookInDir('s');
+            float sec = RandomTime();
+            //Debug.Log("Looking south for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
 
-        //Debug.Log("Looking west");
-        LookInDir('w');
-        yield return new WaitForSeconds(2);
+        //Can look left
+        if (directions[3] && ChanceToLookInDir())
+        {
+            LookInDir('w');
+            float sec = RandomTime();
+            //Debug.Log("Looking west for " + sec + " seconds");
+            yield return new WaitForSeconds(sec);
+        }
 
         Debug.Log("LookInAllDir() finished");
         lookingInDir = false;
         Move(Vector3.zero);
     }
-
-
-
-
 
 
     /*

@@ -81,6 +81,7 @@ public class TriggerVolume : MonoBehaviour
                     break;
             }
         }
+        
     }
 
     private void OnTriggerStay(Collider coll)
