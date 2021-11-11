@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         dead = false;
         genreMain = States.GameGenre.Platformer;
         duration = 0.0f;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
         SetUpScene();
         gameAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
     }

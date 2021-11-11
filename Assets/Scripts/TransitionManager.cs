@@ -63,7 +63,7 @@ public class TransitionManager : MonoBehaviour
         loadingGroup.transform.GetChild(1).GetComponent<Text>().text = sceneText;
         loadingGroup.SetActive(true);
         StartCoroutine(TextUpdater(sceneText));
-        SceneManager.LoadScene(sceneStr);
+        SceneManager.LoadSceneAsync(sceneStr);
     }
 
     public IEnumerator TextUpdater(string ori)

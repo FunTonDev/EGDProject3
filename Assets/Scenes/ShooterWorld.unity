@@ -6186,13 +6186,13 @@ MonoBehaviour:
   genreExtra1: 0
   genreExtra2: 0
   gameAudio: {fileID: 0}
-  platformerMusic1: {fileID: 0}
-  platformerMusic2: {fileID: 0}
-  shooterMusic1: {fileID: 0}
-  shooterMusic2: {fileID: 0}
-  RPGMusic1: {fileID: 0}
-  RPGMusic2: {fileID: 0}
-  HubMusic: {fileID: 0}
+  platformerMusic1: {fileID: 8300000, guid: 19a15fa906f1a4444b91c38fd37a7854, type: 3}
+  platformerMusic2: {fileID: 8300000, guid: 4c52390ad2a96ad4ca35b379ca86fee9, type: 3}
+  shooterMusic1: {fileID: 8300000, guid: 303a3f5617def28459fb99b6b4df31bc, type: 3}
+  shooterMusic2: {fileID: 8300000, guid: 5cd0a7474a5dd3e4895f6c734c250ef2, type: 3}
+  RPGMusic1: {fileID: 8300000, guid: 88711c1876424d545b0fd204fe62bf82, type: 3}
+  RPGMusic2: {fileID: 8300000, guid: c373225256f757c4e8e155f99a80386b, type: 3}
+  HubMusic: {fileID: 8300000, guid: 490c967c89489e644be9489b2dac268a, type: 3}
   duration: 0
 --- !u!4 &729373082
 Transform:
