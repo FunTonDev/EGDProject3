@@ -4,40 +4,57 @@ using UnityEngine;
 
 public class scrollingBg : MonoBehaviour
 {
-    public InputManager inputMan;
+    private InputManager inputMan;
+    private PlayerController playerCont;
 
-    public PlayerController pla;
+    [Header("Components")]
+    public Material bgMat;
+    public GameObject bgPrefab;
+    private List<GameObject> bgObjs;
 
-    [SerializeField]
-    public float moveSpeed = 1f;
-
-    [SerializeField]
-
-    public float offset;
-
-    private Vector3 startPosition;
-
-    private Quaternion startRotation;
-
-    private float neXPosition;
-    private float neYPosition;
+    [Header("Variables")]
+    public bool isStaticObject;
+    public bool LoopingX;
+    [Range(0, 1)] public float xWeight;
+    [Range(0, 1)] public float yWeight;
+    
 
     private void Start()
     {
-        startPosition = transform.position;
-        startRotation = transform.rotation;
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
-        pla = GameObject.Find("PlayerPrefab").GetComponent<PlayerController>();
-
+        playerCont = GameObject.Find("PlayerPrefab").GetComponent<PlayerController>();
+        bgObjs = new List<GameObject>();
+        CloneBG(new Vector3(21.25f, 0, 0));
+        CloneBG(new Vector3(-21.25f, 0, 0));
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (pla.playerRigB.velocity.x != 0)
-        neXPosition = pla.transform.position.x * 0.3f;
-        if (pla.playerRigB.velocity.y != 0)
-        neYPosition = pla.transform.position.y * 0.8f;
-        transform.position = startPosition + (Vector3.right * neXPosition * (pla.playerRigB.velocity.x)/6) + (Vector3.up * neYPosition);
-        transform.rotation = startRotation;
+        //transform.position = new Vector3(playerCont.gameObject.transform.position.x, playerCont.gameObject.transform.position.y, transform.position.z);
+        MoveBGGroup();
+    }
+
+    private void MoveBGGroup()
+    {
+        float velX = -playerCont.playerRigB.velocity.x * xWeight;
+        float velY = -playerCont.playerRigB.velocity.y * yWeight;
+        foreach (GameObject g in bgObjs)
+        {
+            g.GetComponent<Rigidbody>().velocity = new Vector3(velX, velY, 0);
+            /*if (!g.GetComponent<MeshRenderer>().isVisible)
+            {
+                Debug.Log(g.name + " NOT VISIBLE");
+                //Destroy(g);
+            }*/
+        }
+    }
+
+    private void CloneBG(Vector3 startPos = default(Vector3))
+    {
+        GameObject newBG = Instantiate(bgPrefab, transform);
+        newBG.transform.localPosition = startPos;
+        newBG.GetComponent<MeshRenderer>().material = bgMat;
+        bgObjs.Add(newBG);
+        Debug.Log(newBG.GetComponent<MeshRenderer>().bounds);
     }
 }

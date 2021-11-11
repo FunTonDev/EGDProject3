@@ -53,7 +53,9 @@ public class GameMenuManager : MonoBehaviour
         if (currentSection == States.MenuSection.Main)
         {
             mainIndex += ((navDiff < 0 && mainIndex > 0) || (navDiff > 0 && mainIndex < mainButtons.Count - 1)) ? navDiff : 0;
-            mainButtons[mainIndex].Select();
+            Debug.Log(mainButtons[mainIndex].name);
+            //mainButtons[mainIndex].Select();
+            mainButtons[mainIndex].gameObject.GetComponent<Button>().Select();
         }
         else
         {

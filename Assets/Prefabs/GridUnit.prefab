@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7848288845327019500}
   - component: {fileID: 5973570843785171038}
   - component: {fileID: 8259064351696607718}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GridUnit
   m_TagString: Grid
   m_Icon: {fileID: 0}
@@ -57,3 +57,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b9445521486e54b9827e4dcbf326c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  occupied: 0
