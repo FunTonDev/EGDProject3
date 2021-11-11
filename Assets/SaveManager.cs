@@ -67,6 +67,8 @@ public class SaveFile
 
     public bool platStart;              //Whether platformer stage started (whether to display cutscene)
 
+    public bool inPlat;
+
     public bool platDone;
 
     public bool platCollect;

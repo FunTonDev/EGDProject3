@@ -54,17 +54,21 @@ public class CutsceneManager : MonoBehaviour
             case 0:         //Hub events
                 if (!so.gameStart)
                 {
-                    //Conveyor Belt Scene
+                    //Conveyor Belt Scene (4)
                     storeText.Add("Ever wonder how Pixels are made?");
                     storeText.Add("Each one is made to serve a purpose");
                     storeText.Add("However, sometimes things don’t always go according to plan...");
                     storeText.Add("Especially when things get...Interesting...");
 
-                    //Pixal Meets Coder
+                    //Pixal Meets Coder (3)
                     storeText.Add("Egads! What was that noise?");
                     storeText.Add("Ahh I see, I wonder how that managed to happen. Maybe a context switch gone astray…");
                     storeText.Add("No matter, I had debugging scheduled for today anyway.");
+
+                    //Pixal has goop hat by this point (1)
                     storeText.Add("Ack! Good grief, remove that corrupted goop from yourself this instant!");
+                    //Pixal loses hat
+                    //Pixal learns stuff (8)
                     storeText.Add("My my, you weren’t even phased. Hold on a moment...maybe this is the solution I have been looking for all along!");
                     storeText.Add("Ugh, where are my manners.");
                     storeText.Add("*Ahem*");
@@ -73,13 +77,15 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("But you… you seem to be unaffected by it.");
                     storeText.Add("Hmm, that’s interesting, I can’t seem to get a read on you. Regardless, something must be done as this goop is everywhere. Please, I need your help in getting rid of this virus.");
                     storeText.Add("Ahh, thank you so much uhhh...Pixal! Ah yes, that’s right, that is your name. So, let us get started then...");
+                    //Coder displays map on screen (7)
                     storeText.Add("What you are looking at is a map of the games I manage, and as you can see here, these genres have had a high concentration of the virus.");
                     storeText.Add("Unfortunately, the map hasn’t been elucidated since these areas have already been contaminated, so you will be walking among uncharted territories.");
                     storeText.Add("Your job is to go into these areas and exterminate the virus. Be warned, each area is different so you should know what you’re getting yourself into.");
                     storeText.Add("Here we have the RPG, go there if you want a fantastical journey and meet some friends.");
                     storeText.Add("The Shooter is where bullet hell mayhem will ensue.");
-                    storeText.Add("Finally, the platformer where a princess must be saved.");
+                    storeText.Add("Finally, the platformer where a queen must be saved.");
                     storeText.Add("So, have at it and take your pick.");
+                    //Screen fades to black, back to HUB world
 
                     for (int i = 0; i < 4; i++)
                     {
@@ -94,7 +100,25 @@ public class CutsceneManager : MonoBehaviour
             case 1:         //Platformer events
                 if (!so.platStart)
                 {
+                    //Pixal finds castle wall, jumps over it using a platform into the castle
+                    //No dialogue
+                }
+                else if (!so.inPlat)
+                { 
 
+                    storeText.Add("“Hey you! Uhh, do you think you can help me out here? Just uhh, jump and get me, I know you can do it! I believe in you!”");
+                    //Pixal then air dashes and hits the cage Cecilia is in. As the cage breaks, she falls down and sticks the landing, thus talking to Pixal-
+                    storeText.Add("Thank you so much, when the queen said ‘hang out’, I thought she meant something different.");
+                    storeText.Add("Huh, looks like you haven’t been assigned yet, what is your name by the way?");
+                    storeText.Add("Well Pixal, thank you for saving my rump, much appreciated.");
+                    storeText.Add("Man, seeing the way you look reminds me of the good ol’ factory days where we all would just bum around, waiting for our calling...");
+                    storeText.Add("Thankfully though, I feel like I became who I was meant to be: a Jokester whose job it was to make people smile and protect those I love.");
+                    storeText.Add("What I will say though is that it is hard sometimes to always put up a positive front, even when sometimes deep down I do get sad,");
+                    storeText.Add("but seeing those smiles always warms my heart and reminds why I do what I do.");
+                    storeText.Add("Lately however, the queen ain’t doing much smiling, and that don’t make me smile.");
+                    //Pixal shows Cecilia the glitch goop (either as hat or in central area
+                    storeText.Add("Now wait a minute, that’s the same stuff the queen got on her crown, maybe thats why she’s been acting up lately. Please save her, she’s that way!");
+                    //Pixal goes off to save the queen (moves right off screen
                 }
                 else
                 {
