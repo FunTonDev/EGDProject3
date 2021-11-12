@@ -14,7 +14,7 @@ public class ShooterEnemy : Enemy
     [SerializeField] private bool sentry;  //Doesn't move from initial spot
     private bool agroMode;                //Enemy detection radius expands after player enters it visions or attacks enemy
 
-    private bool PlayerInSightRange, PlayerInAtkRange, PlayerInBufferRange;
+    private bool PlayerInSightRange, PlayerInAtkRange, PlayerInBufferRange, attacking;
     [SerializeField] private bool turnLeft;
 
     [Header("Detection and movement values")]
@@ -44,7 +44,7 @@ public class ShooterEnemy : Enemy
 
     public override void ClassStart()
     {
-        
+        attacking = false;
     }
 
     public override void ClassUpdate()
@@ -65,10 +65,15 @@ public class ShooterEnemy : Enemy
         PlayerInSightRange = PlayerInDetectionRange();
         PlayerInAtkRange = PlayerInAttackVision();
         PlayerInBufferRange = PlayerInBufferCircle();
-               
+
+        //If enemy is already attacking player
+        if (attacking)
+        {
+
+        }
 
         //If enemy should be attacking the player
-        if (PlayerInAtkRange)
+        else if (PlayerInAtkRange)
         {
             agroMode = true;
             AttackPlayer();
@@ -197,8 +202,7 @@ public class ShooterEnemy : Enemy
     private void AttackPlayer()
     {
         Attack();
-
-
+        
         NavAgent.SetDestination(this.transform.position);
         //transform.position = new Vector3(this.transform.position.x, 0.5f, this.transform.position.z);
 
@@ -225,33 +229,53 @@ public class ShooterEnemy : Enemy
 
     }
 
+    IEnumerator RangedAttack()
+    {        
+        yield return new WaitForSeconds(1);
+
+        Debug.Log("Ranged attacked called");
+
+        Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
+        Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver
+        //Instantiate(AttackObj2, spawnPos, transform.rotation).GetComponent<Bullet>().Init(gameObject.tag, 10.0f);  
+
+        attacking = false;
+        timeBtwAtk = StartTimeBtwAtk;
+    }
+
+    IEnumerator MeleeAttack()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        Debug.Log("Melee attacked called");
+
+        Vector3 spawnPos = this.transform.position + (this.transform.forward * 0.75f);
+        spawnPos.y = 0.5f;
+        Instantiate(AttackObj, spawnPos, this.transform.rotation);
+
+        yield return new WaitForSeconds(0.5f);
+
+        attacking = false;
+        timeBtwAtk = StartTimeBtwAtk;
+    }
 
     public void Attack()
     {
         //If enemy attack cooldown is done
         if(timeBtwAtk <= 0)
         {
+            attacking = true;
             if (ranged)
             {
-                Debug.Log("Ranged attacked called");
-
-                Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
-
-                //Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver
-                Instantiate(AttackObj2, spawnPos, transform.rotation).GetComponent<Bullet>().Init(gameObject.tag, 10.0f);   
+                StartCoroutine("RangedAttack");
             }
 
             //Melee attack
             else
             {
-                Debug.Log("Melee attacked called");
-
-                Vector3 spawnPos = this.transform.position + (this.transform.forward * 0.75f);
-                spawnPos.y = 0.5f;
-                Instantiate(AttackObj, spawnPos, this.transform.rotation);            
+                StartCoroutine("MeleeAttack");
             }
-
-            timeBtwAtk = StartTimeBtwAtk;
+            
         }        
     }
 
