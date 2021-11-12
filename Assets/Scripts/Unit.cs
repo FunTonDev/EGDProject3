@@ -17,6 +17,8 @@ public class Action
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
     public int damage;
 
+    public int cost;
+
     public int ATKBoost;
     public int DEFBoost;
     public int SPDBoost;
@@ -36,6 +38,7 @@ public class Basic : Action
         damage = 5;
         priority = 2;
         target = 0;
+        cost = 1;
     }
 }
 
@@ -49,6 +52,7 @@ public class AOE : Action
         damage = 3;
         priority = 1;
         target = 1;
+        cost = 3;
     }
 }
 
@@ -62,6 +66,7 @@ public class BasicHeal : Action
         damage = 5;
         priority = 1;
         target = 0;
+        cost = 2;
     }
 }
 
@@ -75,6 +80,7 @@ public class StatBoost : Action
         damage = 0;
         priority = 1;
         target = 0;
+        cost = 4;
     }
 }
 

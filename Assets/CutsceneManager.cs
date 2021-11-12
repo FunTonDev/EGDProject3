@@ -59,6 +59,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Each one is made to serve a purpose");
                     storeText.Add("However, sometimes things don’t always go according to plan...");
                     storeText.Add("Especially when things get...Interesting...");
+                    //Pixal Falls, screen fades to black once pixal falls off
 
                     //Pixal Meets Coder (3)
                     storeText.Add("Egads! What was that noise?");
@@ -174,11 +175,17 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("I DIDN’T MEAN TO SEARCH FOR HOT SINGLES IN MY AREA!");
                     storeText.Add("I Need to fix this, hopefully I can get rid of the virus before before dad checks...");
                     //End of black screen, pixal helps up soldier guy
-                    storeText.Add("");
+                    storeText.Add("Thanks for saving my ass Pixal, you not only helped clear the malware, but also defeated that glitch as well. For that, you have my gratitude.");
+                    //Pixal tries giving back gun
+                    storeText.Add("No no, that’s yours soldier, you made better use of it than I did.");
                 }
                 break;
             case 3:         //RPG events
                 if (!so.rpgStart)
+                {
+
+                }
+                else if (!so.inRPG)
                 {
 
                 }
@@ -188,6 +195,7 @@ public class CutsceneManager : MonoBehaviour
                 }
                 break;
         }
+        StartCoroutine(displayAllText(storeText));
 
     }
 
@@ -208,6 +216,14 @@ public class CutsceneManager : MonoBehaviour
     public void Clear()
     {
         storyText.text = "";
+    }
+
+    public IEnumerator displayAllText(List<string> tts)
+    {
+        for (int i = 0; i < tts.Count; i++)
+        {
+            yield return textDisplay(tts[i]);
+        }
     }
 
     //Display text

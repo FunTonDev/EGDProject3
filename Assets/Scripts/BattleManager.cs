@@ -716,6 +716,7 @@ public class BattleManager : MonoBehaviour
 
                         yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName, true);
                         yield return playerAbility(actions[z].getIndex(), toget, PartyMembers[ind], EnemyMembers[toget]);
+                        PartyMembers[ind].currentStamina -= PartyMembers[ind].abilities[actions[z].getIndex()].cost;
                     }
                 }
                 //Use Buff/Support ability (player)
@@ -731,6 +732,7 @@ public class BattleManager : MonoBehaviour
                             {
                                 yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName);
                                 yield return playerAbility(actions[z].getIndex(), pose, PartyMembers[ind], PartyMembers[pose]);
+                                PartyMembers[ind].currentStamina -= PartyMembers[ind].abilities[actions[z].getIndex()].cost;
                             }
                             else
                             {

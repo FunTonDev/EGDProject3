@@ -13,8 +13,15 @@ public class TransitionManager : MonoBehaviour
     public GameObject loadingGroup;
     public List<Image> stageIcons;
 
+    SaveFile so;
+
     public int toSwitch;
     public bool isCompleted = false;
+
+    public void Start()
+    {
+        so = SaveManager.Load();
+    }
 
     public void MouseAudioTrigger(AudioClip tClip)
     {
@@ -45,15 +52,19 @@ public class TransitionManager : MonoBehaviour
         {
             case "HubWorld":
                 sceneText += "Central Hub";
+                so.currentGenre = 0;
                 break;
             case "RPGWorld":
                 sceneText += "Fantasy Plains";
+                so.currentGenre = 3;
                 break;
             case "ShooterWorld":
                 sceneText += "Shooter Jungle";
+                so.currentGenre = 2;
                 break;
             case "PlatformerWorld":
                 sceneText += "Platformer Kingdom";
+                so.currentGenre = 1;
                 break;
             case "MenuScene":
                 sceneText = "Leaving the System";
@@ -63,6 +74,7 @@ public class TransitionManager : MonoBehaviour
         loadingGroup.transform.GetChild(1).GetComponent<Text>().text = sceneText;
         loadingGroup.SetActive(true);
         StartCoroutine(TextUpdater(sceneText));
+        SaveManager.Save(so);
         SceneManager.LoadSceneAsync(sceneStr);
     }
 
