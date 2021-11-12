@@ -69,6 +69,8 @@ public abstract class Enemy : MonoBehaviour
             axisLevel = player.transform.position.y;
         }
 
+        rgbdy.velocity = new Vector3(0, rgbdy.velocity.y, 0);
+
         /*
         else
         {

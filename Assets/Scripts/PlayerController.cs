@@ -453,7 +453,7 @@ public class PlayerController : MonoBehaviour
         
         xForce = 4.0f;
         yForce = 4.0f;
-        jumpForce = 100.0f;
+        jumpForce = 150.0f;
         dashForce = 80.0f;
 
         maxXVelocity = 6.0f;
