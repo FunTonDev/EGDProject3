@@ -69,12 +69,18 @@ public class SaveFile
 
     public bool inPlat;
 
+    public bool inPlat2;
+
+    public bool inPlat3;
+
     public bool platDone;
 
     public bool platCollect;
 
 
     public bool shotStart;
+
+    public bool inShot;
 
     public bool shotDone;
 

@@ -83,7 +83,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Your job is to go into these areas and exterminate the virus. Be warned, each area is different so you should know what you’re getting yourself into.");
                     storeText.Add("Here we have the RPG, go there if you want a fantastical journey and meet some friends.");
                     storeText.Add("The Shooter is where bullet hell mayhem will ensue.");
-                    storeText.Add("Finally, the platformer where a queen must be saved.");
+                    storeText.Add("Finally, the platformer where a princess must be saved.");
                     storeText.Add("So, have at it and take your pick.");
                     //Screen fades to black, back to HUB world
 
@@ -105,34 +105,76 @@ public class CutsceneManager : MonoBehaviour
                 }
                 else if (!so.inPlat)
                 { 
-
                     storeText.Add("“Hey you! Uhh, do you think you can help me out here? Just uhh, jump and get me, I know you can do it! I believe in you!”");
                     //Pixal then air dashes and hits the cage Cecilia is in. As the cage breaks, she falls down and sticks the landing, thus talking to Pixal-
-                    storeText.Add("Thank you so much, when the queen said ‘hang out’, I thought she meant something different.");
+                    storeText.Add("Thank you so much, when the princess said ‘hang out’, I thought she meant something different.");
                     storeText.Add("Huh, looks like you haven’t been assigned yet, what is your name by the way?");
                     storeText.Add("Well Pixal, thank you for saving my rump, much appreciated.");
                     storeText.Add("Man, seeing the way you look reminds me of the good ol’ factory days where we all would just bum around, waiting for our calling...");
                     storeText.Add("Thankfully though, I feel like I became who I was meant to be: a Jokester whose job it was to make people smile and protect those I love.");
                     storeText.Add("What I will say though is that it is hard sometimes to always put up a positive front, even when sometimes deep down I do get sad,");
                     storeText.Add("but seeing those smiles always warms my heart and reminds why I do what I do.");
-                    storeText.Add("Lately however, the queen ain’t doing much smiling, and that don’t make me smile.");
+                    storeText.Add("Lately however, the princess ain’t doing much smiling, and that don’t make me smile.");
                     //Pixal shows Cecilia the glitch goop (either as hat or in central area
-                    storeText.Add("Now wait a minute, that’s the same stuff the queen got on her crown, maybe thats why she’s been acting up lately. Please save her, she’s that way!");
-                    //Pixal goes off to save the queen (moves right off screen
+                    storeText.Add("Now wait a minute, that’s the same stuff the princess got on her crown, maybe thats why she’s been acting up lately. Please save her, she’s that way!");
+                    //Pixal goes off to save the princess (moves right off screen
+                    storeText.Add("");
+                }
+                else if (!so.inPlat2)
+                {
+                    //-Pixal enters the princesss throne-
+                    //-The princess is seen crying, then she sees Pixal, and then proceeds to attack-
                 }
                 else
                 {
-
+                    //-Pixal eventually knocks the goop off the princesss crown. The princess then sits back on her rump and begins to cry while pointing at the goop-
+                    storeText.Add("I want my daddy!!!");
+                    //-Pixal then approaches the goop and purifies the data-
+                    //Black Screen
+                    storeText.Add("Daddy is very nice");
+                    storeText.Add("Daddy would play castle with me");
+                    storeText.Add("Daddy would call me his princess");
+                    storeText.Add("Daddy started making more money");
+                    storeText.Add("Daddy disappeared all day");
+                    storeText.Add("He never plays anymore");
+                    storeText.Add("I miss my daddy");
+                    //
+                    //-Seeing the data, Pixal then makes a new crown that the Queen can wear.Offering it to her, she takes it, then disappears, leaving Pixal be, where it can return back to the hub -
                 }
                 break;
             case 2:         //Shooter events
                 if (!so.shotStart)
                 {
-
+                    /*
+                     * -Scene: Pixal enters the jungle level, where he is trapped in a cage (or Bear Trap) by the main soldier guy of the level that 
+                     * Pixal will save. After capturing Pixal, the main soldier guy appears out of the bushes-
+                     * */
+                    storeText.Add("Well well well, look what we have here, a Pixel. I wonder if you’re with em");
+                    //-MS then whips out a piece of glitch goop-
+                    storeText.Add("We’ll put it to the test then...");
+                    //Soldier puts goop on pixal
+                    storeText.Add("Well son of a Gun, looks like ye ain’t affected by this slop, ya should have said somethin sooner!");
+                    //-The soldier then releases Pixal from the trap-
+                    storeText.Add("Thank goodness they sent in reinforcements, although I’m not sure why they sent in a plain ol’ pixel to help with this crap we’re dealing with.");
+                    storeText.Add("There has been a damn trojan infestation here and its been messin things up, but then that thing... that damn thing... It morphed with it!");
+                    storeText.Add("And now it’s out here shootin the shit and making everything worse! At the rate things are goin, we might even have to go offli-");
+                    //Sudenly, the monster MS was talking about appears out of nowhere and then takes away MS. As MS is being dragged off, he drops his gun. Pixal picks up the dropped gun and then follows the trail of the monster-
+                    storeText.Add("'Obtained GUN'");
                 }
+                //After shooter horde battle
                 else
                 {
-
+                    //Black Screen
+                    storeText.Add("Alright, if I want to work in that company someday, its time to put in the grind!");
+                    storeText.Add("...");
+                    storeText.Add("I don’t know how dad does this, maybe he’ll have a solution, I hope he won’t mind if I login to his laptop to see how he does some pathfinding algorithms.");
+                    storeText.Add("Oh man, there’s so much stuff on here... Wait, what’s this link?");
+                    storeText.Add("*click*");
+                    storeText.Add("SHIT, NOO!!!");
+                    storeText.Add("I DIDN’T MEAN TO SEARCH FOR HOT SINGLES IN MY AREA!");
+                    storeText.Add("I Need to fix this, hopefully I can get rid of the virus before before dad checks...");
+                    //End of black screen, pixal helps up soldier guy
+                    storeText.Add("");
                 }
                 break;
             case 3:         //RPG events
