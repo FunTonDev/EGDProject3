@@ -20,6 +20,7 @@ public class RPG_Enemy : Enemy
     private bool pathForward;
     private bool lookingInDir;
     private bool playerSpotted;
+    private bool fought;
 
     //For the FOV Script
     public int GetTileVisionRange() { return TileVisionRange; }
@@ -30,22 +31,28 @@ public class RPG_Enemy : Enemy
     {
         pathForward = true;
         lookingInDir = false;
+        fought = false;
     }
 
     public override void ClassUpdate()
     {
         playerSpotted = CheckForPlayer();
 
-        /*
+        
         //Stop Coroutine
         if(playerSpotted && lookingInDir)
         {
             StopCoroutine("LookInAllDir");
+            lookingInDir = false;
         }
-        */
+
+        if (playerSpotted)
+        {
+
+        }
 
         //When arriving at a node, looking in specific directions   
-        if (this.transform.position == pathNodes[this.currNode].GetComponent<Transform>().position && !lookingInDir)
+        else if (this.transform.position == pathNodes[this.currNode].GetComponent<Transform>().position && !lookingInDir)
         {
             lookingInDir = true;
             
@@ -57,7 +64,7 @@ public class RPG_Enemy : Enemy
             Move(Vector3.zero);            
         }
 
-        closestTile.GetComponent<GridUnit>().occupied = rgbdy.velocity.magnitude == 0;
+        //closestTile.GetComponent<GridUnit>().occupied = rgbdy.velocity.magnitude == 0;
     }
 
     public override Vector3 PathFollow()
@@ -210,6 +217,11 @@ public class RPG_Enemy : Enemy
         Move(Vector3.zero);
     }
 
+    public void InitiateBattle()
+    {
+
+        fought = true;
+    }
 
     /*
     public void RPGMoveUpdate()
