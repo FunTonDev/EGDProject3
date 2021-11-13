@@ -1,12 +1,84 @@
 fileFormatVersion: 2
 guid: 1deed079806dd7445afb5818d78b1ee5
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8134954196017247215
+    second: Dot Dot Strip_0
+  - first:
+      213: 4415617834119695651
+    second: Dot Dot Strip_1
+  - first:
+      213: -6260498478076796217
+    second: Dot Dot Strip_2
+  - first:
+      213: -6083068114263105129
+    second: Dot Dot Strip_3
+  - first:
+      213: -3559664512559873286
+    second: Dot Dot Strip_4
+  - first:
+      213: 3479722603911718287
+    second: Dot Dot Strip_5
+  - first:
+      213: 2968497371761834078
+    second: Dot Dot Strip_6
+  - first:
+      213: -2010479102929202493
+    second: Dot Dot Strip_7
+  - first:
+      213: -62860785621392690
+    second: Dot Dot Strip_8
+  - first:
+      213: -1251839530149942246
+    second: Dot Dot Strip_9
+  - first:
+      213: 6221101172259251158
+    second: Dot Dot Strip_10
+  - first:
+      213: -294581726534076983
+    second: Dot Dot Strip_11
+  - first:
+      213: -8481988361916723599
+    second: Dot Dot Strip_12
+  - first:
+      213: 4713123661200988517
+    second: Dot Dot Strip_13
+  - first:
+      213: -5760003673491502038
+    second: Dot Dot Strip_14
+  - first:
+      213: 1731616530279650084
+    second: Dot Dot Strip_15
+  - first:
+      213: -2682806633961657541
+    second: Dot Dot Strip_16
+  - first:
+      213: 1225995743091371990
+    second: Dot Dot Strip_17
+  - first:
+      213: -6449218303837088227
+    second: Dot Dot Strip_18
+  - first:
+      213: -2774683033854970700
+    second: Dot Dot Strip_19
+  - first:
+      213: 6921349094766026045
+    second: Dot Dot Strip_20
+  - first:
+      213: 5360239411730488716
+    second: Dot Dot Strip_21
+  - first:
+      213: -464114498052228248
+    second: Dot Dot Strip_22
+  - first:
+      213: -7356606828939808560
+    second: Dot Dot Strip_23
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -35,13 +107,13 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -50,9 +122,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -75,13 +147,529 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Dot Dot Strip_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11c81527246da1f80800000000000000
+      internalID: -8134954196017247215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32d8592760d674d30800000000000000
+      internalID: 4415617834119695651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_2
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c2eb51cdcd3e19a0800000000000000
+      internalID: -6260498478076796217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_3
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 791a7d097c9949ba0800000000000000
+      internalID: -6083068114263105129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af20e495cf7899ec0800000000000000
+      internalID: -3559664512559873286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_5
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f852e0b95457a4030800000000000000
+      internalID: 3479722603911718287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_6
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e587b80c1a8323920800000000000000
+      internalID: 2968497371761834078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_7
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c21f8968e75914e0800000000000000
+      internalID: -2010479102929202493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec22cb2d27ca02ff0800000000000000
+      internalID: -62860785621392690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_9
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1cee91749290aee0800000000000000
+      internalID: -1251839530149942246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_10
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d3674c2e8ac55650800000000000000
+      internalID: 6221101172259251158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_11
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c57d900b7f69ebf0800000000000000
+      internalID: -294581726534076983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17ec4fa368ce94a80800000000000000
+      internalID: -8481988361916723599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_13
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5699f58aff0686140800000000000000
+      internalID: 4713123661200988517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_14
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2c08904d2b5010b0800000000000000
+      internalID: -5760003673491502038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_15
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 423538e4f00f70810800000000000000
+      internalID: 1731616530279650084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3b67ad9491c4cad0800000000000000
+      internalID: -2682806633961657541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_17
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6df2a1bf1ac930110800000000000000
+      internalID: 1225995743091371990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_18
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d16d7d04f16cf76a0800000000000000
+      internalID: -6449218303837088227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_19
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b475ca4b785e79d0800000000000000
+      internalID: -2774683033854970700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3d1000b4529d0060800000000000000
+      internalID: 6921349094766026045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_21
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 0
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8d9e3f5855636a40800000000000000
+      internalID: 5360239411730488716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_22
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 0
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86bfc70b2522f89f0800000000000000
+      internalID: -464114498052228248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dot Dot Strip_23
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 0
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d074d8e01518e990800000000000000
+      internalID: -7356606828939808560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4777192352b3f8946acdf0f533bd6023
     internalID: 0
     vertices: []
     indices: 

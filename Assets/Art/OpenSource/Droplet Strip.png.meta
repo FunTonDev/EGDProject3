@@ -1,12 +1,87 @@
 fileFormatVersion: 2
 guid: 534b08148be81614f9a3d263f86ec80b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -5071236690574461636
+    second: Droplet Strip_0
+  - first:
+      213: -7365828397115089159
+    second: Droplet Strip_1
+  - first:
+      213: -7051075387426630431
+    second: Droplet Strip_2
+  - first:
+      213: 1365783932707150086
+    second: Droplet Strip_3
+  - first:
+      213: -4580920555194582439
+    second: Droplet Strip_4
+  - first:
+      213: 7172689568664941611
+    second: Droplet Strip_5
+  - first:
+      213: 3144191423741377855
+    second: Droplet Strip_6
+  - first:
+      213: -8831259264735979314
+    second: Droplet Strip_7
+  - first:
+      213: 2575804407883839627
+    second: Droplet Strip_8
+  - first:
+      213: -9203133530818861587
+    second: Droplet Strip_9
+  - first:
+      213: -236740602624774639
+    second: Droplet Strip_10
+  - first:
+      213: 211122611050047340
+    second: Droplet Strip_11
+  - first:
+      213: 4809410054619664022
+    second: Droplet Strip_12
+  - first:
+      213: 4513010096845814316
+    second: Droplet Strip_13
+  - first:
+      213: 2067232992887329422
+    second: Droplet Strip_14
+  - first:
+      213: -3128715728797268735
+    second: Droplet Strip_15
+  - first:
+      213: -5350550349490070381
+    second: Droplet Strip_16
+  - first:
+      213: -5957920736428637024
+    second: Droplet Strip_17
+  - first:
+      213: 5084166363778815698
+    second: Droplet Strip_18
+  - first:
+      213: 5551251530021450744
+    second: Droplet Strip_19
+  - first:
+      213: -7119571321650835700
+    second: Droplet Strip_20
+  - first:
+      213: -3478514598754291654
+    second: Droplet Strip_21
+  - first:
+      213: 7778689868843956584
+    second: Droplet Strip_22
+  - first:
+      213: -6908351788792466176
+    second: Droplet Strip_23
+  - first:
+      213: -6007546253383108673
+    second: Droplet Strip_24
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -35,13 +110,13 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -50,9 +125,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -75,13 +150,550 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Droplet Strip_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c35b16639195f99b0800000000000000
+      internalID: -5071236690574461636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fe5871491257c990800000000000000
+      internalID: -7365828397115089159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_2
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e49fe71b4c852e90800000000000000
+      internalID: -7051075387426630431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_3
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60912f4204d34f210800000000000000
+      internalID: 1365783932707150086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95a775b960d4d60c0800000000000000
+      internalID: -4580920555194582439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_5
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b247c6009238a8360800000000000000
+      internalID: 7172689568664941611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_6
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3d3fe5f07962ab20800000000000000
+      internalID: 3144191423741377855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_7
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec8d80e1d70117580800000000000000
+      internalID: -8831259264735979314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b883dc636781fb320800000000000000
+      internalID: 2575804407883839627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_9
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de52e0360d6e74080800000000000000
+      internalID: -9203133530818861587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_10
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11e63ac1dade6bcf0800000000000000
+      internalID: -236740602624774639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_11
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c67e0bb65ee0ee200800000000000000
+      internalID: 211122611050047340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69e0ccc96f47eb240800000000000000
+      internalID: 4809410054619664022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_13
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2afe3aa5ce61ae30800000000000000
+      internalID: 4513010096845814316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_14
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e825401547940bc10800000000000000
+      internalID: 2067232992887329422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_15
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1058cdd0f919494d0800000000000000
+      internalID: -3128715728797268735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39c5dc93ec60fb5b0800000000000000
+      internalID: -5350550349490070381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_17
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a4cc3918a6315da0800000000000000
+      internalID: -5957920736428637024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_18
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d6960cee569e8640800000000000000
+      internalID: 5084166363778815698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_19
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f3b5c1dad10a0d40800000000000000
+      internalID: 5551251530021450744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0f81f3aa93323d90800000000000000
+      internalID: -7119571321650835700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_21
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a307d330765d9bfc0800000000000000
+      internalID: -3478514598754291654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_22
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 869bf52f83573fb60800000000000000
+      internalID: 7778689868843956584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_23
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 005379d66aa9020a0800000000000000
+      internalID: -6908351788792466176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Droplet Strip_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb7fe5b0388e0aca0800000000000000
+      internalID: -6007546253383108673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c7fd194a0136909489b3d4799125498b
     internalID: 0
     vertices: []
     indices: 

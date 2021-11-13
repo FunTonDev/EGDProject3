@@ -178,16 +178,38 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Thanks for saving my ass Pixal, you not only helped clear the malware, but also defeated that glitch as well. For that, you have my gratitude.");
                     //Pixal tries giving back gun
                     storeText.Add("No no, that’s yours soldier, you made better use of it than I did.");
+                    //Pixal nods and leaves
                 }
                 break;
             case 3:         //RPG events
                 if (!so.rpgStart)
                 {
-
+                    //Background = forest/plains
+                    //Pixal finds trail of slime, follows it
+                    //Some gameplay/movement
                 }
                 else if (!so.inRPG)
                 {
-
+                    //Pixal attacked by slime, but slime is defeated by Mama Rogue (jumps out of nowhere)
+                    storeText.Add("Well, I haven’t seen the likes of you before, luckily I came just in time.");
+                    //Pixal thanks her and moves to leave
+                    storeText.Add("Wait, don’t go yet! You and I are both on the same mission; To figure out where this pestilence comes from!");
+                    //As she finishes her statement, she starts coughing up a liquid that looks similar to the glitch goop. Some of the goop lands on Pixal.
+                    storeText.Add("Oh heavens, I am so sorry! Hurry, we must clean before you’re infected!");
+                    //As the woman is reaching for her things, she notices that Pixal is unaffected.-
+                    storeText.Add("Good grief, you must be some kind of panacea. Please, let me join you, I must help relieve my village from this sickness.");
+                    //-Pixal nods and they both head toward the goop.-
+                    storeText.Add("'The Motherly Rogue joined your Party'");
+                }
+                else if (!so.inRPG2)
+                {
+                    //As they continue walking thru the forest, mama rogue stops and walks infront of Pixal to tell it something-
+                    storeText.Add("I was wondering where I’ve seen you from, and it hit me: you’re a pixel. So, how did you escape the factory?");
+                    storeText.Add("...");
+                    storeText.Add("Not much of a talker I see, just like someone I used to know.");
+                    storeText.Add("Well, I’d say you’re a lucky pixel, it’s rare when to see one loose, it’s been years. You can become whatever you want, so choose wisely when you do.");
+                    storeText.Add("");
+                    storeText.Add("");
                 }
                 else
                 {

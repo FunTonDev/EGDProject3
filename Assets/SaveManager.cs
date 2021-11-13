@@ -64,33 +64,25 @@ public class SaveFile
 
 
     public bool gameStart;
-
     public bool platStart;              //Whether platformer stage started (whether to display cutscene)
-
     public bool inPlat;
-
     public bool inPlat2;
-
     public bool inPlat3;
-
     public bool platDone;
 
     public bool platCollect;
 
 
     public bool shotStart;
-
     public bool inShot;
-
     public bool shotDone;
 
     public bool shotCollect;
 
 
     public bool rpgStart;
-
     public bool inRPG;
-
+    public bool inRPG2;
     public bool rpgDone;
 
     public bool rpgCollect;

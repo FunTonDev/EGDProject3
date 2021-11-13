@@ -1,12 +1,87 @@
 fileFormatVersion: 2
 guid: ad34d8f77d4e72d45a8510a2f2843cbd
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2577643423044045348
+    second: Sleeping Strip_0
+  - first:
+      213: -1035506663520114257
+    second: Sleeping Strip_1
+  - first:
+      213: 8492033829088721310
+    second: Sleeping Strip_2
+  - first:
+      213: -1918526116516412003
+    second: Sleeping Strip_3
+  - first:
+      213: 8770969971398746705
+    second: Sleeping Strip_4
+  - first:
+      213: 2978671293563507588
+    second: Sleeping Strip_5
+  - first:
+      213: -3143367668730070608
+    second: Sleeping Strip_6
+  - first:
+      213: -8311002319849652393
+    second: Sleeping Strip_7
+  - first:
+      213: 446463784929508204
+    second: Sleeping Strip_8
+  - first:
+      213: 4896070880001951021
+    second: Sleeping Strip_9
+  - first:
+      213: -1455516601716813381
+    second: Sleeping Strip_10
+  - first:
+      213: -36396698134355042
+    second: Sleeping Strip_11
+  - first:
+      213: 7589913383141725297
+    second: Sleeping Strip_12
+  - first:
+      213: 3552470101207429375
+    second: Sleeping Strip_13
+  - first:
+      213: 150856556492298670
+    second: Sleeping Strip_14
+  - first:
+      213: 6678327185777250613
+    second: Sleeping Strip_15
+  - first:
+      213: -274410816656836049
+    second: Sleeping Strip_16
+  - first:
+      213: 1090989247461989543
+    second: Sleeping Strip_17
+  - first:
+      213: -8839043579265211272
+    second: Sleeping Strip_18
+  - first:
+      213: 7561092764333246971
+    second: Sleeping Strip_19
+  - first:
+      213: -1613395678373952456
+    second: Sleeping Strip_20
+  - first:
+      213: 2357777635687066592
+    second: Sleeping Strip_21
+  - first:
+      213: 8825111226740922485
+    second: Sleeping Strip_22
+  - first:
+      213: 8437362196888157044
+    second: Sleeping Strip_23
+  - first:
+      213: 8541984878516620227
+    second: Sleeping Strip_24
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -35,13 +110,13 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -50,9 +125,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -75,13 +150,550 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Sleeping Strip_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42a892c4901a5c320800000000000000
+      internalID: 2577643423044045348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa965560d2421a1f0800000000000000
+      internalID: -1035506663520114257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_2
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e99fe6b56c3c9d570800000000000000
+      internalID: 8492033829088721310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_3
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 348
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d95cabc69a60065e0800000000000000
+      internalID: -1918526116516412003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15227d8e7beb8b970800000000000000
+      internalID: 8770969971398746705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_5
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 483918382cd565920800000000000000
+      internalID: 2978671293563507588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_6
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b975e272c38064d0800000000000000
+      internalID: -3143367668730070608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_7
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 290
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75ff9e57c6369ac80800000000000000
+      internalID: -8311002319849652393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6bbcc96278223600800000000000000
+      internalID: 446463784929508204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_9
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2586ad568652f340800000000000000
+      internalID: 4896070880001951021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_10
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb15cf5cc57fccbe0800000000000000
+      internalID: -1455516601716813381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_11
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 232
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9364b85561be7ff0800000000000000
+      internalID: -36396698134355042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1745526420ac45960800000000000000
+      internalID: 7589913383141725297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_13
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff03aa93cb8ec4130800000000000000
+      internalID: 3552470101207429375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_14
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea913c52d33f71200800000000000000
+      internalID: 150856556492298670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_15
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 174
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5315612313f2eac50800000000000000
+      internalID: 6678327185777250613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2af4aee0d8113cf0800000000000000
+      internalID: -274410816656836049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_17
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ac1eb4b0f8f32f00800000000000000
+      internalID: 1090989247461989543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_18
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87423b722b8655580800000000000000
+      internalID: -8839043579265211272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_19
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 116
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf90cdb0fc56ee860800000000000000
+      internalID: 7561092764333246971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 834ce5cbd211c99e0800000000000000
+      internalID: -1613395678373952456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_21
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ebec72844288b020800000000000000
+      internalID: 2357777635687066592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_22
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 578543d37e7197a70800000000000000
+      internalID: 8825111226740922485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_23
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 58
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47bf3da0738871570800000000000000
+      internalID: 8437362196888157044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sleeping Strip_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 52
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cbcdb85df93b8670800000000000000
+      internalID: 8541984878516620227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: db7bdf4ee9cce3a44b45ba7239cab6be
     internalID: 0
     vertices: []
     indices: 
