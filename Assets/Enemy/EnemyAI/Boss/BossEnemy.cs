@@ -6,15 +6,23 @@ using UnityEngine.AI;
 
 public class BossEnemy : MonoBehaviour
 {
-    [SerializeField] protected string type;                     //Name (Ex: TestBox)
+    [SerializeField] private string type;                     //Name (Ex: TestBox)
 
-    [SerializeField] protected int phase;               //currPhase of the boss
-    [SerializeField] protected List<float> health;      //List of the bosses health set at the begining of each of their phase
-    [SerializeField] protected List<float> armor;       //List of the bosses armor set at the begining of each of their phase
-    protected float currHealth;             
-    protected float currArmor;
-    
+    [SerializeField] private int phase;               //currPhase of the boss
+    [SerializeField] private List<float> health;      //List of the bosses health set at the begining of each of their phase
+    [SerializeField] private List<float> armor;       //List of the bosses armor set at the begining of each of their phase
+    private float currHealth;
+    private float currArmor;
+
+    private bool invincible;
+    private bool vulnarable;
+
     protected Rigidbody rgbdy;
+
+    public void SetInvincible(bool t) { invincible = t; }
+    public void SetVulnarable(bool t) { vulnarable = t; }
+    public bool GetInvincible() { return invincible; }
+    public bool GetVulnarable() { return vulnarable; }
 
 
     // Start is called before the first frame update
@@ -23,6 +31,10 @@ public class BossEnemy : MonoBehaviour
         Introduction();
         rgbdy = this.GetComponent<Rigidbody>();
 
+        invincible = false;
+        vulnarable = false;
+
+        rgbdy.useGravity = true;
         phase = 1;              
     }
 

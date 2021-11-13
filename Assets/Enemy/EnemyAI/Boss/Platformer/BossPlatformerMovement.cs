@@ -15,6 +15,7 @@ public class BossPlatformerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isFlipped = false;
         axisLvl = GameObject.FindGameObjectWithTag("Player").transform.position.z;
     }
 
@@ -30,7 +31,16 @@ public class BossPlatformerMovement : MonoBehaviour
     public void SetPathNodes(List<Transform> pts)
         { pathNodes = pts; currNode = 0;}
 
-    public virtual void Move(Vector3 Pos)
+    //For regular Movement
+    public virtual void MoveReg()
+    {
+        this.transform.position += this.transform.forward * moveSpd * Time.deltaTime;
+        //this.transform.position = Vector3.MoveTowards(this.transform.position, Pos, moveSpd * Time.deltaTime);
+        SetAxisLevel();
+    }
+
+    //For Movements related to Attacking
+    public virtual void MoveAtk(Vector3 Pos)
     {
         transform.position = Vector3.MoveTowards(this.transform.position, Pos, moveSpd * Time.deltaTime);
         SetAxisLevel();
@@ -64,22 +74,26 @@ public class BossPlatformerMovement : MonoBehaviour
 
     public void LookAtPlayer(Transform player)
     {
-        Vector3 flipped = this.transform.localScale;
-        flipped.y *= -1f;
+        //Vector3 flipped = this.transform.localScale;
+        //flipped.z *= -1f;
 
-        if((this.transform.position.x > player.position.x) && isFlipped)
+        if((player.position.x < this.transform.position.x) && isFlipped)
         {
-            this.transform.localScale = flipped;
+            //this.transform.localScale = flipped;
             transform.Rotate(0f, 180f, 0f);
             //this.transform.eulerAngles = new Vector3(0, 270, 0);
             isFlipped = false;
+
+            Debug.Log("Boss Flipped"); 
         }
 
-        else if((this.transform.position.x < player.position.x) && isFlipped)
+        else if((player.position.x > this.transform.position.x) && !isFlipped)
         {
-            this.transform.localScale = flipped;
+            //this.transform.localScale = flipped;
             transform.Rotate(0f, 180f, 0f);
             isFlipped = true;
+
+            Debug.Log("Boss Flipped");
         }
     }
 

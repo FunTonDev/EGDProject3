@@ -58,13 +58,13 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
         ClassUpdate();
-                
-        if (shooter )
+
+        if (shooter)
         {
             axisLevel = player.transform.position.y;
         }
@@ -78,6 +78,7 @@ public abstract class Enemy : MonoBehaviour
         }
         */
     }
+    
 
     //A start function for each specfic class to be define behaviours specific to them
     public virtual void ClassStart()

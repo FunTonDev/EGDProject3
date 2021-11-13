@@ -219,7 +219,6 @@ public class RPG_Enemy : Enemy
 
     public void InitiateBattle()
     {
-
         fought = true;
     }
 
