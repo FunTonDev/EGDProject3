@@ -74,7 +74,7 @@ public class StatBoost : Action
 {
     public StatBoost()
     {
-        actionName = "Basic Heal";
+        actionName = "Stat Buff";
         actionDesc = "A unique support move, used to amplify an ally's abilities. Helps in a pinch.";
         type = 1;
         damage = 0;

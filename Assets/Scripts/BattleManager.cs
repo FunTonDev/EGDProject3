@@ -176,7 +176,7 @@ public class BattleManager : MonoBehaviour
 
     public void playerTurn()
     {
-        DisplayText.text = PartyMembers[currentUnit] + "'s turn";
+        DisplayText.text = PartyMembers[currentUnit] + "'s turn\nHP = " + PartyMembers[currentUnit].currentHP + ", MP = " + PartyMembers[currentUnit].currentStamina;
     }
 
     //Function to enter the target/action for an attack
@@ -272,7 +272,8 @@ public class BattleManager : MonoBehaviour
             else
             {
                 actionButtons[6].gameObject.SetActive(true);
-                actionButtons[6].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[3].actionName;
+                actionButtons[6].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[3].actionName + ": " +
+                    PartyMembers[currentUnit].abilities[3].cost + "MP ";
             }
             if (PartyMembers[currentUnit].abilities.Count < 3)
             {
@@ -281,7 +282,8 @@ public class BattleManager : MonoBehaviour
             else
             {
                 actionButtons[5].gameObject.SetActive(true);
-                actionButtons[5].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[2].actionName;
+                actionButtons[5].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[2].actionName + ": " +
+                    PartyMembers[currentUnit].abilities[2].cost + "MP ";
             }
             if (PartyMembers[currentUnit].abilities.Count < 2)
             {
@@ -290,7 +292,8 @@ public class BattleManager : MonoBehaviour
             else
             {
                 actionButtons[4].gameObject.SetActive(true);
-                actionButtons[4].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[1].actionName;
+                actionButtons[4].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[1].actionName + ": " +
+                    PartyMembers[currentUnit].abilities[1].cost + "MP ";
             }
             if (PartyMembers[currentUnit].abilities.Count < 1)
             {
@@ -300,7 +303,8 @@ public class BattleManager : MonoBehaviour
             else
             {
                 actionButtons[3].gameObject.SetActive(true);
-                actionButtons[3].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[0].actionName;
+                actionButtons[3].transform.GetChild(0).GetComponent<Text>().text = PartyMembers[currentUnit].abilities[0].actionName + ": " +
+                    PartyMembers[currentUnit].abilities[0].cost + "MP ";
             }
         }
         else if (num == 1)
@@ -710,13 +714,18 @@ public class BattleManager : MonoBehaviour
                                 yield return battleEnd();
                             }
                         }
+                        else
+                        {
 
-                        string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
+                            string abiName = PartyMembers[ind].abilities[actions[z].getIndex()].actionName;
 
 
-                        yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName, true);
-                        yield return playerAbility(actions[z].getIndex(), toget, PartyMembers[ind], EnemyMembers[toget]);
-                        PartyMembers[ind].currentStamina -= PartyMembers[ind].abilities[actions[z].getIndex()].cost;
+                            yield return textDisplay(PartyMembers[ind].unitName + " used " + abiName, true);
+                            yield return playerAbility(actions[z].getIndex(), toget, PartyMembers[ind], EnemyMembers[toget]);
+                            PartyMembers[ind].currentStamina -= PartyMembers[ind].abilities[actions[z].getIndex()].cost;
+                            partyPrefabs[ind].transform.GetChild(1).localScale = new Vector3(1.0f * PartyMembers[ind].currentStamina / PartyMembers[ind].maxStamina,
+                    partyPrefabs[ind].transform.GetChild(1).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
+                        }
                     }
                 }
                 //Use Buff/Support ability (player)
