@@ -33,7 +33,7 @@ public class RPG_FOV : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.Raycast(this.transform.position, this.transform.forward, out hitInfo, range, ~ignoreMask))
         {
-            Debug.Log("RPG Raycast hit " + hitInfo.collider.tag);
+            
             if (hitInfo.collider.tag == "Player")
             {
                 Debug.Log("Player spotted!");

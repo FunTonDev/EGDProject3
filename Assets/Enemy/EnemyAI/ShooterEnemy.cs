@@ -236,8 +236,8 @@ public class ShooterEnemy : Enemy
         Debug.Log("Ranged attacked called");
 
         Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
-        Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver
-        //Instantiate(AttackObj2, spawnPos, transform.rotation).GetComponent<Bullet>().Init(gameObject.tag, 10.0f);  
+        //Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver
+        Instantiate(AttackObj2, spawnPos, transform.rotation).GetComponent<Bullet>().Init(gameObject.tag, 10.0f);  
 
         attacking = false;
         timeBtwAtk = StartTimeBtwAtk;

@@ -13,8 +13,6 @@ public class RPG_Enemy : Enemy
     [SerializeField] private int minLookTime, maxLookTime;             //How short and long an emeny can look in a specific direction
     [SerializeField] private List<bool> directions;                   //Which directions the enemy can look in. Index 0-3 for north, east, south, west respectively
    
-
-
     [HideInInspector] public GameObject closestTile;
 
     private bool pathForward;
@@ -52,19 +50,22 @@ public class RPG_Enemy : Enemy
         }
 
         //When arriving at a node, looking in specific directions   
-        else if (this.transform.position == pathNodes[this.currNode].GetComponent<Transform>().position && !lookingInDir)
+        else if (this.transform.position == pathNodes[this.currNode].position && !lookingInDir)
         {
             lookingInDir = true;
-            
+
+            if (closestTile != null)
+            { closestTile.GetComponent<GridUnit>().occupied = rgbdy.velocity.magnitude == 0; }
+
             StartCoroutine("LookInAllDir");            
         }
 
-        else if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position && !lookingInDir)
+        else if(this.transform.position != pathNodes[this.currNode].position && !lookingInDir)
         {
             Move(Vector3.zero);            
         }
 
-        //closestTile.GetComponent<GridUnit>().occupied = rgbdy.velocity.magnitude == 0;
+        
     }
 
     public override Vector3 PathFollow()

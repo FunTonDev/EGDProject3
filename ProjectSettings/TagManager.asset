@@ -16,6 +16,7 @@ TagManager:
   - DialogueBox
   - Volume
   - EnemyAttack
+  - PathNode
   layers:
   - Default
   - TransparentFX

@@ -69,16 +69,19 @@ public class TriggerVolume : MonoBehaviour
 
     private void OnTriggerEnter(Collider coll)
     {
-        if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
+        if (coll.gameObject.tag != "PathNode")
         {
-            switch (volumeType)
+            if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
             {
-                case States.VolumeType.Control:
-                    PlayerModeUpdate();
-                    break;
-                case States.VolumeType.Transition:
-                    tranMan.SceneSwitch(targetScene);
-                    break;
+                switch (volumeType)
+                {
+                    case States.VolumeType.Control:
+                        PlayerModeUpdate();
+                        break;
+                    case States.VolumeType.Transition:
+                        tranMan.SceneSwitch(targetScene);
+                        break;
+                }
             }
         }
         
@@ -86,14 +89,18 @@ public class TriggerVolume : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
-        if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
+        if(coll.gameObject.tag != "PathNode")
         {
-            if (volumeType == States.VolumeType.Damage && damageTimer <= 0)
+            if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
             {
-                playerCont.HealthUpdate(damage);
-                damageTimer = !isKillVolume ? damageDelay : 0;
+                if (volumeType == States.VolumeType.Damage && damageTimer <= 0)
+                {
+                    playerCont.HealthUpdate(damage);
+                    damageTimer = !isKillVolume ? damageDelay : 0;
+                }
             }
         }
+        
     }
 
     /*============================================================================
