@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RPGBattle.unity
     guid: 0b4d7dd059013ce44a3a2608acbbb6cc
+  - enabled: 1
+    path: Assets/Scenes/HubWorld.unity
+    guid: ef24c58cae134a74ebd3abe06eb7f615
   m_configObjects: {}
