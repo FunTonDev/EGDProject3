@@ -48,7 +48,7 @@ public class TransitionManager : MonoBehaviour
     {
         Debug.Log("Go to next scene");
         string sceneText = "Loading ";
-        switch (sceneText)
+        switch (sceneStr)
         {
             case "HubWorld":
                 sceneText += "Central Hub";

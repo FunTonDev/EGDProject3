@@ -57,10 +57,12 @@ public class CutsceneManager : MonoBehaviour
         seSource = tmp[0];
         musicSource = tmp[1];
         so = SaveManager.Load();
+        /*
         if (!so.gameStart)
         {
             so.currentGenre = 0;
         }
+        */
         switch (so.currentGenre)
         {
             case 0:         //Hub events
@@ -113,8 +115,13 @@ public class CutsceneManager : MonoBehaviour
             case 1:         //Platformer events
                 if (!so.platStart)
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneP1-Controls"));
                     //Pixal finds castle wall, jumps over it using a platform into the castle
                     //No dialogue
+                    storeText.Add("...");
+                    storeText.Add("");
+                    storeText.Add("");
+                    storeText.Add("*Pixal learned to jump!*");
                 }
                 else if (!so.inPlat)
                 { 
@@ -256,7 +263,8 @@ public class CutsceneManager : MonoBehaviour
     {
         for (int i = 0; i < tts.Count; i++)
         {
-            yield return textDisplay(tts[i]);
+            bg.sprite = image_queue[i];
+            yield return textDisplay(tts[i], true);
         }
     }
 
