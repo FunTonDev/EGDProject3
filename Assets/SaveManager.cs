@@ -27,7 +27,7 @@ public static class SaveManager
     //Load data from SaveFile.savenum
     public static SaveFile Load()
     {
-        fileName = fileName + PlayerPrefs.GetInt("SaveNum") + ".txt";
+        fileName = "File" + PlayerPrefs.GetInt("SaveNum") + ".txt";
         string fPath = Application.streamingAssetsPath + directory + "/" + fileName;
         SaveFile sf = new SaveFile();
 
@@ -39,7 +39,7 @@ public static class SaveManager
         else
         {
             Debug.Log(Application.persistentDataPath);
-            Debug.Log("Savefile doesn't exist");
+            Debug.Log("Savefile" + fPath+ " doesn't exist");
             Save(new SaveFile());
             sf = new SaveFile();
         }

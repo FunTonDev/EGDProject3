@@ -10,19 +10,26 @@ public class CutsceneManager : MonoBehaviour
     public AudioSource seSource;
     public AudioSource musicSource;
 
-    public Image story1;
-    public Image story2;
+    public Image bg;
 
     public Image Left;
     public Image Right;
     public Image Center;
+    public Image UpperLeft;
     public Image UpperRight;
+
+    public Image mainImage;
+
+    public Image fader;
 
     public Text storyText;
 
+    
+
     private List<string> storeText;
     private List<string> write_queue;
-    private List<string> image_queue;
+    private List<Sprite> image_queue;
+    private List<string> bg_queue;
     private List<string> left_queue;
     private List<string> right_queue;
     private List<string> center_queue;
@@ -32,13 +39,14 @@ public class CutsceneManager : MonoBehaviour
     private bool active;
     private bool writing;
     private bool ender = false;
+    private bool advance = false;
 
     // Start is called before the first frame update
     void Start()
     {
         storeText = new List<string>();
         write_queue = new List<string>();
-        image_queue = new List<string>();
+        bg_queue = new List<string>();
         left_queue = new List<string>();
         right_queue = new List<string>();
         center_queue = new List<string>();
@@ -49,6 +57,10 @@ public class CutsceneManager : MonoBehaviour
         seSource = tmp[0];
         musicSource = tmp[1];
         so = SaveManager.Load();
+        if (!so.gameStart)
+        {
+            so.currentGenre = 0;
+        }
         switch (so.currentGenre)
         {
             case 0:         //Hub events
@@ -284,6 +296,7 @@ public class CutsceneManager : MonoBehaviour
         storyText.text = tt;
         if (stop)
         {
+            
             yield return new WaitForSeconds(0.2f);
             yield return new WaitUntil(new System.Func<bool>(() => inputMan.inputSubmit != 0.0f));
         }

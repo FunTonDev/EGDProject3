@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 public class PlayerController : MonoBehaviour
 {
+    private SaveFile so;
     private GameManager gameMan;
     private InputManager inputMan;
     private TransitionManager tranMan;
@@ -28,6 +29,9 @@ public class PlayerController : MonoBehaviour
     public float maxHP;
     public Image hpBar;
     public Image extraBar;
+    public Image platBar;
+    public Image shotBar;
+    public Image rpgBar;
     public LayerMask hazardMask;
 
     [Header("General Movement")]
@@ -91,6 +95,7 @@ public class PlayerController : MonoBehaviour
      ============================================================================*/
     private void Start()
     {
+        so = SaveManager.Load();
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
@@ -108,6 +113,45 @@ public class PlayerController : MonoBehaviour
             genreCosmetics.Add(gameObject.transform.GetChild(2).GetChild(i).gameObject);
         }
         SetDefaultValues();
+        if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>() != null)
+            platBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>();
+        if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("ShotBase").GetChild(0).GetComponent<Image>() != null)
+            shotBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("ShotBase").GetChild(0).GetComponent<Image>();
+        if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("RPGBase").GetChild(0).GetComponent<Image>() != null)
+            rpgBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("RPGBase").GetChild(0).GetComponent<Image>();
+        if (platBar != null)
+        {
+            if (so.platDone)
+            {
+                platBar.color = new Color(0.0f, 1.0f, 0.0f);
+            }
+            else
+            {
+                platBar.color = new Color(1.0f, 1.0f, 1.0f);
+            }
+        }
+        if (shotBar != null)
+        {
+            if (so.shotDone)
+            {
+                shotBar.color = new Color(0.0f, 1.0f, 0.0f);
+            }
+            else
+            {
+                shotBar.color = new Color(1.0f, 1.0f, 1.0f);
+            }
+        }
+        if (rpgBar != null)
+        {
+            if (so.rpgDone)
+            {
+                rpgBar.color = new Color(0.0f, 1.0f, 0.0f);
+            }
+            else
+            {
+                rpgBar.color = new Color(1.0f, 1.0f, 1.0f);
+            }
+        }
     }
 
     private void Update()       //Handles live/uneven changes
