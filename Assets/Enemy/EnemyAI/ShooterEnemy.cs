@@ -243,7 +243,7 @@ public class ShooterEnemy : Enemy
 
     IEnumerator MeleeAttack()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         Debug.Log("Melee attacked called");
 
