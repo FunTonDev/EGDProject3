@@ -7,6 +7,7 @@ public class CutsceneManager : MonoBehaviour
 {
     public SaveFile so;
     public InputManager inputMan;
+    public TransitionManager tranMan;
     public AudioSource seSource;
     public AudioSource musicSource;
 
@@ -24,6 +25,7 @@ public class CutsceneManager : MonoBehaviour
 
     public Text storyText;
 
+    public string nextScene;
     
 
     private List<string> storeText;
@@ -52,6 +54,7 @@ public class CutsceneManager : MonoBehaviour
         center_queue = new List<string>();
         upperLeft_queue = new List<string>();
         upperRight_queue = new List<string>();
+        tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         AudioSource[] tmp = GameObject.FindObjectsOfType<AudioSource>();
         seSource = tmp[0];
@@ -101,6 +104,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Finally, the platformer where a princess must be saved.");
                     storeText.Add("So, have at it and take your pick.");
                     //Screen fades to black, back to HUB world
+                    nextScene = "HubWorld";
 
                     for (int i = 0; i < 4; i++)
                     {
@@ -122,6 +126,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");
                     storeText.Add("");
                     storeText.Add("*Pixal learned to jump!*");
+                    nextScene = "PlatformerWorld";
                 }
                 else if (!so.inPlat)
                 { 
@@ -139,6 +144,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Now wait a minute, that’s the same stuff the princess got on her crown, maybe thats why she’s been acting up lately. Please save her, she’s that way!");
                     //Pixal goes off to save the princess (moves right off screen
                     storeText.Add("");
+                    nextScene = "PlatformerWorld";
                 }
                 else if (!so.inPlat2)
                 {
@@ -160,6 +166,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("I miss my daddy");
                     //
                     //-Seeing the data, Pixal then makes a new crown that the Queen can wear.Offering it to her, she takes it, then disappears, leaving Pixal be, where it can return back to the hub -
+                    nextScene = "PlatformerWorld";
                 }
                 break;
             case 2:         //Shooter events
@@ -180,6 +187,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("And now it’s out here shootin the shit and making everything worse! At the rate things are goin, we might even have to go offli-");
                     //Sudenly, the monster MS was talking about appears out of nowhere and then takes away MS. As MS is being dragged off, he drops his gun. Pixal picks up the dropped gun and then follows the trail of the monster-
                     storeText.Add("'Obtained GUN'");
+                    nextScene = "ShooterWorld";
                 }
                 //After shooter horde battle
                 else
@@ -198,6 +206,7 @@ public class CutsceneManager : MonoBehaviour
                     //Pixal tries giving back gun
                     storeText.Add("No no, that’s yours soldier, you made better use of it than I did.");
                     //Pixal nods and leaves
+                    nextScene = "ShooterWorld";
                 }
                 break;
             case 3:         //RPG events
@@ -206,6 +215,7 @@ public class CutsceneManager : MonoBehaviour
                     //Background = forest/plains
                     //Pixal finds trail of slime, follows it
                     //Some gameplay/movement
+                    nextScene = "RPGWorld";
                 }
                 else if (!so.inRPG)
                 {
@@ -219,6 +229,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Good grief, you must be some kind of panacea. Please, let me join you, I must help relieve my village from this sickness.");
                     //-Pixal nods and they both head toward the goop.-
                     storeText.Add("'The Motherly Rogue joined your Party'");
+                    nextScene = "RPGWorld";
                 }
                 else if (!so.inRPG2)
                 {
@@ -266,6 +277,7 @@ public class CutsceneManager : MonoBehaviour
             bg.sprite = image_queue[i];
             yield return textDisplay(tts[i], true);
         }
+        tranMan.SceneSwitch(nextScene);
     }
 
     //Display text

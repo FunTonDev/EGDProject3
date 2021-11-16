@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
     public Image shotBar;
     public Image rpgBar;
     public LayerMask hazardMask;
+    public GameObject objective;
+    public GameObject arrows;
+    private GameObject tempArrow;
 
     [Header("General Movement")]
     public float xForce;
@@ -113,45 +116,51 @@ public class PlayerController : MonoBehaviour
             genreCosmetics.Add(gameObject.transform.GetChild(2).GetChild(i).gameObject);
         }
         SetDefaultValues();
-        if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>() != null)
-            platBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>();
-        if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("ShotBase").GetChild(0).GetComponent<Image>() != null)
-            shotBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("ShotBase").GetChild(0).GetComponent<Image>();
-        if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("RPGBase").GetChild(0).GetComponent<Image>() != null)
-            rpgBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("RPGBase").GetChild(0).GetComponent<Image>();
-        if (platBar != null)
+        objective = GameObject.FindGameObjectWithTag("Objective");
+        tempArrow = Instantiate(arrows);
+        if (gameMan.genreMain == States.GameGenre.None)
         {
-            if (so.platDone)
+            if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>() != null)
+                platBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>();
+            if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("ShotBase").GetChild(0).GetComponent<Image>() != null)
+                shotBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("ShotBase").GetChild(0).GetComponent<Image>();
+            if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("RPGBase").GetChild(0).GetComponent<Image>() != null)
+                rpgBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("RPGBase").GetChild(0).GetComponent<Image>();
+            if (platBar != null)
             {
-                platBar.color = new Color(0.0f, 1.0f, 0.0f);
+                if (so.platDone)
+                {
+                    platBar.color = new Color(0.0f, 1.0f, 0.0f);
+                }
+                else
+                {
+                    platBar.color = new Color(1.0f, 1.0f, 1.0f);
+                }
             }
-            else
+            if (shotBar != null)
             {
-                platBar.color = new Color(1.0f, 1.0f, 1.0f);
+                if (so.shotDone)
+                {
+                    shotBar.color = new Color(0.0f, 1.0f, 0.0f);
+                }
+                else
+                {
+                    shotBar.color = new Color(1.0f, 1.0f, 1.0f);
+                }
+            }
+            if (rpgBar != null)
+            {
+                if (so.rpgDone)
+                {
+                    rpgBar.color = new Color(0.0f, 1.0f, 0.0f);
+                }
+                else
+                {
+                    rpgBar.color = new Color(1.0f, 1.0f, 1.0f);
+                }
             }
         }
-        if (shotBar != null)
-        {
-            if (so.shotDone)
-            {
-                shotBar.color = new Color(0.0f, 1.0f, 0.0f);
-            }
-            else
-            {
-                shotBar.color = new Color(1.0f, 1.0f, 1.0f);
-            }
-        }
-        if (rpgBar != null)
-        {
-            if (so.rpgDone)
-            {
-                rpgBar.color = new Color(0.0f, 1.0f, 0.0f);
-            }
-            else
-            {
-                rpgBar.color = new Color(1.0f, 1.0f, 1.0f);
-            }
-        }
+
     }
 
     private void Update()       //Handles live/uneven changes
@@ -160,6 +169,43 @@ public class PlayerController : MonoBehaviour
         {
             TimerUpdate();
             CursorUpdate();
+        }
+        if (objective != null)
+        {
+            Debug.Log("Objective good");
+            Vector3 screenpos = Camera.main.WorldToScreenPoint(objective.transform.position);
+            if (screenpos.z > 0 &&
+                screenpos.x > 0 && screenpos.x < Screen.width &&
+                screenpos.y > 0 && screenpos.y < Screen.height)
+            {
+
+            }
+            else
+            {
+                if (screenpos.z < 0) screenpos *= -1;
+                Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 4;
+                screenpos -= screenCenter;
+                float angle = Mathf.Atan2(screenpos.y, screenpos.x);
+                angle -= 90 * Mathf.Deg2Rad;
+
+                float cos = Mathf.Cos(angle);
+                float sin = -Mathf.Sin(angle);
+                screenpos = screenCenter + new Vector3(sin * 150, cos * 150, 0);
+
+                float m = cos / sin;
+
+                Vector3 screenBounds = screenCenter * 0.9f;
+
+                if (cos > 0) screenpos = new Vector3(screenpos.y / m, screenpos.y, 0);
+                else screenpos = new Vector3(-screenpos.y / m, -screenpos.y, 0);
+
+                if (screenpos.x > screenBounds.x) screenpos = new Vector3(screenpos.x, screenpos.x * m, 0);
+                else if (screenpos.x < screenBounds.x) screenpos = new Vector3(screenpos.x, -screenpos.x * m, 0);
+
+                screenpos += screenCenter;
+                tempArrow.transform.localPosition = screenpos;
+                tempArrow.transform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+            }
         }
     }
 

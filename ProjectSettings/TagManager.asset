@@ -17,6 +17,7 @@ TagManager:
   - Volume
   - EnemyAttack
   - PathNode
+  - Objective
   layers:
   - Default
   - TransparentFX
