@@ -83,6 +83,7 @@ public class SaveFile
     public bool rpgStart;
     public bool inRPG;
     public bool inRPG2;
+    public bool inRPG3;
     public bool rpgDone;
 
     public bool rpgCollect;

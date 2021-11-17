@@ -69,6 +69,9 @@ public class PlayerController : MonoBehaviour
     public float wallJumpDelayTime;
     public float dashTimer;
     public float dashDelayTime;
+    //For double tap 
+    public float lastDashTime = 0;
+    public float dashSpeed = 0.2f;
 
     [Header("Platformer Data")]
     public bool grounded;
@@ -160,7 +163,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
+        lastDashTime = Time.deltaTime;
     }
 
     private void Update()       //Handles live/uneven changes
@@ -264,12 +267,17 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (inputMan.inputAct3 == 1 && dashCount < 1)   //Dash check
+        if (inputMan.inputAct5_D && dashCount < 1)   //Dash check
         {
             GameObject temp = Instantiate(dashEffect, transform.position, transform.rotation);
             playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);
             dashCount++;
             dashTimer = dashDelayTime;
+            lastDashTime = Time.deltaTime;
+        }
+        else if (inputMan.inputX_D)
+        {
+            lastDashTime = Time.deltaTime;
         }
         extraBar.fillAmount = -(dashTimer - dashDelayTime) / dashDelayTime;
 
@@ -284,7 +292,7 @@ public class PlayerController : MonoBehaviour
 
     public void ShooterMoveUpdate()
     {
-        if (inputMan.inputAct3 == 1 && rollTimer <= 0) //Roll check (current mapping == q)
+        if (inputMan.inputAct4 == 1 && rollTimer <= 0) //Roll check (current mapping == q)
         {
             rollTimer = rollDelayTime;
             StartCoroutine(Roll());
