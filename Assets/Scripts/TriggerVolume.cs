@@ -136,6 +136,7 @@ public class TriggerVolume : MonoBehaviour
             playerCont.transform.position = new Vector3(playerCont.transform.position.x, transform.position.y, playerCont.transform.position.z);
         }
         playerCont.playerRigB.velocity = Vector3.zero;
+        playerCont.transform.rotation = Quaternion.Euler(0, 0, 0);
         playerCont.playerMeshF.gameObject.transform.eulerAngles = modelEulers;
         playerCont.playerMeshF.gameObject.transform.localScale = modelScale;
         playerCont.playerPrimaryGenre = primaryGenre;
