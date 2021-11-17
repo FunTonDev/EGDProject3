@@ -6936,8 +6936,10 @@ MonoBehaviour:
   - {fileID: 1332071469}
   optionButtons:
   - {fileID: 1081454363}
+  rpgButtons: []
   mainIndex: 0
   optionsIndex: 0
+  rpgIndex: 0
   currentSection: 0
 --- !u!114 &672399292
 MonoBehaviour:
@@ -13911,7 +13913,7 @@ PrefabInstance:
     - target: {fileID: 6677177545914274470, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: arrows
       value: 
-      objectReference: {fileID: 2373358335044939318, guid: e87413a575b9ff84f9989ebfa80a8953, type: 3}
+      objectReference: {fileID: 1979449126325219158, guid: aee888e238196d84e8d5649d61fc2143, type: 3}
     - target: {fileID: 6677177545914274470, guid: 869f9226818588b498f36b5a2f4039b3, type: 3}
       propertyPath: currentHP
       value: 10
