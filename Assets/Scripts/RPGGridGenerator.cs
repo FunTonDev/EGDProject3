@@ -9,25 +9,26 @@ public class RPGGridGenerator : MonoBehaviour
     [SerializeField] private Transform gridContainer;
 
     [Header("Variables")]
-    public uint totalHor;
-    public uint totalVer;
-    public float startXPos;
-    public float startZPos;
+    public uint totalX;
+    public uint totalY;
+    public uint totalZ;
+    public Quaternion targetRot;
     private float tileSize;
-    private float yPos;
 
     private void Awake()
     {
-        tileSize = gridUnit.transform.localScale.x;
-        yPos = gameObject.transform.position.y;
-
-        for (int i = 0; i < totalVer; i++)
+        tileSize = 1;
+        for (int i = 0; i < totalY; i++)
         {
-            for (int j = 0; j < totalHor; j++)
+            for (int j = 0; j < totalZ; j++)
             {
-                Vector3 pos = new Vector3(startXPos + tileSize * j, yPos + 0.5f, startZPos - tileSize * i);
-                Instantiate(gridUnit, pos, gridContainer.transform.rotation, gridContainer);
+                for (int k = 0; k < totalX; k++)
+                {
+                    Vector3 pos = new Vector3(gridContainer.position.x + tileSize * k, gridContainer.position.y + tileSize * i, gridContainer.position.z - tileSize * j);
+                    GameObject newUnit = Instantiate(gridUnit, pos, gridContainer.transform.rotation, gridContainer);
+                }
             }
         }
+        transform.rotation = targetRot;
     }
 }

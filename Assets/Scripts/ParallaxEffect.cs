@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class scrollingBg : MonoBehaviour
+public class ParallaxEffect : MonoBehaviour
 {
     [Header("Components")]
     public GameObject target;

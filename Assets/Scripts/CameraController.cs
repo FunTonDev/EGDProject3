@@ -100,39 +100,16 @@ public class CameraController : MonoBehaviour
     private Vector3 CharMoveBiasUpdate()
     {
         if (isTrackingMovement)
-        { 
-            
-            float xDist = 0, yDist = 0;
+        {
+            float xDist = -focusDiff.x;
+            float yDist = -focusDiff.y;
             if (inputMan.inputX != 0 || inputMan.inputY != 0)
             {
                 Vector3 lookAheadVec = new Vector3(inputMan.inputX, inputMan.inputY, 0).normalized * moveAheadMax;
-                
-                
-                if (Mathf.Abs((cameraTarget.position.x + lookAheadVec.x) - transform.position.x) > 0.5f)
-                {
-                    xDist = (cameraTarget.position.x + lookAheadVec.x) - transform.position.x;
-                }
-                if (Mathf.Abs((cameraTarget.position.y + lookAheadVec.y) - transform.position.y) > 0.5f)
-                {
-                    yDist = (cameraTarget.position.y + lookAheadVec.y) - transform.position.y;
-                }
-                //xDist = Mathf.Abs(lookAheadPoint.x - transform.position.x) > 0.2f ? lookAheadPoint.x - transform.position.x : 0;
-                //yDist = Mathf.Abs(lookAheadPoint.y - transform.position.y) > 0.2f ? lookAheadPoint.y - transform.position.y : 0;
-                Debug.Log(xDist + " " + yDist);
+                xDist = (Mathf.Abs((cameraTarget.position.x + lookAheadVec.x) - transform.position.x) > 0.5f) ? (cameraTarget.position.x + lookAheadVec.x) - transform.position.x : 0;
+                yDist = (Mathf.Abs((cameraTarget.position.y + lookAheadVec.y) - transform.position.y) > 0.5f) ? (cameraTarget.position.y + lookAheadVec.y) - transform.position.y : 0;
             }
-            else
-            {
-                xDist = -focusDiff.x;
-                yDist = -focusDiff.y;
-            }
-            float xChange = xDist != 0 ? Mathf.Sign(xDist) * 0.15f : 0;
-            float yChange = yDist != 0 ? Mathf.Sign(yDist) * 0.15f : 0;
-            
-            //Debug.Log(xChange + " " + yChange);
-            //if (xDist == -focusDiff.x || focusDiff.magnitude < moveAheadMax)
-            //{
-                focusDiff += new Vector3(xChange, yChange, 0);
-            //}
+            focusDiff += new Vector3(xDist / moveAheadMax * 0.5f, yDist / moveAheadMax * 0.5f, 0);
             return focusDiff;
         }
         return Vector3.zero;

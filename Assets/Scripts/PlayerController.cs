@@ -307,23 +307,32 @@ public class PlayerController : MonoBehaviour
 
     public void RPGMoveUpdate()
     {
-        float xClampVel = 0, yClampVel = 0;
-        if (inputMan.inputX != 0)
+        float xClampVel = 0, yClampVel = 0, zClampVel = 0;
+        if (inputMan.inputX != 0)  //X move check
         {
-            playerRigB.AddForce(new Vector3(inputMan.inputX * xForce / 2, 0, 0), ForceMode.VelocityChange);
-            xClampVel = (inputMan.inputX == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity) * Mathf.Sign(playerRigB.velocity.x);  //X move check
+            float zSin = Mathf.Abs(Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.z));
+            float zCos = Mathf.Abs(Mathf.Cos(Mathf.Deg2Rad * transform.localEulerAngles.z));
+            playerRigB.AddForce(new Vector3(inputMan.inputX * xForce * zCos, 0, 0), ForceMode.VelocityChange);
+            playerRigB.AddForce(new Vector3(0, inputMan.inputX * xForce * Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.z), 0), ForceMode.VelocityChange);
+            xClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.x), 0, maxXVelocity * zCos) * Mathf.Sign(playerRigB.velocity.x);
+            yClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxXVelocity * zSin) * Mathf.Sign(playerRigB.velocity.y);
         }
-        else if (inputMan.inputY != 0)
+        else if (inputMan.inputY != 0)  //Z move check
         {
-            playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce / 2), ForceMode.VelocityChange);
-            yClampVel = (inputMan.inputY == 0) ? 0 : Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity) * Mathf.Sign(playerRigB.velocity.z);  //Y move check
+            float xSin = Mathf.Abs(Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x));
+            float xCos = Mathf.Abs(Mathf.Cos(Mathf.Deg2Rad * transform.localEulerAngles.x));
+            playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce * xCos), ForceMode.VelocityChange);
+            playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce * Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x), 0), ForceMode.VelocityChange);
+            zClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity * xCos) * Mathf.Sign(playerRigB.velocity.z);
+            yClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity * xSin) * Mathf.Sign(playerRigB.velocity.y);
         }
-        else if (closestTile != null)
+
+        if (closestTile != null)
         {
-            transform.position = closestTile.transform.position;//.new Vector3(position.x, transform.position.y, closestTile.transform.position.z);
-        }
-        closestTile.GetComponent<GridUnit>().occupied = inputMan.inputX == 0 && inputMan.inputY == 0;
-        playerRigB.velocity = new Vector3(xClampVel, playerRigB.velocity.y, yClampVel);
+            closestTile.GetComponent<GridUnit>().occupied = inputMan.inputX == 0 && inputMan.inputY == 0;
+            transform.position = closestTile.GetComponent<GridUnit>().occupied ? closestTile.transform.position : transform.position;
+        }  
+        playerRigB.velocity = new Vector3(xClampVel, yClampVel, zClampVel);
     }
 
     public void HubMoveUpdate()
