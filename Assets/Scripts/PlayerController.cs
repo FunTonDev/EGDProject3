@@ -331,7 +331,7 @@ public class PlayerController : MonoBehaviour
             float xSin = Mathf.Abs(Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x));
             float xCos = Mathf.Abs(Mathf.Cos(Mathf.Deg2Rad * transform.localEulerAngles.x));
             playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce * xCos), ForceMode.VelocityChange);
-            playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce * Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x), 0), ForceMode.VelocityChange);
+            playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce * -Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x), 0), ForceMode.VelocityChange);
             zClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity * xCos) * Mathf.Sign(playerRigB.velocity.z);
             yClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity * xSin) * Mathf.Sign(playerRigB.velocity.y);
         }
