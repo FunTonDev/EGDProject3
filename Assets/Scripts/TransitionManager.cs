@@ -37,34 +37,34 @@ public class TransitionManager : MonoBehaviour
             case "HubWorld":
                 sceneText += "Central Hub";
                 so.currentGenre = 0;
-                if (!so.gameStart)
+                /*if (!so.gameStart)
                 {
                     sceneStr = "CutsceneScene";
-                }
+                }*/
                 break;
             case "RPGWorld":
                 sceneText += "Fantasy Plains";
                 so.currentGenre = 3;
-                if (!so.rpgStart)
+                /*if (!so.rpgStart)
                 {
                     sceneStr = "CutsceneScene";
-                }
+                }*/
                 break;
             case "ShooterWorld":
                 sceneText += "Shooter Jungle";
                 so.currentGenre = 2;
-                if (!so.shotStart)
+                /*if (!so.shotStart)
                 {
                     sceneStr = "CutsceneScene";
-                }
+                }*/
                 break;
             case "PlatformerWorld":
                 sceneText += "Platformer Kingdom";
                 so.currentGenre = 1;
-                if (!so.platStart)
+                /*if (!so.platStart)
                 {
                     sceneStr = "CutsceneScene";
-                }
+                } */
                 break;
             case "MenuScene":
                 sceneText = "Leaving the System";

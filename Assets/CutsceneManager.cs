@@ -71,14 +71,20 @@ public class CutsceneManager : MonoBehaviour
             case 0:         //Hub events
                 if (!so.gameStart)
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/Cutscene1-Intro"));
                     //Conveyor Belt Scene (4)
                     storeText.Add("Ever wonder how Pixels are made?");
                     storeText.Add("Each one is made to serve a purpose");
                     storeText.Add("However, sometimes things don’t always go according to plan...");
-                    storeText.Add("Especially when things get...Interesting...");
+                    storeText.Add("Especially when things get...");
+                    storeText.Add("...Interesting...");
                     //Pixal Falls, screen fades to black once pixal falls off
+                    image_queue.Add(null);
 
                     //Pixal Meets Coder (3)
+                    storeText.Add("");
+                    storeText.Add("");
+                    storeText.Add("");
                     storeText.Add("Egads! What was that noise?");
                     storeText.Add("Ahh I see, I wonder how that managed to happen. Maybe a context switch gone astray…");
                     storeText.Add("No matter, I had debugging scheduled for today anyway.");
@@ -293,6 +299,7 @@ public class CutsceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (inputMan.inputSubmit_D)
         {
             SaveManager.Save(so);
@@ -301,6 +308,7 @@ public class CutsceneManager : MonoBehaviour
         {
             so = SaveManager.Load();
         }
+        */
     }
 
     //public function for clearing the text of the textbox
@@ -315,6 +323,7 @@ public class CutsceneManager : MonoBehaviour
         {
             bg.sprite = image_queue[i];
             yield return textDisplay(tts[i], true);
+            advance = false;
         }
         tranMan.SceneSwitch(nextScene);
     }
@@ -330,7 +339,7 @@ public class CutsceneManager : MonoBehaviour
         writing = true;
         for (int i = 0; i < write_queue[0].Length && writing; i++)
         {
-            if (inputMan.inputSubmit != 0.0f && stop)
+            if (inputMan.inputSubmit != 0.0f && stop && !advance)
             {
                 Debug.Log("Should stop now");
                 Clear();

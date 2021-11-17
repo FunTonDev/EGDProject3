@@ -54,17 +54,17 @@ public class SaveFile
 {
 
     public int currentGenre = 1;
-    public int lastGenre = 1;               //0 - HUB, 1 - Plat, 2 - Shot, 3 - RPG
+    public int lastGenre = 1;                           //0 - HUB, 1 - Plat, 2 - Shot, 3 - RPG
 
-    public Vector3 lastPosition;            //Position to load player prefab in
+    public Vector3 lastPosition;                        //Position to load player prefab in
 
     public string lastScene = "Testing/[Test Scene]";            //Last scene player was in
 
-    public float lastHP = 1.0f;                //Last known hp value
+    public float lastHP = 1.0f;                         //Last known hp value
 
 
     public bool gameStart;
-    public bool platStart;              //Whether platformer stage started (whether to display cutscene)
+    public bool platStart;                              //Whether platformer stage started (whether to display cutscene)
     public bool inPlat;
     public bool inPlat2;
     public bool inPlat3;
