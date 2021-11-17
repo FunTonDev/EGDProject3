@@ -115,6 +115,17 @@ public class CutsceneManager : MonoBehaviour
                     so.gameStart = true;
                     SaveManager.Save(so);
                 }
+                else if (so.platDone && so.shotDone && so.rpgDone)
+                {
+                    storeText.Add("Eureka! Now that we have more information and the games are decontaminated, we can finally move on to exterminating the source.");
+                    //A new doorway opens up, leading to forbo
+                    storeText.Add("I am not sure what will happen here. Whatever it is though, I have faith it can’t hurt you, as long as you do not let it. Good luck, friend");
+                    storeText.Add("");
+                    storeText.Add("");
+                    storeText.Add("");
+                    storeText.Add("");
+                    storeText.Add("");
+                }
                 break;
             case 1:         //Platformer events
                 if (!so.platStart)
@@ -238,12 +249,40 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("...");
                     storeText.Add("Not much of a talker I see, just like someone I used to know.");
                     storeText.Add("Well, I’d say you’re a lucky pixel, it’s rare when to see one loose, it’s been years. You can become whatever you want, so choose wisely when you do.");
-                    storeText.Add("");
-                    storeText.Add("");
+                }
+                else if (!so.inRPG3)
+                {
+                    storeText.Add("We’re close");
+                    //They approach a giant blob (Setting is either in a cave or deep in the forest). The giant blob looks at Pixal and the woman and then attacks.
+                    storeText.Add("Here we go!");
                 }
                 else
                 {
-
+                    //The glitch is defeated and is deflated. The goop then falls off from the shape of a heart shaped flask.-
+                    storeText.Add("The Panacea... We did it...");
+                    //She opens it up and takes a swig. The woman then starts to heal. As the woman is healing, Pixal grabs the goop and then starts to purify and absorb the data.-
+                    storeText.Add("Do you take this man to be your lawfully wedded husband?");
+                    storeText.Add("I do");
+                    storeText.Add("Do you take this woman to be your lawfully wedded wife?");
+                    storeText.Add("I do");
+                    storeText.Add("Then you may kiss the bride.");
+                    storeText.Add("I love you.");
+                    storeText.Add("*Several years later...*");
+                    storeText.Add("Are we still going out for dinner tonight?");
+                    storeText.Add("I can’t, the game is close to release and there’s still much to be done. My boss has been telling me there’s a breach in the system and it’s my job to fix it.");
+                    storeText.Add("Ugh, you’re always working, when was the last time you even checked in on the kids?");
+                    storeText.Add("Listen, I understand but-");
+                    storeText.Add("But nothing! ANTHONY hasn’t even left his room in weeks! And you don’t seem to care.");
+                    storeText.Add("It’s like you don’t even love us!");
+                    storeText.Add("You know that’s not true, what I do is for you guys...");
+                    storeText.Add("Shut up! You do this for yourself! Your precious game is SO IMPORTANT, I get it, now get out of my face! *coughs*");
+                    //End Black Screen
+                    //As Pixal is leaving the forest, he looks behind and notices the woman isn’t following him. It sees that the woman is collapsed over the panacea, holding it dearly.-
+                    storeText.Add("Here, go on ahead and deliver it to my people");
+                    //Pixal is worried (show expression)
+                    storeText.Add("Don’t worry about me... I'll be fine, I just need to... rest this weary body for a bit.");
+                    storeText.Add("The name is Barbara by the way");
+                    //Fade to black
                 }
                 break;
         }
