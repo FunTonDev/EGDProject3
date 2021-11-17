@@ -2628,13 +2628,12 @@ MonoBehaviour:
   mouseRightBound: 223
   mouseUpBound: 773
   mouseDownBound: 173
-  moveAheadMax: 15
+  moveAheadMax: 4
   mouseAheadMax: 450
-  xChange: 0
-  yChange: 0
   camVelX: 0.1
   camVelY: 0.1
   isTrackingMovement: 1
+  shaking: 0
   currMode: 0
 --- !u!114 &648874675
 MonoBehaviour:
@@ -3850,6 +3849,10 @@ PrefabInstance:
     - target: {fileID: 2587144832372627837, guid: 7ad5df323dcbcca488ace7c0e198b6ba, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587144832372627837, guid: 7ad5df323dcbcca488ace7c0e198b6ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324696290644958822, guid: 7ad5df323dcbcca488ace7c0e198b6ba, type: 3}
       propertyPath: m_Layer

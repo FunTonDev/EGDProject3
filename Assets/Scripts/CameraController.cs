@@ -20,8 +20,6 @@ public class CameraController : MonoBehaviour
     public float mouseDownBound;
     public float moveAheadMax;
     public float mouseAheadMax;
-    public float xChange;
-    public float yChange;
     public float camVelX;
     public float camVelY;
 
@@ -29,8 +27,8 @@ public class CameraController : MonoBehaviour
     public bool shaking;
     public States.GameGenre currMode;
 
+    private Vector3 focusDiff;
     private Vector3 mousePos;
-    private Vector3 targetPos;
     private Vector3 genrePos;
     private Quaternion targetRot;
 
@@ -49,12 +47,11 @@ public class CameraController : MonoBehaviour
         SetCameraMode(States.GameGenre.Platformer);
         isTrackingMovement = true;
         shaking = false;
-        moveAheadMax = 15.0f;
+        moveAheadMax = 2.0f;
         mouseAheadMax = 450.0f;
-        xChange = 0.0f;
-        yChange = 0.0f;
         camVelX = 0.1f;
         camVelY = 0.1f;
+        focusDiff = Vector3.zero;
     }
 
     private void Update()
@@ -70,8 +67,6 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        xChange = yChange = 0.0f;
-        targetPos = cameraTarget.position;
         switch (cameraTarget.tag)
         {
             case "Player":
@@ -85,15 +80,65 @@ public class CameraController : MonoBehaviour
      ============================================================================*/
     private void PlayerCamUpdate()
     {
-        CursorBiasUpdate();
-        CharMoveBiasUpdate();
-        Vector3 playerADSDir = ADSBiasUpdate();
-        transform.position = targetPos + genrePos + playerADSDir;
+        Vector3 playerDiff = Vector3.zero;
+        switch(playerPrefab.GetComponent<PlayerController>().playerPrimaryGenre)
+        {
+            case (States.GameGenre.Platformer):
+                playerDiff += CharMoveBiasUpdate();
+                break;
+            case (States.GameGenre.Shooter):
+                playerDiff += ADSBiasUpdate() + CursorBiasUpdate();
+                break;
+            case (States.GameGenre.RPG):
+                break;
+        }
+        transform.position = cameraTarget.position + genrePos + playerDiff;
         transform.rotation = targetRot;
-        //Incorporate averaging of mouse position, movement, character position later using x/y change //Vector3(xChange, yChange, 0);
+        //OLD: Incorporate averaging of mouse position, movement, character position later using x/y change //Vector3(xChange, yChange, 0);
     }
 
-    private void CursorBiasUpdate()
+    private Vector3 CharMoveBiasUpdate()
+    {
+        if (isTrackingMovement)
+        { 
+            
+            float xDist = 0, yDist = 0;
+            if (inputMan.inputX != 0 || inputMan.inputY != 0)
+            {
+                Vector3 lookAheadVec = new Vector3(inputMan.inputX, inputMan.inputY, 0).normalized * moveAheadMax;
+                
+                
+                if (Mathf.Abs((cameraTarget.position.x + lookAheadVec.x) - transform.position.x) > 0.5f)
+                {
+                    xDist = (cameraTarget.position.x + lookAheadVec.x) - transform.position.x;
+                }
+                if (Mathf.Abs((cameraTarget.position.y + lookAheadVec.y) - transform.position.y) > 0.5f)
+                {
+                    yDist = (cameraTarget.position.y + lookAheadVec.y) - transform.position.y;
+                }
+                //xDist = Mathf.Abs(lookAheadPoint.x - transform.position.x) > 0.2f ? lookAheadPoint.x - transform.position.x : 0;
+                //yDist = Mathf.Abs(lookAheadPoint.y - transform.position.y) > 0.2f ? lookAheadPoint.y - transform.position.y : 0;
+                Debug.Log(xDist + " " + yDist);
+            }
+            else
+            {
+                xDist = -focusDiff.x;
+                yDist = -focusDiff.y;
+            }
+            float xChange = xDist != 0 ? Mathf.Sign(xDist) * 0.15f : 0;
+            float yChange = yDist != 0 ? Mathf.Sign(yDist) * 0.15f : 0;
+            
+            //Debug.Log(xChange + " " + yChange);
+            //if (xDist == -focusDiff.x || focusDiff.magnitude < moveAheadMax)
+            //{
+                focusDiff += new Vector3(xChange, yChange, 0);
+            //}
+            return focusDiff;
+        }
+        return Vector3.zero;
+    }
+
+    private Vector3 CursorBiasUpdate()
     {
         Vector3 playerScreenPos = cam.WorldToScreenPoint(playerPrefab.transform.position);
         playerScreenPos = new Vector3(playerScreenPos.x, playerScreenPos.y, 0);
@@ -101,38 +146,21 @@ public class CameraController : MonoBehaviour
         Vector3 dirVec = cursorScreenPos - playerScreenPos;
         float adjustedDist = Mathf.Clamp(dirVec.magnitude, 0, mouseAheadMax);
 
-        Vector3 res = dirVec.normalized * adjustedDist;
-
-        
+        return dirVec.normalized * adjustedDist;
     }
-
-    private void CharMoveBiasUpdate()
-    {
-        if (isTrackingMovement && playerPrefab.GetComponent<PlayerController>().playerPrimaryGenre == States.GameGenre.Platformer)
-        {
-            Vector3 currVel = playerPrefab.GetComponent<Rigidbody>().velocity;
-            //inputMan.inputX
-            //inputMan.inputY
-            float xDir = Mathf.Abs(currVel.x) > 0 ? currVel.x/Mathf.Abs(currVel.x) : 0;// * 0.1f);
-            float yDir = Mathf.Abs(currVel.y) > 0 ? currVel.y/Mathf.Abs(currVel.y) : 0;// * 0.1f);
-
-            Vector3 lookAheadPos = new Vector3(xDir, yDir, 0).normalized * moveAheadMax;
-            if (transform.position.x != lookAheadPos.x)
-            {
-                xChange = xDir;// * camVelX;
-                yChange = yDir;// * camVelY;
-            }
-        }
-    }
-
+    
     private Vector3 ADSBiasUpdate() //Currently a naive implementation, planning to add cursor cam
     {
-        if (cameraTarget.GetComponent<PlayerController>().playerSubGenre != States.GameGenre.Shooter || inputMan.inputFire2 != 1) { return Vector3.zero; }
-        Vector3 mouseWorldPos = cam.ScreenToWorldPoint(new Vector3(inputMan.inputMX, inputMan.inputMY, 2.0f));
-        mouseWorldPos = new Vector3(mouseWorldPos.x, playerPrefab.transform.position.y, mouseWorldPos.z);
-        Vector3 dirVec = (mouseWorldPos - playerPrefab.transform.position).normalized;
-        float dist = Mathf.Clamp(Vector3.Distance(mouseWorldPos, playerPrefab.transform.position), 0, 1.0f) * 3.0f;
-        return dirVec * dist;
+        if (inputMan.inputFire2 == 1)
+        {
+            Vector3 mouseWorldPos = cam.ScreenToWorldPoint(new Vector3(inputMan.inputMX, inputMan.inputMY, 2.0f));
+            mouseWorldPos = new Vector3(mouseWorldPos.x, playerPrefab.transform.position.y, mouseWorldPos.z);
+            Vector3 dirVec = (mouseWorldPos - playerPrefab.transform.position).normalized;
+            float dist = Mathf.Clamp(Vector3.Distance(mouseWorldPos, playerPrefab.transform.position), 0, 1.0f) * 3.0f;
+            return dirVec * dist;
+        }
+        return Vector3.zero;
+        
     }
 
     /*============================================================================
@@ -192,7 +220,6 @@ public class CameraController : MonoBehaviour
                 yield return null;
                 timer += Time.deltaTime;
             }
-            Debug.Log(timer);
         }
         shaking = false;
     }
