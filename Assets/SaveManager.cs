@@ -58,7 +58,7 @@ public class SaveFile
 
     public Vector3 lastPosition;                        //Position to load player prefab in
 
-    public string lastScene = "Testing/[Test Scene]";            //Last scene player was in
+    public string lastScene = "HubWorld";            //Last scene player was in
 
     public float lastHP = 1.0f;                         //Last known hp value
 
