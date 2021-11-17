@@ -5,20 +5,15 @@ using System;
 
 public class Bullet : MonoBehaviour
 {
-    [Header("Components")]
-    [SerializeField] private Rigidbody bulletRigB;
-    [SerializeField] private SphereCollider bulletSphereC;
-
-    [Header("Variables")]
-    public float bulletForce;
+    private Rigidbody bulletRigB;
+    private SphereCollider bulletSphereC;
 
     /*============================================================================
      * DEFAULT UNITY METHODS
      ============================================================================*/
     private void OnTriggerEnter(Collider coll)
     {
-        if (gameObject.tag != coll.gameObject.tag && coll.gameObject.name.Substring(0, 6) != "Bullet"
-            && (gameObject.layer == coll.gameObject.layer || coll.gameObject.tag == "Player"))
+        if (gameObject.tag != coll.gameObject.tag && coll.gameObject.tag != "Volume" && coll.gameObject.tag != "EnemyAttack")// && (gameObject.layer == coll.gameObject.layer || coll.gameObject.tag == "Player"))
         {
             SelfDestruct();
             if (gameObject.tag == "Player" && coll.gameObject.tag == "Enemy")
@@ -61,8 +56,7 @@ public class Bullet : MonoBehaviour
         bulletRigB = GetComponent<Rigidbody>();
         bulletSphereC = GetComponent<SphereCollider>();
         gameObject.tag = sourceTag;
-        bulletForce = sourceForce;
-        bulletRigB.AddForce(transform.forward * bulletForce, ForceMode.VelocityChange);
+        bulletRigB.AddForce(transform.forward * sourceForce, ForceMode.VelocityChange);
         Invoke("SelfDestruct", 3.0f);
     }
 }

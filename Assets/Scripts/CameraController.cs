@@ -152,6 +152,7 @@ public class CameraController : MonoBehaviour
     public void SetCameraMode(States.GameGenre mode)
     {
         currMode = mode;
+        cursorRecT.gameObject.SetActive(true);
         switch (currMode)
         {
             case (States.GameGenre.Shooter):
@@ -160,11 +161,13 @@ public class CameraController : MonoBehaviour
                 targetRot = Quaternion.Euler(90, 0, 0);
                 break;
             case (States.GameGenre.RPG):
+                cursorRecT.gameObject.SetActive(false);
                 cam.orthographic = false;
                 genrePos = new Vector3(0, 5.0f, -6.0f);
                 targetRot = Quaternion.Euler(45, 0, 0);
                 break;
             default:    //Applies same cam to platformer and hub; subject to change
+                cursorRecT.gameObject.SetActive(false);
                 cam.orthographic = true;
                 genrePos = new Vector3(0, 0, -8.0f);
                 targetRot = Quaternion.Euler(0, 0, 0);
