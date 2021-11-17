@@ -11,10 +11,12 @@ public class GameMenuManager : MonoBehaviour
     public List<GameObject> panels;
     public List<Button> mainButtons;
     public List<Button> optionButtons;
+    public List<Button> rpgButtons;
 
     [Header("Variables")]
     [HideInInspector] public int mainIndex;
     [HideInInspector] public int optionsIndex;
+    [HideInInspector] public int rpgIndex;
     [HideInInspector] public States.MenuSection currentSection;
 
     /*============================================================================
@@ -97,6 +99,9 @@ public class GameMenuManager : MonoBehaviour
             case States.MenuSection.Options:
                 panels[2].SetActive(false);
                 break;
+            case States.MenuSection.Team:
+                panels[3].SetActive(false);
+                break;
         }
         currentSection = i;
         switch (currentSection)
@@ -111,6 +116,19 @@ public class GameMenuManager : MonoBehaviour
             case States.MenuSection.Options:
                 panels[2].SetActive(true);
                 optionButtons[optionsIndex].Select();
+                break;
+            case States.MenuSection.Team:
+                panels[3].SetActive(true);
+                rpgButtons[rpgIndex].Select();
+                SaveFile so = SaveManager.Load();
+                if (so.helperGot)
+                {
+                    panels[3].transform.Find("Team2").gameObject.SetActive(true);
+                }
+                if (so.mamaGot)
+                {
+                    panels[3].transform.Find("Team3").gameObject.SetActive(true);
+                }
                 break;
         }
     }

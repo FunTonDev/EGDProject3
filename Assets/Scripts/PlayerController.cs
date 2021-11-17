@@ -69,6 +69,9 @@ public class PlayerController : MonoBehaviour
     public float wallJumpDelayTime;
     public float dashTimer;
     public float dashDelayTime;
+    //For double tap 
+    public float lastDashTime = 0;
+    public float dashSpeed = 0.5f;
 
     [Header("Platformer Data")]
     public bool grounded;
@@ -264,12 +267,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (inputMan.inputAct3 == 1 && dashCount < 1)   //Dash check
+        if (inputMan.inputX_D && Time.time - lastDashTime < dashSpeed)   //Dash check
         {
             GameObject temp = Instantiate(dashEffect, transform.position, transform.rotation);
             playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);
             dashCount++;
             dashTimer = dashDelayTime;
+        }
+        else if (inputMan.inputX_D)
+        {
+            lastDashTime = Time.time;
         }
         extraBar.fillAmount = -(dashTimer - dashDelayTime) / dashDelayTime;
 
