@@ -213,7 +213,8 @@ public class BattleManager : MonoBehaviour
         {
             actions.Add(new actionTag(currentUnit, "Attack", currentAction, target, PartyMembers[currentUnit].spd));
         }
-        currentUnit += 1;
+        while (PartyMembers[currentUnit].currentHP <= 0)
+            currentUnit += 1;
         currentActionType = "";
         currentAction = 0;
         
