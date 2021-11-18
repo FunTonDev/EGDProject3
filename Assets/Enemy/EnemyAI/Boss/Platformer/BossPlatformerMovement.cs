@@ -36,15 +36,6 @@ public class BossPlatformerMovement : MonoBehaviour
     public void SetGravity(bool gravity)
     { rgbdy.useGravity = gravity; }
 
-    public void SetPathNodes(List<Transform> pts, bool left)
-    { 
-        pathNodes = pts;
-        currNode = 0;
-        dir = 1;
-        if (!left) { currNode = pts.Count-1; dir = -1; }
-
-    }
-
     //For regular Movement
     public virtual void MoveReg()
     {
@@ -60,12 +51,22 @@ public class BossPlatformerMovement : MonoBehaviour
         SetAxisLevel();
     }
 
+    public void SetPathNodes(List<Transform> pts, bool left)
+    {
+        pathNodes = pts;
+        currNode = 0;
+        dir = 1;
+        if (!left) { currNode = pts.Count - 1; dir = -1; }
+
+        //Debug.Log(string.Format("currNode = {0}, dir = {1}", currNode, dir));
+    }
+
     //Gets the transform of the current node
     public Vector3 PathFollow()
     {
         Vector3 newPos = this.transform.position;
 
-        if (0.2f < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
+        if (0.3f < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
         //if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position)
         { newPos = pathNodes[this.currNode].GetComponent<Transform>().position; }
 

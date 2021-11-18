@@ -73,17 +73,18 @@ public class BossPlatformerAttack : MonoBehaviour
             {
                 if (moving && AtkPart == 1)
                 {
-                    if(0.2f < Vector3.Distance(this.transform.position, Destination))
+                    //Debug.Log(string.Format("BossPos: {0}, Destination: {1}, PathFollow{2}", this.transform.position, Destination, BossMovement.PathFollow()));
+                    if(Destination == BossMovement.PathFollow())
                     {
                         BossMovement.LookAtPos(Destination);
                         BossMovement.MoveReg();
                     }
 
                     //Move onto next part
-                    else { Atk1_P2(); }
+                    else { Atk1_P2(); moving = false; }
                 }
 
-                else if (moving && AtkPart == 2)
+                else if (AtkPart == 2)
                 {
                     attacking = false;
                     attack1 = false;
@@ -116,9 +117,10 @@ public class BossPlatformerAttack : MonoBehaviour
     {
         //StartCoroutine("Atk1Pattern");
 
+        Debug.Log("Boss Attack1() called");
         attacking = true;
         attack1 = true;
-
+        
         Atk1_P1();
     }
 
@@ -127,30 +129,44 @@ public class BossPlatformerAttack : MonoBehaviour
     //Figure out which side to start attack and move towards it
     public void Atk1_P1()
     {
+        //Debug.Log("Boss Atk1_P1() called");
+
         AtkPart = 1;
         bool left = true;
-        
+        Vector3 firstNode = Atk1MovePattern[0].position;
+
         //If Boss is closer to right side
         if (Vector3.Distance(this.transform.position, Atk1MovePattern[0].position) > Vector3.Distance(this.transform.position, Atk1MovePattern[4].position))
-        { left = false;}
+        { left = false; firstNode = Atk1MovePattern[4].position; }
           
         BossMovement.SetPathNodes(Atk1MovePattern, left);
-        Vector3 firstNode = BossMovement.PathFollow();
         BossMovement.LookAtPos(firstNode);
-        Debug.Log("firstNode = " + firstNode);
-        Debug.Log("left is " + left);
+        //Debug.Log("firstNode = " + firstNode);
+        //Debug.Log("left is " + left);
 
         Destination = firstNode;
         moving = true;
         atDest = false;
+                
     }
 
     //Move to first node
     public void Atk1_P2()
     {
-        AtkPart = 2;
+        //Debug.Log("Boss Atk1_P2 called");
 
-        Debug.Log("Boss Atk1_P2 called");
+        AtkPart = 2;
+        //moving = true;
+
+        //Look at other end
+        Vector3 lastNode = Atk1MovePattern[4].position;       
+        if (BossMovement.PathFollow() == Atk1MovePattern[3].position)
+        {
+            lastNode = Atk1MovePattern[0].position;
+        }
+
+        BossMovement.LookAtPos(lastNode);
+        
     }
     
 
