@@ -9,14 +9,19 @@ public class BossPlatformerMovement : MonoBehaviour
     [SerializeField] protected float moveSpd;
     private List<Transform> pathNodes;
     private int currNode;
+    private int dir;
 
     private float axisLvl;
+
+    private Rigidbody rgbdy;
 
     // Start is called before the first frame update
     void Start()
     {
         isFlipped = false;
         axisLvl = GameObject.FindGameObjectWithTag("Player").transform.position.z;
+
+        rgbdy = this.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -28,8 +33,17 @@ public class BossPlatformerMovement : MonoBehaviour
     public void SetMoveSpd(float spd)
         { moveSpd = spd; }
 
-    public void SetPathNodes(List<Transform> pts)
-        { pathNodes = pts; currNode = 0;}
+    public void SetGravity(bool gravity)
+    { rgbdy.useGravity = gravity; }
+
+    public void SetPathNodes(List<Transform> pts, bool left)
+    { 
+        pathNodes = pts;
+        currNode = 0;
+        dir = 1;
+        if (!left) { currNode = pts.Count-1; dir = -1; }
+
+    }
 
     //For regular Movement
     public virtual void MoveReg()
@@ -51,12 +65,13 @@ public class BossPlatformerMovement : MonoBehaviour
     {
         Vector3 newPos = this.transform.position;
 
-        if (1 < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
+        if (0.2f < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
+        //if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position)
         { newPos = pathNodes[this.currNode].GetComponent<Transform>().position; }
 
         else
-        {
-            this.currNode = (this.currNode + 1) % pathNodes.Count;
+        {            
+            this.currNode = (this.currNode + dir) % pathNodes.Count;
             newPos = pathNodes[this.currNode].GetComponent<Transform>().position;
         }
 
@@ -72,29 +87,29 @@ public class BossPlatformerMovement : MonoBehaviour
         this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
     }
 
-    public void LookAtPlayer(Transform player)
+    public void LookAtPos(Vector3 pos)
     {
         //Vector3 flipped = this.transform.localScale;
         //flipped.z *= -1f;
 
-        if((player.position.x < this.transform.position.x) && isFlipped)
+        if((pos.x < this.transform.position.x) && isFlipped)
         {
             //this.transform.localScale = flipped;
             transform.Rotate(0f, 180f, 0f);
-            //this.transform.eulerAngles = new Vector3(0, 270, 0);
             isFlipped = false;
 
-            Debug.Log("Boss Flipped"); 
+            //Debug.Log("Boss Flipped"); 
         }
 
-        else if((player.position.x > this.transform.position.x) && !isFlipped)
+        else if((pos.x > this.transform.position.x) && !isFlipped)
         {
             //this.transform.localScale = flipped;
             transform.Rotate(0f, 180f, 0f);
             isFlipped = true;
 
-            Debug.Log("Boss Flipped");
+            //Debug.Log("Boss Flipped");
         }
+                
     }
 
 
