@@ -100,8 +100,8 @@ public class BossAttackPhase : StateMachineBehaviour
 
     void PerformAtk(int i)
     {
-        Debug.Log("Boss Performing Atk1");
-        BossAtks.Attack1();
+        Debug.Log("Boss Performing Atk3");
+        BossAtks.Attack3();
         
         /*
         Debug.Log("Boss Performing Atk" + i);

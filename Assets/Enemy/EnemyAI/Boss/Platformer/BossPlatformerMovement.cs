@@ -47,7 +47,7 @@ public class BossPlatformerMovement : MonoBehaviour
     //For Movements related to Attacking
     public virtual void MoveAtk(Vector3 Pos)
     {
-        transform.position = Vector3.MoveTowards(this.transform.position, Pos, moveSpd * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(this.transform.position, Pos, 2 * moveSpd * Time.deltaTime);
         SetAxisLevel();
     }
 

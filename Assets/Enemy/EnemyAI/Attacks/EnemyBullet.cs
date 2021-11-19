@@ -39,9 +39,7 @@ public class EnemyBullet : MonoBehaviour
         }
 
         else
-        {
-            Invoke("SelfDestruct", 4.0f);
-        }
+        { Invoke("SelfDestruct", 4.0f);}
 
     }
 
@@ -82,12 +80,16 @@ public class EnemyBullet : MonoBehaviour
 
     private void SelfDestruct()
     {
-        //Debug.Log("Bullet SelfDestruct");
+        Debug.Log("Bullet SelfDestruct");
         Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {        
-        SelfDestruct();
+        if(!PlatformerBossAtk3 && collision.gameObject.tag != "Boss")
+        {
+            SelfDestruct();
+        }
+                
     }
 }
