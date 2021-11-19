@@ -16,18 +16,10 @@ public class EnemyBullet : MonoBehaviour
     private Vector3 target;
     private Vector3 origin;
 
-    //For the slime projectile attack for the PlatformerBoss
-    private float arcHeight = 1;
-    private float x1;
-    private float targetX;
-    private float dist;
-    private float nextX;
-    private float baseY;
-    private float height;
-
-
     void Start()
     {
+
+
         origin = this.transform.position;
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         target = new Vector3(playerPos.position.x, playerPos.position.y, playerPos.position.z);
@@ -49,16 +41,18 @@ public class EnemyBullet : MonoBehaviour
         {
             // Compute the next position, with arc added in
             float x0 = origin.x;
-            float x1 = target.x;
-            float dist = x1 - x0;
-            float nextX = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
+            float targetx = target.x + target.y;
+            float dist = targetx - x0;
+            float nextX = Mathf.MoveTowards(transform.position.x, targetx, speed * Time.deltaTime);
             float baseY = Mathf.Lerp(origin.y, target.y, (nextX - x0) / dist);
-            float arc = arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
-            Vector3 nextPos = new Vector3(nextX, baseY + arc, transform.position.z);
+            //float baseY = Mathf.Lerp(origin.y, target.y, dist);
+            float arcHeight = 2 * (nextX - x0) * (nextX - targetx) / (-0.25f * dist * dist);
+            Vector3 nextPos = new Vector3(nextX, baseY + arcHeight, transform.position.z);
 
             // Rotate to face the next position, and then move there
             this.transform.rotation = LookAtTarget(nextPos - transform.position);
             this.transform.position = nextPos;
+                        
         }
 
 
@@ -85,8 +79,8 @@ public class EnemyBullet : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {        
-        if(!PlatformerBossAtk3 && collision.gameObject.tag != "Boss")
+    {
+        if (collision.gameObject.tag != "Boss")
         {
             SelfDestruct();
         }
