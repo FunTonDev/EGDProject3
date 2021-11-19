@@ -14,7 +14,7 @@ public class PlatformerBossMove : StateMachineBehaviour
     {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         BossMovement = animator.GetComponent<BossPlatformerMovement>();
-        timer = 6f;
+        timer = 5f;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

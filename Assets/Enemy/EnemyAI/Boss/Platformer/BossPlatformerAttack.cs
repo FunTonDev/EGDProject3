@@ -9,11 +9,7 @@ public class BossPlatformerAttack : MonoBehaviour
 
     [SerializeField] private GameObject Atk1Obj;
     [SerializeField] private GameObject Atk3Obj;
-
-    //For OmniShot
-    int numOfShots = 8;
-    int angle = 360;
-
+        
     BossPlatformerMovement BossMovement;
 
     //Used to keep track of variables in during an attacking phase
@@ -21,14 +17,18 @@ public class BossPlatformerAttack : MonoBehaviour
     [SerializeField] int AtkIndex = 0;    
     bool NewAtkPhase;
     bool attacking;
+
+    //Used to help object manuver for specific patterns during attacks
     bool attack1;
     bool attack2;
     bool attack3;
 
     int AtkPart;
+    int numOfAtks;
     Vector3 Destination;
     bool moving;
-    bool atDest;
+    bool charging;
+    
 
     public void ResetAtkforPhase() { AtksForPhase = new List<int>(); }
     public void AddAtkforPhase(int i) { AtksForPhase.Add(i); }
@@ -57,7 +57,7 @@ public class BossPlatformerAttack : MonoBehaviour
         attack2 = false;
         attack3 = false;
         moving = false; ;
-        atDest = false;
+        charging = false;
 
         AtkPart = 0;
 
@@ -71,9 +71,11 @@ public class BossPlatformerAttack : MonoBehaviour
         {
             if (attack1)
             {
+                //Perform during Atk1 part 1
                 if (moving && AtkPart == 1)
                 {
                     //Debug.Log(string.Format("BossPos: {0}, Destination: {1}, PathFollow{2}", this.transform.position, Destination, BossMovement.PathFollow()));
+                    //Boss still hasn't reached destination
                     if(Destination == BossMovement.PathFollow())
                     {
                         BossMovement.LookAtPos(Destination);
@@ -81,14 +83,38 @@ public class BossPlatformerAttack : MonoBehaviour
                     }
 
                     //Move onto next part
-                    else { Atk1_P2(); moving = false; }
+                    else { Atk1_P2(); }
                 }
 
+                //Perform during Atk1 part 2
                 else if (AtkPart == 2)
                 {
-                    attacking = false;
-                    attack1 = false;
-                    Debug.Log("Boss Atk1 Finished");
+                    if (numOfAtks > 0)
+                    {
+                        
+                        //Debug.Log(string.Format("BossPos: {0}, Destination: {1}, PathFollow{2}", this.transform.position, Destination, BossMovement.PathFollow()));
+                        //Boss still hasn't reached destination
+                        if (Destination == BossMovement.PathFollow() && moving)
+                        {
+                            BossMovement.MoveAtk(Destination);
+                        }
+
+                        //Boss has reached destination and needs to start charging attack
+                        else if (!charging)
+                        {
+                            StartCoroutine("Atk1_P2_Charging");                           
+                        }
+                    }
+
+                    //Move onto next part
+                    else { AtkPart = 4; }
+                    
+                }
+
+                //End Atk
+                else if(AtkPart == 4)
+                {
+                    StartCoroutine("Atk1_End");
                 }
             }
         }
@@ -145,32 +171,70 @@ public class BossPlatformerAttack : MonoBehaviour
         //Debug.Log("left is " + left);
 
         Destination = firstNode;
-        moving = true;
-        atDest = false;
-                
+        moving = true;                
     }
 
     //Move to first node
     public void Atk1_P2()
     {
         //Debug.Log("Boss Atk1_P2 called");
-
+        Destination = BossMovement.PathFollow();
         AtkPart = 2;
-        //moving = true;
+        moving = true;
 
         //Look at other end
         Vector3 lastNode = Atk1MovePattern[4].position;       
         if (BossMovement.PathFollow() == Atk1MovePattern[3].position)
-        {
-            lastNode = Atk1MovePattern[0].position;
-        }
-
+            { lastNode = Atk1MovePattern[0].position;}
         BossMovement.LookAtPos(lastNode);
+
+        //Allow boss to float for movement in the air
+        BossMovement.SetGravity(false);
+
+        numOfAtks = 3; //Num of nodes enemy must vist to shoot its omni attack       
+                
         
     }
-    
 
-    
+    //For attack 
+    IEnumerator Atk1_P2_Charging()
+    {
+        moving = false;
+        charging = true;
+
+        Debug.Log("Boss Atk1 Charging...");
+        yield return new WaitForSeconds(2);
+        Debug.Log("Boss Atk1 Fired!");
+        yield return new WaitForSeconds(1);
+
+        moving = true;
+        charging = false;
+        numOfAtks--;
+
+        Destination = BossMovement.PathFollow();
+    }
+
+    //Reset Gravity for boss and end attack along with providing cooldown for enemy
+    IEnumerator Atk1_End()
+    {
+        attack1 = false;
+
+        yield return new WaitForSeconds(1);
+
+       
+        BossMovement.SetGravity(true);
+
+        yield return new WaitForSeconds(2);
+
+
+        attacking = false;
+        
+        Debug.Log("Boss Atk1 Finished");
+
+       
+    }
+
+
     IEnumerator Atk1Pattern()
     {
         attacking = true;
@@ -191,7 +255,6 @@ public class BossPlatformerAttack : MonoBehaviour
 
         Destination = BossMovement.PathFollow();
         moving = true;
-        atDest = false;
         /*
         Vector2 dest = new Vector2(destV3.x, destV3.y);
         Vector2 BossPos = new Vector2(this.transform.position.x, this.transform.position.y);
