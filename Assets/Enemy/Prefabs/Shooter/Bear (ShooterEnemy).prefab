@@ -102,7 +102,7 @@ MonoBehaviour:
   type: BoxEnemy
   health: 100
   atkDamage: 2
-  moveSpd: 2
+  moveSpd: 3
   armor: 0
   detectionLvl: 1
   platformer: 0
@@ -123,7 +123,6 @@ MonoBehaviour:
   rotAngle: 0
   StartTimeBtwAtk: 2
   AttackObj: {fileID: 2327161074033181551, guid: 86956d8f0b6cbdb42b22a01157540581, type: 3}
-  AttackObj2: {fileID: 8752199938233944868, guid: 771dca5dd3ded244ea1a616ae56e838f, type: 3}
 --- !u!114 &1429997731959356066
 MonoBehaviour:
   m_ObjectHideFlags: 0
