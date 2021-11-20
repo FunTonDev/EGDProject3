@@ -32,7 +32,7 @@ public class Basic : Action
 {
     public Basic()
     {
-        actionName = "Basic Attack";
+        actionName = "Slashing Edge";
         actionDesc = "A standard offensive move, deals 5 points of damage. One of the hallmarks of any RPG character.";
         type = 0;
         damage = 5;
@@ -46,7 +46,7 @@ public class AOE : Action
 {
     public AOE()
     {
-        actionName = "AOE Attack";
+        actionName = "Grand Slam";
         actionDesc = "An attack that covers a wide area of effect. Deals less damage, but hits more than usual.";
         type = 0;
         damage = 3;
@@ -60,7 +60,7 @@ public class BasicHeal : Action
 {
     public BasicHeal()
     {
-        actionName = "Basic Heal";
+        actionName = "HP Support";
         actionDesc = "A simple healing spell, solves all your problems. The hallmark of any true white mage.";
         type = 1;
         damage = 5;
@@ -74,7 +74,7 @@ public class StatBoost : Action
 {
     public StatBoost()
     {
-        actionName = "Stat Buff";
+        actionName = "Stat Support";
         actionDesc = "A unique support move, used to amplify an ally's abilities. Helps in a pinch.";
         type = 1;
         damage = 0;

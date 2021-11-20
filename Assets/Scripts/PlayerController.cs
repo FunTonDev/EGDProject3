@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
         SetDefaultValues();
         objective = GameObject.FindGameObjectWithTag("Objective");
         tempArrow = Instantiate(arrows);
+        tempArrow.transform.SetParent(GameObject.Find("Canvas").transform, false);
         if (gameMan.genreMain == States.GameGenre.None)
         {
             if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>() != null)
@@ -175,39 +176,79 @@ public class PlayerController : MonoBehaviour
         }
         if (objective != null)
         {
-            Debug.Log("Objective good");
-            Vector3 screenpos = Camera.main.WorldToScreenPoint(objective.transform.position);
-            if (screenpos.z > 0 &&
-                screenpos.x > 0 && screenpos.x < Screen.width &&
-                screenpos.y > 0 && screenpos.y < Screen.height)
+            if (playerPrimaryGenre == States.GameGenre.Platformer || playerPrimaryGenre == States.GameGenre.None)
             {
+                Debug.Log("Objective good");
+                Vector3 screenpos = Camera.main.WorldToScreenPoint(objective.transform.position);
+                if (screenpos.z > 0 &&
+                    screenpos.x > 0 && screenpos.x < Screen.width &&
+                    screenpos.y > 0 && screenpos.y < Screen.height)
+                {
 
+                }
+                else
+                {
+                    if (screenpos.z < 0) screenpos *= -1;
+                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 3;
+                    screenpos -= screenCenter;
+                    float angle = Mathf.Atan2(screenpos.y, screenpos.x);
+                    angle -= 90 * Mathf.Deg2Rad;
+
+                    float cos = Mathf.Cos(angle);
+                    float sin = -Mathf.Sin(angle);
+                    screenpos = screenCenter + new Vector3(sin * 150, cos * 150, 0);
+
+                    float m = cos / sin;
+
+                    Vector3 screenBounds = screenCenter * 0.9f;
+
+                    if (cos > 0) screenpos = new Vector3(screenpos.y / m, screenpos.y, 0);
+                    else screenpos = new Vector3(-screenpos.y / m, -screenpos.y, 0);
+
+                    if (screenpos.x > screenBounds.x) screenpos = new Vector3(screenpos.x, screenpos.x * m, 0);
+                    else if (screenpos.x < screenBounds.x) screenpos = new Vector3(screenpos.x, -screenpos.x * m, 0);
+
+                    screenpos += screenCenter;
+                    tempArrow.transform.localPosition = screenpos;
+                    tempArrow.transform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+                }
             }
             else
             {
-                if (screenpos.z < 0) screenpos *= -1;
-                Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 4;
-                screenpos -= screenCenter;
-                float angle = Mathf.Atan2(screenpos.y, screenpos.x);
-                angle -= 90 * Mathf.Deg2Rad;
+                Debug.Log("Objective good");
+                Vector3 screenpos = Camera.main.WorldToScreenPoint(objective.transform.position);
+                if (screenpos.z > 0 &&
+                    screenpos.x > 0 && screenpos.x < Screen.width &&
+                    screenpos.y > 0 && screenpos.y < Screen.height)
+                {
 
-                float cos = Mathf.Cos(angle);
-                float sin = -Mathf.Sin(angle);
-                screenpos = screenCenter + new Vector3(sin * 150, cos * 150, 0);
+                }
+                else
+                {
+                    if (screenpos.z < 0) screenpos *= -1;
+                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
+                    screenpos -= screenCenter;
+                    float angle = Mathf.Atan2(screenpos.y, screenpos.x);
+                    angle -= 90 * Mathf.Deg2Rad;
 
-                float m = cos / sin;
+                    float cos = Mathf.Cos(angle);
+                    float sin = -Mathf.Sin(angle);
+                    screenpos = screenCenter + new Vector3(sin * 150, cos * 150, 0);
 
-                Vector3 screenBounds = screenCenter * 0.9f;
+                    float m = cos / sin;
 
-                if (cos > 0) screenpos = new Vector3(screenpos.y / m, screenpos.y, 0);
-                else screenpos = new Vector3(-screenpos.y / m, -screenpos.y, 0);
+                    Vector3 screenBounds = screenCenter * 0.9f;
 
-                if (screenpos.x > screenBounds.x) screenpos = new Vector3(screenpos.x, screenpos.x * m, 0);
-                else if (screenpos.x < screenBounds.x) screenpos = new Vector3(screenpos.x, -screenpos.x * m, 0);
+                    if (cos > 0) screenpos = new Vector3(screenpos.y / m, screenpos.y, 0);
+                    else screenpos = new Vector3(-screenpos.y / m, -screenpos.y, 0);
 
-                screenpos += screenCenter;
-                tempArrow.transform.localPosition = screenpos;
-                tempArrow.transform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+                    if (screenpos.x > screenBounds.x) screenpos = new Vector3(screenpos.x, screenpos.x * m, 0);
+                    else if (screenpos.x < screenBounds.x) screenpos = new Vector3(screenpos.x, -screenpos.x * m, 0);
+
+                    screenpos += screenCenter;
+                    tempArrow.transform.localPosition = screenpos;
+                    tempArrow.transform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+                }
             }
         }
     }
@@ -330,7 +371,7 @@ public class PlayerController : MonoBehaviour
             float xSin = Mathf.Abs(Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x));
             float xCos = Mathf.Abs(Mathf.Cos(Mathf.Deg2Rad * transform.localEulerAngles.x));
             playerRigB.AddForce(new Vector3(0, 0, inputMan.inputY * yForce * xCos), ForceMode.VelocityChange);
-            playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce * Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x), 0), ForceMode.VelocityChange);
+            playerRigB.AddForce(new Vector3(0, inputMan.inputY * yForce * -Mathf.Sin(Mathf.Deg2Rad * transform.localEulerAngles.x), 0), ForceMode.VelocityChange);
             zClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.z), 0, maxYVelocity * xCos) * Mathf.Sign(playerRigB.velocity.z);
             yClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity * xSin) * Mathf.Sign(playerRigB.velocity.y);
         }

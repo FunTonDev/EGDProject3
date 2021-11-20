@@ -14,13 +14,13 @@ public class PlatformerBossMove : StateMachineBehaviour
     {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         BossMovement = animator.GetComponent<BossPlatformerMovement>();
-        timer = 10f;
+        timer = 5f;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        BossMovement.LookAtPlayer(Player);
+        BossMovement.LookAtPos(Player.position);
         BossMovement.MoveReg();
 
         if(timer <= 0)

@@ -47,7 +47,7 @@ public class CameraController : MonoBehaviour
         SetCameraMode(States.GameGenre.Platformer);
         isTrackingMovement = true;
         shaking = false;
-        moveAheadMax = 2.0f;
+        moveAheadMax = 1.5f;
         mouseAheadMax = 450.0f;
         camVelX = 0.1f;
         camVelY = 0.1f;
@@ -61,7 +61,7 @@ public class CameraController : MonoBehaviour
         hpBar.fillAmount = playerCont.currentHP / playerCont.maxHP;
         if (playerCont.shootTimer > 0 && !shaking)
         {
-            StartCoroutine(CamEffectShake(0.1f, new Vector3(0.25f, 0, 0.25f)));
+            StartCoroutine(CamEffectShake(0.05f, new Vector3(0.25f, 0, 0.25f)));
         }
     }
 
@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour
                 playerDiff += CharMoveBiasUpdate();
                 break;
             case (States.GameGenre.Shooter):
-                playerDiff += ADSBiasUpdate() + CursorBiasUpdate();
+                playerDiff += ADSBiasUpdate();// + CursorBiasUpdate();
                 break;
             case (States.GameGenre.RPG):
                 break;
@@ -152,6 +152,7 @@ public class CameraController : MonoBehaviour
     public void SetCameraMode(States.GameGenre mode)
     {
         currMode = mode;
+        cursorRecT.gameObject.SetActive(true);
         switch (currMode)
         {
             case (States.GameGenre.Shooter):
@@ -160,11 +161,13 @@ public class CameraController : MonoBehaviour
                 targetRot = Quaternion.Euler(90, 0, 0);
                 break;
             case (States.GameGenre.RPG):
+                cursorRecT.gameObject.SetActive(false);
                 cam.orthographic = false;
                 genrePos = new Vector3(0, 5.0f, -6.0f);
                 targetRot = Quaternion.Euler(45, 0, 0);
                 break;
             default:    //Applies same cam to platformer and hub; subject to change
+                cursorRecT.gameObject.SetActive(false);
                 cam.orthographic = true;
                 genrePos = new Vector3(0, 0, -8.0f);
                 targetRot = Quaternion.Euler(0, 0, 0);

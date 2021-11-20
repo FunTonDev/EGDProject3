@@ -625,11 +625,11 @@ public class BattleManager : MonoBehaviour
         ender = stop;
         if (!stop && state != battleState.START)
         {
-            scroll_speed = 20;
+            scroll_speed = 40;
         }
         else
         {
-            scroll_speed = 20;
+            scroll_speed = 40;
         }
         //StopCoroutine("textDisplay");
         Clear();
@@ -637,7 +637,7 @@ public class BattleManager : MonoBehaviour
         writing = true;
         for (int i = 0; i < write_queue[0].Length && writing; i++)
         {
-            if (inputMan.inputSubmit != 0.0f && stop)
+            if (inputMan.inputSubmit_D && stop)
             {
                 Debug.Log("Should stop now");
                 Clear();

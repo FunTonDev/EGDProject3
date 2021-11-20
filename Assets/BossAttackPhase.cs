@@ -7,20 +7,25 @@ public class BossAttackPhase : StateMachineBehaviour
     BossPlatformerMovement BossMovement;
     BossPlatformerAttack BossAtks;
 
+    bool exiting;
+
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         BossMovement = animator.GetComponent<BossPlatformerMovement>();
         BossAtks = animator.GetComponent<BossPlatformerAttack>();
+        exiting = false;
 
         //Performed all Atks, move onto Vulnarable phase
-        if(BossAtks.GetAtkIndex() == 3)
+        if (BossAtks.GetAtkIndex() == 3)
         {
             BossAtks.SetAtkIndex(0);
             BossAtks.SetAttacking(false);
             BossAtks.SetNewAtkPhase(true);
 
             animator.SetTrigger("Vulnarable");
+
+            Debug.Log("Atk Phase finished");
         }
 
 
@@ -63,16 +68,18 @@ public class BossAttackPhase : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(BossAtks.GetAtkIndex() == 3 && !BossAtks.GetAttacking())
+        if(BossAtks.GetAtkIndex() == 3 && !BossAtks.GetAttacking() && !exiting)
         {
-            BossAtks.SetAtkIndex(0);
+            Debug.Log("Atk Phase finished");
+
             BossAtks.SetAttacking(false);
+            exiting = true;
 
             animator.SetTrigger("Vulnarable");
         }
 
         //Perform next attack in list
-        else if (!BossAtks.GetAttacking())
+        else if (!BossAtks.GetAttacking() && !exiting)
         {
             int index = BossAtks.GetAtkIndex();
             PerformAtk(BossAtks.GetAtkForPhase(index));
@@ -86,10 +93,17 @@ public class BossAttackPhase : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.ResetTrigger("Vulnarable");
+
+        if (BossAtks.GetAtkIndex() == 3)
+        { BossAtks.SetAtkIndex(0); }
     }
 
     void PerformAtk(int i)
     {
+        Debug.Log("Boss Performing Atk3");
+        BossAtks.Attack3();
+        
+        /*
         Debug.Log("Boss Performing Atk" + i);
 
         if (i == 1)
@@ -99,14 +113,18 @@ public class BossAttackPhase : StateMachineBehaviour
 
         else if (i == 2)
         {
-            BossAtks.Attack2();
+            BossAtks.Attack1();
         }
 
         else if (i == 3)
         {
-            BossAtks.Attack3();
+            BossAtks.Attack1();
         }
+        */
     }
+
+
+
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

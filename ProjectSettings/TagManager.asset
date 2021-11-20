@@ -18,6 +18,7 @@ TagManager:
   - EnemyAttack
   - PathNode
   - Objective
+  - Boss
   layers:
   - Default
   - TransparentFX
