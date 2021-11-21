@@ -45,9 +45,9 @@ public class BossPlatformerMovement : MonoBehaviour
     }
 
     //For Movements related to Attacking
-    public virtual void MoveAtk(Vector3 Pos)
+    public virtual void MoveAtk(Vector3 Pos, float multi)
     {
-        transform.position = Vector3.MoveTowards(this.transform.position, Pos, 2 * moveSpd * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(this.transform.position, Pos, multi * moveSpd * Time.deltaTime);
         SetAxisLevel();
     }
 
@@ -73,7 +73,9 @@ public class BossPlatformerMovement : MonoBehaviour
         else
         {            
             this.currNode = (this.currNode + dir) % pathNodes.Count;
-            newPos = pathNodes[this.currNode].GetComponent<Transform>().position;
+            if(dir < 0 && this.currNode < 0) { this.currNode = pathNodes.Count - 1; }
+
+             newPos = pathNodes[this.currNode].GetComponent<Transform>().position;            
         }
 
         return newPos;

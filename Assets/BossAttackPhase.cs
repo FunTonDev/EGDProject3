@@ -100,27 +100,17 @@ public class BossAttackPhase : StateMachineBehaviour
 
     void PerformAtk(int i)
     {
-        Debug.Log("Boss Performing Atk3");
-        BossAtks.Attack3();
-        
-        /*
         Debug.Log("Boss Performing Atk" + i);
 
         if (i == 1)
-        {
-            BossAtks.Attack1();
-        }
+        { BossAtks.Attack1();}
 
         else if (i == 2)
-        {
-            BossAtks.Attack1();
-        }
+        { BossAtks.Attack2();}
 
         else if (i == 3)
-        {
-            BossAtks.Attack1();
-        }
-        */
+        { BossAtks.Attack3();}
+        
     }
 
 
