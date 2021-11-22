@@ -79,18 +79,25 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Especially when things get...");
                     storeText.Add("...Interesting...");
                     //Pixal Falls, screen fades to black once pixal falls off
-                    image_queue.Add(null);
-
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    Sprite[] temp = Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/Cutscene2-Intro2");
+                    for (int i = 0; i < temp.Length; i++)
+                    {
+                        image_queue.Add(temp[i]);
+                    }
                     //Pixal Meets Coder (3)
                     storeText.Add("");
-                    storeText.Add("");
-                    storeText.Add("");
+                    storeText.Add("Hmm...this is quite troubling...");
+                    storeText.Add("With the glitches spreading so quickly, it won't be long until...");
+                    storeText.Add("*sigh* Well, its not like a solution is going to fall from the sky, might as well-");
                     storeText.Add("Egads! What was that noise?");
-                    storeText.Add("Ahh I see, I wonder how that managed to happen. Maybe a context switch gone astray…");
+                    storeText.Add("Huh, I wonder how that managed to happen. Maybe a context switch gone astray...");
                     storeText.Add("No matter, I had debugging scheduled for today anyway.");
 
                     //Pixal has goop hat by this point (1)
                     storeText.Add("Ack! Good grief, remove that corrupted goop from yourself this instant!");
+                    storeText.Add("*SMACK*   Reeeeeeeeeeee...");
+                    storeText.Add(".....*splat*");
                     //Pixal loses hat
                     //Pixal learns stuff (8)
                     storeText.Add("My my, you weren’t even phased. Hold on a moment...maybe this is the solution I have been looking for all along!");
@@ -99,7 +106,8 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Hello tiny pixel, I am the great C0D3R, the game manager responsible for making sure all the interconnected processes run smoothly across all the current games hosted here.");
                     storeText.Add("However, recently these processes have been getting interrupted more and more, and my hypothesis is that this strange goop is the culprit.");
                     storeText.Add("But you… you seem to be unaffected by it.");
-                    storeText.Add("Hmm, that’s interesting, I can’t seem to get a read on you. Regardless, something must be done as this goop is everywhere. Please, I need your help in getting rid of this virus.");
+                    storeText.Add("Hmm, that’s interesting, I can’t seem to get a read on you. Regardless, something must be done as this goop is everywhere.");
+                    storeText.Add("Please, I need your help in getting rid of this virus. Will you aid my cause?");
                     storeText.Add("Ahh, thank you so much uhhh...Pixal! Ah yes, that’s right, that is your name. So, let us get started then...");
                     //Coder displays map on screen (7)
                     storeText.Add("What you are looking at is a map of the games I manage, and as you can see here, these genres have had a high concentration of the virus.");
