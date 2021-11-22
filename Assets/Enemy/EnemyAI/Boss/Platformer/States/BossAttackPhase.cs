@@ -92,7 +92,7 @@ public class BossAttackPhase : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.ResetTrigger("Vulnarable");
+       //animator.ResetTrigger("Vulnarable");
 
         if (BossAtks.GetAtkIndex() == 3)
         { BossAtks.SetAtkIndex(0); }

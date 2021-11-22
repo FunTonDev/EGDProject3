@@ -22,7 +22,7 @@ public class BossEnemy : MonoBehaviour
     public void SetInvincible(bool t) { invincible = t; }
     public void SetVulnarable(bool t) { vulnarable = t; }
     public bool GetInvincible() { return invincible; }
-    public bool GetVulnarable() { return vulnarable; }
+    public bool GetVulnarablity() { return vulnarable; }
 
 
     // Start is called before the first frame update
@@ -56,26 +56,43 @@ public class BossEnemy : MonoBehaviour
         currArmor = armor[phase - 1];
     }
 
-
-
     public void TakeDamage(float damage)
     {
-        if (currArmor > 0)
+        if (vulnarable)
         {
-            currArmor -= (3 / 4) * damage;
-            currHealth -= (1 / 4) * damage;
-            Debug.Log(string.Format("Enemy {0} took {1} damage", type, (1 / 4) * damage));
-        }
-        else
-        {
-            currHealth -= damage;
-            Debug.Log(string.Format("Enemy {0} took {1} damage", type, damage));
-        }
+            if (currArmor > 0)
+            {
+                currArmor -= (3 / 4) * damage;
+                currHealth -= (1 / 4) * damage;
+                Debug.Log(string.Format("Platform Boss took {0} damage to armor and {1} damage to health", (3 / 4) * damage, (1 / 4) * damage));
+            }
+            else
+            {
+                currHealth -= damage;
+                Debug.Log(string.Format("Platform Boss took {0} damage", damage));
+            }
 
-        if (currHealth <= 0)
-        { Death(); }
+            Debug.Log(string.Format("Platform Boss Current Health and Armor: {0} & {1}", currHealth, currArmor));
 
+            if (currHealth <= 0)
+            { Death(); }
+        }
     }
+
+    public void BecomeVulnarable()
+    {
+        StartCoroutine("VulnarableTimer");
+    }
+
+    IEnumerator VulnarableTimer()
+    {
+        vulnarable = true;
+
+        yield return new WaitForSeconds(6);
+
+        vulnarable = false;
+    }
+
 
     public void Death()
     {

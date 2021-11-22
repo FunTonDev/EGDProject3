@@ -50,8 +50,7 @@ public class BossPlatformerAttack : MonoBehaviour
     {
         //Attack1();
         //Attack3();
-
-        ArcThrow();
+        //ArcThrow();
 
         NewAtkPhase = true;
         attacking = false;
@@ -334,8 +333,18 @@ public class BossPlatformerAttack : MonoBehaviour
     public void Atk2_P2()
     {
         //Debug.Log("Boss Atk1_P1() called");
+        StartCoroutine("Atk2_P2_Charge");
+        
+    }
 
+    //Charge before dashing
+    IEnumerator Atk2_P2_Charge()
+    {
         AtkPart = 2;
+        moving = false;
+
+        yield return new WaitForSeconds(2);
+        
         numOfAtks = 5; //Num of nodes enemy must fly to in its dash
         Destination = BossMovement.PathFollow();
 
@@ -392,7 +401,7 @@ public class BossPlatformerAttack : MonoBehaviour
 
         Vector3 PlayerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
         //When leftside > PlayerPos.x > bossPos.x  
-        if ((this.transform.position.x < PlayerPos.x) && PlayerPos.x < (Atk1MovePattern[0].position.x - 5))
+        if ( ((Atk1MovePattern[0].position.x - 8) > PlayerPos.x) && (PlayerPos.x > this.transform.position.x))
         { left = false; firstNode = Atk1MovePattern[4].position; }
 
         BossMovement.SetPathNodes(Atk1MovePattern, left);
