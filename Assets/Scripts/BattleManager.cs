@@ -686,6 +686,96 @@ public class BattleManager : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 int ind = actions[z].getID();
 
+                //Check if player should take damage from a status effect
+                if (sc == "attack" || sc == "ability" || sc == "ability1" || sc == "item" || sc == "swap" || sc == "basic attack"
+                    || sc == "Flee" || sc == "revive")
+                {
+                    if (PartyMembers[ind].currentHP <= 0)
+                    {
+                        continue;
+                    }
+                    bool newd = false;
+                    //Check for poison
+                    if (PartyMembers[ind].statuses[0] != -1)
+                    {
+                        newd = PartyMembers[ind].takeDamage(4);
+                        StartCoroutine(flash(ind, false, 0));
+                        yield return textDisplay(PartyMembers[ind].unitName + " took damage from Poison.", true);
+                        //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+                    }
+                    if (newd)
+                    {
+                        yield return textDisplay(PartyMembers[ind].unitName + " was taken out by the Poison.", true);
+                        StartCoroutine(unitDeath(PartyMembers[ind]));
+                        partyDeaths++;
+                        //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+                        if (partyDeaths == activeUnits)
+                        {
+                            state = battleState.LOSE;
+                            yield return battleEnd();
+                        }
+                        continue;
+                    }
+                }
+                //Check if an enemy should take damage from a status effect
+                else
+                {
+                    if (EnemyMembers[ind].currentHP <= 0)
+                    {
+                        continue;
+                    }
+                    bool newd = false;
+                    //Check for vomiting
+                    if (EnemyMembers[ind].statuses[0] != -1)
+                    {
+                        newd = EnemyMembers[ind].takeDamage(4);
+                        StartCoroutine(flash(ind, true, 0));
+                        yield return textDisplay(EnemyMembers[ind].unitName + " took damage from Poison", true);
+                        //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+                    }
+                    if (newd)
+                    {
+                        yield return textDisplay(EnemyMembers[ind].unitName + " was taken out by the Poison", true);
+                        StartCoroutine(unitDeath(EnemyMembers[ind]));
+                        enemyDeaths++;
+                        //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+                        if (enemyDeaths >= activeEnemies)
+                        {
+                            state = battleState.WIN;
+                            yield return battleEnd();
+                        }
+                        continue;
+                    }
+                }
+
+                //Check if the player is stopped by a status
+                if (sc == "attack" || sc == "ability" || sc == "ability1" || sc == "item" || sc == "swap" || sc == "basic attack"
+                    || sc == "Flee" || sc == "revive")
+                {
+                    if (PartyMembers[ind].statuses[1] != -1)
+                    {
+                        int rando = Random.Range(0, 5);
+                        if (rando > 2)
+                            yield return textDisplay(PartyMembers[ind].unitName + " is Paralyzed");
+                        //yield return new WaitForSeconds(0.5f);
+                        //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+                        continue;
+                    }
+                }
+                //Same for the enemy
+                else
+                {
+                    if (EnemyMembers[ind].statuses[1] != -1)
+                    {
+                        int rando = Random.Range(0, 5);
+                        if (rando > 2)
+                            yield return textDisplay(EnemyMembers[ind].unitName + " is Paralyzed");
+                        //yield return new WaitForSeconds(0.5f);
+                        //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
+                        continue;
+                    }
+                }
+
                 Debug.Log("Current action == " + actions[z].getType());
                 Debug.Log("Index == " + actions[z].getID());
 
@@ -941,7 +1031,18 @@ public class BattleManager : MonoBehaviour
                     if (PartyMembers[i].currentHP > 0)
                     {
                         PartyMembers[i].defending = false;
+                        PartyMembers[i].statusTurn();
                         partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
+                    }
+                }
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                if (EnemyMembers[i] != null)
+                {
+                    if (EnemyMembers[i].currentHP > 0)
+                    {
+                        EnemyMembers[i].statusTurn();
                     }
                 }
             }
@@ -1010,6 +1111,29 @@ public class BattleManager : MonoBehaviour
                         yield return battleEnd();
                     }
                 }
+                if (uni.abilities[ata].statusEffect != 0)
+                {
+                    if (target.statuses[uni.abilities[ata].statusEffect] == -1)
+                    {
+                        int rando = Random.Range(0, target.lck);
+                        if (rando == 0)
+                        {
+                            target.statuses[uni.abilities[ata].statusEffect] = 3;
+                            switch(uni.abilities[ata].statusEffect)
+                            {
+                                case 0:
+                                    yield return textDisplay(target.unitName + "was inflicted with corruption", true);
+                                    break;
+                                case 1:
+                                    yield return textDisplay(target.unitName + "was inflicted with glitchy-ness", true);
+                                    break;
+                                case 2:
+                                    yield return textDisplay(target.unitName + "was inflicted with degradation", true);
+                                    break;
+                            }
+                        }
+                    }
+                }
             }
             else
             {
@@ -1045,6 +1169,29 @@ public class BattleManager : MonoBehaviour
                             yield return battleEnd();
                         }
                     }
+                    if (uni.abilities[ata].statusEffect != 0)
+                    {
+                        if (EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
+                        {
+                            int rando = Random.Range(0, EnemyMembers[i].lck);
+                            if (rando == 0)
+                            {
+                                EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
+                                switch (uni.abilities[ata].statusEffect)
+                                {
+                                    case 0:
+                                        yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with corruption", true);
+                                        break;
+                                    case 1:
+                                        yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with glitchy-ness", true);
+                                        break;
+                                    case 2:
+                                        yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with degradation", true);
+                                        break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1054,8 +1201,13 @@ public class BattleManager : MonoBehaviour
             {
                 StartCoroutine(flash(val, false, 1));
                 target.takeDamage(-uni.abilities[ata].damage);
+                if (uni.abilities[ata].statusEffect != 0)
+                {
+                    target.statuses[uni.abilities[ata].statusEffect] = 3;
+                    yield return textDisplay(target.unitName + " was empowered by overclock");
+                }
                 partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[val].currentHP / PartyMembers[val].maxHP,
-                    partyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
+                partyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
             }
             else
             {
@@ -1067,6 +1219,11 @@ public class BattleManager : MonoBehaviour
                         {
                             StartCoroutine(flash(i, false, 1));
                             PartyMembers[i].takeDamage(-uni.abilities[ata].damage);
+                            if (uni.abilities[ata].statusEffect != 0)
+                            {
+                                PartyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
+                                yield return textDisplay(PartyMembers[i].unitName + " was empowered by overclock");
+                            }
                             partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP,
                                 partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                         }
@@ -1198,7 +1355,29 @@ public class BattleManager : MonoBehaviour
                     yield return battleEnd();
                 }
             }
-
+            if (uni.abilities[ata].statusEffect != 0)
+            {
+                if (target.statuses[uni.abilities[ata].statusEffect] == -1)
+                {
+                    int rando = Random.Range(0, target.lck);
+                    if (rando == 0)
+                    {
+                        target.statuses[uni.abilities[ata].statusEffect] = 3;
+                        switch (uni.abilities[ata].statusEffect)
+                        {
+                            case 0:
+                                yield return textDisplay(target.unitName + "was inflicted with corruption", true);
+                                break;
+                            case 1:
+                                yield return textDisplay(target.unitName + "was inflicted with glitchy-ness", true);
+                                break;
+                            case 2:
+                                yield return textDisplay(target.unitName + "was inflicted with degradation", true);
+                                break;
+                        }
+                    }
+                }
+            }
         }
         else
         {
@@ -1237,6 +1416,29 @@ public class BattleManager : MonoBehaviour
                             {
                                 state = battleState.LOSE;
                                 yield return battleEnd();
+                            }
+                        }
+                        if (uni.abilities[ata].statusEffect != 0)
+                        {
+                            if (PartyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
+                            {
+                                int rando = Random.Range(0, PartyMembers[i].lck);
+                                if (rando == 0)
+                                {
+                                    PartyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
+                                    switch (uni.abilities[ata].statusEffect)
+                                    {
+                                        case 0:
+                                            yield return textDisplay(PartyMembers[i].unitName + "was inflicted with corruption", true);
+                                            break;
+                                        case 1:
+                                            yield return textDisplay(PartyMembers[i].unitName + "was inflicted with glitchy-ness", true);
+                                            break;
+                                        case 2:
+                                            yield return textDisplay(PartyMembers[i].unitName + "was inflicted with degradation", true);
+                                            break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -1364,7 +1566,7 @@ public class BattleManager : MonoBehaviour
         transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
     }
 
-    //Cause unit to flash a color (ver: 0 == damage/red, 1 == healing/green)
+    //Cause unit to flash a color (ver: 0 == damage/red, 1 == healing/green, 2 == paralyzed)
     IEnumerator flash(int index, bool enemy, int ver = 0)
     {
         Debug.Log("Index for flash == " + index);
@@ -1392,6 +1594,13 @@ public class BattleManager : MonoBehaviour
             case 1:
                 yield return new WaitForSeconds(0.5f);
                 uni.GetComponent<SpriteRenderer>().color = new Color(0.5f, 1.0f, 0.5f);
+                playSound(1);
+                yield return new WaitForSeconds(0.5f);
+                break;
+
+            case 2:
+                yield return new WaitForSeconds(0.5f);
+                uni.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f);
                 playSound(1);
                 yield return new WaitForSeconds(0.5f);
                 break;

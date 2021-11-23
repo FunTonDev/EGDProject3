@@ -17,6 +17,8 @@ public class Action
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
     public int damage;
 
+    public int statusEffect;
+
     public int cost;
 
     public int ATKBoost;
@@ -41,6 +43,22 @@ public class Basic : Action
         cost = 1;
     }
 }
+
+public class BasicStatus : Action
+{
+    public BasicStatus()
+    {
+        actionName = "Corrupting Edge";
+        actionDesc = "A slightly more dangerous attack, has the chance of inflicting damage over time.";
+        type = 0;
+        damage = 5;
+        priority = 2;
+        target = 0;
+        cost = 1;
+        statusEffect = 1;
+    }
+}
+
 
 public class AOE : Action
 {
@@ -116,6 +134,10 @@ public class Unit
     public int defItemBoost;
     public int spdItemBoost;
 
+    public List<int> statuses;  //0 == Dmg (Poison), 1 == Stun (Paralysis), 2 == Debuff(Burn), 3 == Buff
+    public bool[] weaknesses;           //an array of integer codes for the weaknesses that a unit may have
+    public bool[] resistances;          //an array of integer codes for the resistances that a unit may have
+
     public List<Action> abilities;
 
     public string spriteFilePath;
@@ -132,6 +154,13 @@ public class Unit
         sprites = new Sprite[1];
         abilities = new List<Action>();
         abilities.Add(new Basic());
+        statuses = new List<int>();
+        for (int i = 0; i < 4; i++)
+        {
+            statuses.Add(-1);
+        }
+        weaknesses = new bool[5];
+        resistances = new bool[5];
     }
 
     public bool takeDamage(int dam)
@@ -185,6 +214,21 @@ public class Unit
     public void loadSprites()
     {
         sprites[0] = (Sprite)AssetDatabase.LoadAssetAtPath(spriteFilePath, typeof(Sprite));
+    }
+
+    public void statusTurn()
+    {
+        for (int i = 0; i < statuses.Count; i++)
+        {
+            if (statuses[i] == 0)
+            {
+                statuses[i] = -1;
+            }
+            if (statuses[i] > -1)
+            {
+                statuses[i] -= 1;
+            }
+        }
     }
 }
 
