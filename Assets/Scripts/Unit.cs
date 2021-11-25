@@ -206,6 +206,48 @@ public class Unit
         }
     }
 
+    public int getAtk()
+    {
+        int at = atk;
+        if (statuses[2] != -1)
+        {
+            at = at / 2;
+        }
+        if (statuses[3] != -1)
+        {
+            at = at * 2;
+        }
+        return at;
+    }
+
+    public int getDef()
+    {
+        int de = def;
+        if (statuses[2] != -1)
+        {
+            de = de / 2;
+        }
+        if (statuses[3] != -1)
+        {
+            de = de * 2;
+        }
+        return de;
+    }
+
+    public int getSpd()
+    {
+        int sp = spd;
+        if (statuses[2] != -1)
+        {
+            sp = sp / 2;
+        }
+        if (statuses[3] != -1)
+        {
+            sp = sp * 2;
+        }
+        return sp;
+    }
+
     public void levelUp()
     {
 

@@ -98,8 +98,10 @@ public class BattleManager : MonoBehaviour
 
     //GameObjects to use as basis for battle characters
     public List<GameObject> partyPrefabs;
+    public List<Image> partyIcons;
 
     public List<GameObject> enemyPrefabs;
+    public List<Image> enemyIcons;
 
     private List<actionTag> actions;
 
@@ -109,6 +111,8 @@ public class BattleManager : MonoBehaviour
 
     public AudioSource seSource;
     public AudioSource musicSource;
+
+    public Image fader;
 
 
     //Int to track the number of units actually in the party
@@ -532,6 +536,8 @@ public class BattleManager : MonoBehaviour
                 if (PartyMembers[i].sprites[0] != null)
                 {
                     partyPrefabs[i].GetComponent<SpriteRenderer>().sprite = PartyMembers[i].sprites[0];
+                    partyIcons[i].gameObject.SetActive(true);
+                    partyIcons[i].sprite = PartyMembers[i].sprites[0];
                 }
                 else
                 {
@@ -549,6 +555,7 @@ public class BattleManager : MonoBehaviour
             {
                 partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
                 partyPrefabs[i].SetActive(false);
+                partyIcons[i].gameObject.SetActive(false);
             }
         }
 
@@ -565,6 +572,8 @@ public class BattleManager : MonoBehaviour
                 if (EnemyMembers[i].sprites[0] != null)
                 {
                     enemyPrefabs[i].GetComponent<SpriteRenderer>().sprite = EnemyMembers[i].sprites[0];
+                    enemyIcons[i].gameObject.SetActive(true);
+                    enemyIcons[i].sprite = PartyMembers[i].sprites[0];
                 }
                 else
                 {
@@ -579,6 +588,7 @@ public class BattleManager : MonoBehaviour
             {
                 enemyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
                 enemyPrefabs[i].SetActive(false);
+                enemyIcons[i].gameObject.SetActive(false);
             }
         }
 
@@ -1079,7 +1089,7 @@ public class BattleManager : MonoBehaviour
         bool bad = false;
 
         yield return new WaitForSeconds(1f);
-        int dami = uni.abilities[ata].damage * (uni.atk / target.def);
+        int dami = uni.abilities[ata].damage * (uni.getAtk() / target.getDef());
 
         if (uni.abilities[ata].type == 0)
         {
@@ -1139,7 +1149,7 @@ public class BattleManager : MonoBehaviour
             {
                 for (int i = 0; i < 3; i++)
                 { 
-                    dami = uni.abilities[ata].damage * (uni.atk / EnemyMembers[i].def);
+                    dami = uni.abilities[ata].damage * (uni.getAtk() / EnemyMembers[i].getDef());
                     int crit = Random.Range(1, 101);
                     if (crit <= (uni.lck / 4) + 3)
                     {
@@ -1204,7 +1214,7 @@ public class BattleManager : MonoBehaviour
                 if (uni.abilities[ata].statusEffect != 0)
                 {
                     target.statuses[uni.abilities[ata].statusEffect] = 3;
-                    yield return textDisplay(target.unitName + " was empowered by overclock");
+                    yield return textDisplay(target.unitName + " was empowered by their teammate");
                 }
                 partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[val].currentHP / PartyMembers[val].maxHP,
                 partyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1222,7 +1232,7 @@ public class BattleManager : MonoBehaviour
                             if (uni.abilities[ata].statusEffect != 0)
                             {
                                 PartyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
-                                yield return textDisplay(PartyMembers[i].unitName + " was empowered by overclock");
+                                yield return textDisplay(PartyMembers[i].unitName + " was empowered by their teammate");
                             }
                             partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP,
                                 partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1243,7 +1253,7 @@ public class BattleManager : MonoBehaviour
         bool bad = false;
 
         yield return new WaitForSeconds(1f);
-        int val = 5 * (uni.atk / target.def);
+        int val = 5 * (uni.getAtk() / target.getDef());
         //val = uni.takeDamageCalc(target, val, op);
 
         //Check if the unit gets a crit
@@ -1323,7 +1333,7 @@ public class BattleManager : MonoBehaviour
         bool bad = false;
 
         yield return new WaitForSeconds(1f);
-        int dami = uni.abilities[ata].damage * (uni.atk / target.def);
+        int dami = uni.abilities[ata].damage * (uni.getAtk() / target.getDef());
 
 
         if (uni.abilities[ata].target == 0)
@@ -1387,7 +1397,7 @@ public class BattleManager : MonoBehaviour
                 {
                     if (PartyMembers[i].currentHP > 0)
                     {
-                        dami = uni.abilities[ata].damage * (uni.atk / PartyMembers[i].def);
+                        dami = uni.abilities[ata].damage * (uni.getAtk() / PartyMembers[i].getDef());
                         int crit = Random.Range(1, 101);
                         if (crit <= (uni.lck / 4) + 3)
                         {
@@ -1454,6 +1464,11 @@ public class BattleManager : MonoBehaviour
         if (uni.abilities[ata].target == 0)
         {
             target.takeDamage(-uni.abilities[ata].damage);
+            if (uni.abilities[ata].statusEffect != 0)
+            {
+                target.statuses[uni.abilities[ata].statusEffect] = 3;
+                yield return textDisplay(target.unitName + " was empowered by their teammate");
+            }
             StartCoroutine(flash(val, true, 1));
             enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP,
                 enemyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1467,6 +1482,11 @@ public class BattleManager : MonoBehaviour
                     if (EnemyMembers[i].currentHP > 0)
                     {
                         EnemyMembers[i].takeDamage(-uni.abilities[ata].damage);
+                        if (uni.abilities[ata].statusEffect != 0)
+                        {
+                            EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
+                            yield return textDisplay(EnemyMembers[i].unitName + " was empowered by their teammate");
+                        }
                         StartCoroutine(flash(i, true, 1));
                         enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
                             enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1550,6 +1570,7 @@ public class BattleManager : MonoBehaviour
     //Fade into the battle scene (from black to screen)
     IEnumerator fadeIn()
     {
+        transform.GetChild(1).Find("Fader").gameObject.SetActive(true);
         Color ori = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
         transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(0, 2f, false);
@@ -1681,7 +1702,6 @@ public class BattleManager : MonoBehaviour
         else if (state == battleState.FLEE)
         {
             yield return textDisplay("The party managed to escape", true);
-            //loader.flee = true;
         }
         else if (state == battleState.HUH)
         {
@@ -1702,7 +1722,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (state != battleState.LOSE)
         {
-            //SceneManager.LoadScene(loader.active_scene);
+            SceneManager.LoadScene("RPGWorld");
         }
         else
         {
@@ -1774,6 +1794,7 @@ public class BattleManager : MonoBehaviour
         scroll_speed = 20;
 
         state = battleState.START;
+        StartCoroutine(fadeIn());
         StartCoroutine(setupBattle());
     }
 
