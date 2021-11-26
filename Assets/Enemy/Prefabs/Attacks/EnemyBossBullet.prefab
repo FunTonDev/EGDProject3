@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5396447367361329341}
   - component: {fileID: 6364899394991486964}
   m_Layer: 0
-  m_Name: EnemyMissle
+  m_Name: EnemyBossBullet
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,6 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1a0688c9c6c304f99eb3fa6b6ba9e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  tracking: 1
+  speed: 8
+  tracking: 0
   PlatformerBossAtk3: 0

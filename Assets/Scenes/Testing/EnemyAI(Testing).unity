@@ -710,7 +710,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &265841000
 AudioListener:
   m_ObjectHideFlags: 0
@@ -908,13 +908,17 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: moveSpd
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AtkAngle
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AttackObj
       value: 
-      objectReference: {fileID: 2315463149150691004, guid: 58be0d718c953204597bd8a184471a47, type: 3}
+      objectReference: {fileID: 2315463149150691004, guid: be4cefc542b824a45ab3dfc84bb756de, type: 3}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: BufferDist
       value: 5
@@ -933,7 +937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: maxdetctRadius
-      value: 15
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: mindetctRadius
@@ -1076,7 +1080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_RootOrder
@@ -1948,7 +1952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: rotAngle
-      value: 140
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: turnLeft
@@ -1957,18 +1961,18 @@ PrefabInstance:
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: AttackObj
       value: 
-      objectReference: {fileID: 2315463149150691004, guid: 58be0d718c953204597bd8a184471a47, type: 3}
+      objectReference: {fileID: 2315463149150691004, guid: 10bda905dc870b3418469058c4126499, type: 3}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: chaseMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: maxAtkDist
-      value: 15
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: minAtkDist
-      value: 10
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: detctRadius
@@ -1976,11 +1980,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: maxdetctRadius
-      value: 10
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: mindetctRadius
-      value: 6
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
+      propertyPath: StartTimeBtwAtk
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986139, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: pathNodes.Array.size
@@ -2037,7 +2045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &732356320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2276,7 +2284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &748097909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3159,7 +3167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_RootOrder
@@ -3424,7 +3432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986119, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8502243763931986136, guid: f0e33f802913fd445b46ccb70e4deefe, type: 3}
       propertyPath: m_RootOrder
@@ -4600,6 +4608,10 @@ PrefabInstance:
       value: PlatformerBoss
       objectReference: {fileID: 0}
     - target: {fileID: 157875625714372988, guid: 66f2db4b86841df4aad01c7c56a74ec8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 157875625714372988, guid: 66f2db4b86841df4aad01c7c56a74ec8, type: 3}
       propertyPath: m_TagString
       value: Boss
       objectReference: {fileID: 0}
@@ -4868,7 +4880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1842225326
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class ShooterEnemy : Enemy
     //[SerializeField] private NavMeshAgent agent;
 
     [Header("Enemey Type")]
+    [SerializeField] private bool boss;       //A boss
     [SerializeField] private bool ranged;    //Melee or ranged attacked
     [SerializeField] private bool follow;   //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
     [SerializeField] private bool sentry;  //Doesn't move from initial spot
@@ -229,10 +230,11 @@ public class ShooterEnemy : Enemy
     }
 
     IEnumerator RangedAttack()
-    {        
-        yield return new WaitForSeconds(1);
-
-        Debug.Log("Ranged attacked called");
+    {
+        if (boss) { yield return new WaitForSeconds(0.5f); }
+        else { yield return new WaitForSeconds(1); }
+        
+        //Debug.Log("Ranged attacked called");
 
         Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
         Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver
@@ -245,7 +247,7 @@ public class ShooterEnemy : Enemy
     {
         yield return new WaitForSeconds(0.2f);
 
-        Debug.Log("Melee attacked called");
+        //Debug.Log("Melee attacked called");
 
         Vector3 spawnPos = this.transform.position + (this.transform.forward * 0.75f);
         spawnPos.y = 0.5f;
@@ -295,7 +297,6 @@ public class ShooterEnemy : Enemy
     public bool PlayerInAttackVision()
     {
         return this.GetComponent<FieldOfView>().FindVisibleTargets();
-
     }
 
     public bool PlayerInBufferCircle()
@@ -310,13 +311,6 @@ public class ShooterEnemy : Enemy
 
         return stop;
     }
-
-    IEnumerator waiter()
-    {
-        //Wait for 4 seconds
-        yield return new WaitForSeconds(2);
-    }
-
 
     private void OnCollisionEnter(Collision collision)
     {
