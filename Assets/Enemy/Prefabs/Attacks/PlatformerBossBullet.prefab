@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5396447367361329341}
   - component: {fileID: 6364899394991486964}
   m_Layer: 0
-  m_Name: PlatformerBossAtk3
+  m_Name: PlatformerBossBullet
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d3ca7ab19dfd2574baf77d6c061896a1, type: 2}
+  - {fileID: 2100000, guid: 7c243ac15d1b6ee4f85397479defa147, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,5 +126,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  tracking: 1
+  tracking: 0
   PlatformerBossAtk3: 0

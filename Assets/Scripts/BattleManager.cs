@@ -559,9 +559,12 @@ public class BattleManager : MonoBehaviour
             }
         }
 
+        //ERROR
+        /*
         EnemyMembers[0] = new Slime();
         EnemyMembers[1] = new Skeleton();
         EnemyMembers[2] = new Hound();
+        */
 
         //Set up enemy unit visuals
         for (int i = 0; i < 3; i++)

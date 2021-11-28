@@ -272,10 +272,10 @@ public class BossPlatformerAttack : MonoBehaviour
         charging = true;
 
         Debug.Log("Boss Atk1 Charging...");
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         OmniShot();
         Debug.Log("Boss Atk1 Fired!");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
         moving = true;
         charging = false;
@@ -293,7 +293,7 @@ public class BossPlatformerAttack : MonoBehaviour
        
         BossMovement.SetGravity(true);
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         attacking = false;
         

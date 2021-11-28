@@ -245,7 +245,7 @@ public class ShooterEnemy : Enemy
 
     IEnumerator MeleeAttack()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
         //Debug.Log("Melee attacked called");
 
@@ -253,7 +253,7 @@ public class ShooterEnemy : Enemy
         spawnPos.y = 0.5f;
         Instantiate(AttackObj, spawnPos, this.transform.rotation);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         attacking = false;
         timeBtwAtk = StartTimeBtwAtk;

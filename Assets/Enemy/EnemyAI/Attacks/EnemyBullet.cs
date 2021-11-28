@@ -12,17 +12,23 @@ public class EnemyBullet : MonoBehaviour
     //[SerializeField] private bool PlatformerEnemy;
     [SerializeField] private bool PlatformerBossAtk3;
 
+    private Rigidbody rb;
     private Transform playerPos;
     private Vector3 target;
     private Vector3 origin;
 
     void Start()
     {
-
-
+        rb = this.GetComponent<Rigidbody>();
         origin = this.transform.position;
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         target = new Vector3(playerPos.position.x, playerPos.position.y, playerPos.position.z);
+        if(tracking && PlatformerBossAtk3)
+        {
+            
+            Invoke("SelfDestruct", 5.0f);
+            target.y = 0;
+        }
 
         if (tracking || PlatformerBossAtk3)
         {
@@ -37,6 +43,7 @@ public class EnemyBullet : MonoBehaviour
 
     void Update()
     {
+        /*
         if (PlatformerBossAtk3)
         {
             // Compute the next position, with arc added in
@@ -51,10 +58,19 @@ public class EnemyBullet : MonoBehaviour
 
             // Rotate to face the next position, and then move there
             this.transform.rotation = LookAtTarget(nextPos - transform.position);
-            this.transform.position = nextPos;
-                        
+            this.transform.position = nextPos;                        
         }
+        */
 
+        if(tracking && PlatformerBossAtk3)
+        {
+            Vector3 dir = target - rb.position;
+            dir.Normalize();
+
+            Vector3.Cross(dir, this.transform.up);
+
+            rb.velocity = transform.up * speed;
+        }
 
         else if (tracking)
         {            
