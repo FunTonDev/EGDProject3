@@ -16,8 +16,9 @@ public class Action
 
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
     public int damage;
+    public int manaDamage;
 
-    public int statusEffect;
+    public int statusEffect = -1;
 
     public int cost;
 
@@ -43,6 +44,71 @@ public class Basic : Action
         cost = 1;
     }
 }
+
+public class SoldierBullet : Action
+{
+    public SoldierBullet()
+    {
+        actionName = "Plastic Bullet";
+        type = 0;
+        damage = 4;
+        priority = 4;
+        target = 0;
+        statusEffect = 0;
+    }
+}
+
+public class DutyCalls : Action
+{
+    public DutyCalls()
+    {
+        actionName = "Duty Calls";
+        type = 1;
+        statusEffect = 3;
+        priority = 2;
+        target = 0;
+    }
+}
+
+public class ToySmack : Action
+{
+    public ToySmack()
+    {
+        actionName = "Plushie Smack";
+        type = 0;
+        damage = 3;
+        priority = 5;
+        target = 0;
+    }
+}
+
+public class PlayfulTantrum : Action
+{
+    public PlayfulTantrum()
+    {
+        actionName = "Playful Tantrum";
+        type = 0;
+        damage = 5;
+        statusEffect = 1;
+        priority = 3;
+        target = 1;
+    }
+}
+
+public class ManaBolt : Action
+{
+    public ManaBolt()
+    {
+        actionName = "Mana Bolt";
+        type = 0;
+        damage = 4;
+        statusEffect = 2;
+        priority = 4;
+        target = 0;
+    }
+}
+
+
 
 public class BasicStatus : Action
 {
@@ -78,10 +144,25 @@ public class BasicHeal : Action
 {
     public BasicHeal()
     {
-        actionName = "HP Support";
+        actionName = "Recovery Boost (HP)";
         actionDesc = "A simple healing spell, solves all your problems. The hallmark of any true white mage.";
         type = 1;
         damage = 5;
+        priority = 2;
+        target = 0;
+        cost = 2;
+    }
+}
+
+
+public class BasicStim : Action
+{
+    public BasicStim()
+    {
+        actionName = "Recovery Boost (MP)";
+        actionDesc = "A simple mana recovery spell, solves all your problems. Very useful for the lazy and tired.";
+        type = 1;
+        manaDamage = 5;
         priority = 1;
         target = 0;
         cost = 2;
@@ -181,7 +262,7 @@ public class Unit
         }
     }
 
-    public void setStats(int lv = 1)
+    public virtual void setStats(int lv = 1)
     {
         switch (lv)
         {
@@ -196,6 +277,7 @@ public class Unit
                 lck = 1;
                 break;
             case 2:
+
                 break;
             case 3:
                 break;
@@ -284,6 +366,29 @@ public class Pixal : Unit
         setStats(lv);
         abilities.Add(new BasicHeal());
     }
+
+    public override void setStats(int lv = 1)
+    {
+        switch (lv)
+        {
+            case 1:
+                maxHP = 20;
+                maxStamina = 20;
+                atk = 2;
+                def = 2;
+                spd = 2;
+                lck = 4;
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+    }
 }
 
 public class Mama : Unit
@@ -296,31 +401,73 @@ public class Mama : Unit
         setStats(lv);
         abilities.Add(new AOE());
     }
+
+    public override void setStats(int lv = 1)
+    {
+        switch (lv)
+        {
+            case 1:
+                maxHP = 25;
+                maxStamina = 20;
+                atk = 3;
+                def = 1;
+                spd = 3;
+                lck = 2;
+                break;
+            case 2:
+                maxHP = 27;
+                maxStamina = 23;
+                atk = 5;
+                def = 3;
+                spd = 5;
+                lck = 3;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+    }
 }
 
-public class Hound : Unit
+public class Bear : Unit
 {
-    public Hound(int lv = 1)
+    public Bear(int lv = 1)
     {
         unitName = "Bear";
         spriteFilePath = "Art/Placeholder/Dog.jfif";
         loadSprites();
         setStats(lv);
-        abilities.Add(new Basic());
-        abilities.Add(new StatBoost());
+        abilities.Add(new PlayfulTantrum());
+        abilities.Add(new ToySmack());
     }
 }
 
-public class Slime : Unit
+public class Soldier : Unit
 {
-    public Slime(int lv = 1)
+    public Soldier(int lv = 1)
     {
         unitName = "Soldier";
         spriteFilePath = "Art/Placeholder/BasicSlime";
         loadSprites();
         setStats(lv);
-        abilities.Add(new Basic());
-        abilities.Add(new AOE());
+        abilities.Add(new DutyCalls());
+        abilities.Add(new SoldierBullet());
+    }
+}
+
+public class Wizard : Unit
+{
+    public Wizard(int lv = 1)
+    {
+        unitName = "Wizard";
+        spriteFilePath = "Art/Placeholder/Skeletoj";
+        loadSprites();
+        setStats(lv);
+        abilities.Add(new ManaBolt());
+        abilities.Add(new BasicHeal());
     }
 }
 
@@ -333,18 +480,5 @@ public class BossSlime : Unit
         loadSprites();
         setStats(lv);
         abilities.Add(new Basic());
-    }
-}
-
-public class Skeleton : Unit
-{
-    public Skeleton(int lv = 1)
-    {
-        unitName = "Wizard";
-        spriteFilePath = "Art/Placeholder/Skeletoj";
-        loadSprites();
-        setStats(lv);
-        abilities.Add(new Basic());
-        abilities.Add(new BasicHeal());
     }
 }
