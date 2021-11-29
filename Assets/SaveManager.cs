@@ -20,7 +20,7 @@ public static class SaveManager
         }
 
         string json = JsonUtility.ToJson(sv);
-
+        fileName = "File" + PlayerPrefs.GetInt("SaveNum") + ".txt";
         File.WriteAllText(dir +  "/" + fileName + PlayerPrefs.GetInt("SaveNum") + ".txt", json);
     }
 
@@ -29,6 +29,7 @@ public static class SaveManager
     {
         fileName = "File" + PlayerPrefs.GetInt("SaveNum") + ".txt";
         string fPath = Application.streamingAssetsPath + directory + "/" + fileName;
+        Debug.Log("File path - " + fPath);
         SaveFile sf = new SaveFile();
 
         if (File.Exists(fPath))

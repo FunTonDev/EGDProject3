@@ -45,6 +45,21 @@ public class Basic : Action
     }
 }
 
+public class Basic2 : Action
+{
+    public Basic2()
+    {
+        actionName = "Slashing Edge (EX)";
+        actionDesc = "A standard offensive move, but even better, deals 10 points of damage.";
+        type = 0;
+        damage = 5;
+        priority = 2;
+        target = 0;
+        cost = 1;
+    }
+}
+
+
 public class SoldierBullet : Action
 {
     public SoldierBullet()
@@ -337,7 +352,9 @@ public class Unit
 
     public void loadSprites()
     {
-        sprites[0] = (Sprite)AssetDatabase.LoadAssetAtPath(spriteFilePath, typeof(Sprite));
+        Debug.Log("fPath == " + spriteFilePath);
+        sprites = Resources.LoadAll<Sprite>(spriteFilePath);
+        Debug.Log("Sprite 0 = " + sprites[0] + ", fPath == " + spriteFilePath);
     }
 
     public void statusTurn()
@@ -362,9 +379,10 @@ public class Pixal : Unit
     {
         unitName = "Pixal";
         spriteFilePath = "Art/Placeholder/Cube.png";
-        loadSprites();
         setStats(lv);
-        abilities.Add(new BasicHeal());
+        abilities.Add(new ToySmack());
+        abilities.Add(new DutyCalls());
+        abilities.Add(new ManaBolt());
     }
 
     public override void setStats(int lv = 1)
@@ -396,10 +414,11 @@ public class Mama : Unit
     public Mama(int lv = 1)
     {
         unitName = "Knight";
-        spriteFilePath = "Art/Placeholder/mama.jfif";
+        spriteFilePath = "Art/CharArt/Mama Rogue/Idle/Mama Rogue_Idle1";
         loadSprites();
         setStats(lv);
-        abilities.Add(new AOE());
+        abilities.Add(new BasicHeal());
+        abilities.Add(new BasicStim());
     }
 
     public override void setStats(int lv = 1)
@@ -432,12 +451,25 @@ public class Mama : Unit
     }
 }
 
+public class Helper : Unit
+{
+    public Helper(int lv = 1)
+    {
+        unitName = "Bear";
+        spriteFilePath = "Art/CharArt/Knight (Decoration)/Knight Draft Recolored 2";
+        loadSprites();
+        setStats(lv);
+        abilities.Add(new AOE());
+        abilities.Add(new Basic2());
+    }
+}
+
 public class Bear : Unit
 {
     public Bear(int lv = 1)
     {
         unitName = "Bear";
-        spriteFilePath = "Art/Placeholder/Dog.jfif";
+        spriteFilePath = "Art/CharArt/Bear/Idle/Bear Idle1";
         loadSprites();
         setStats(lv);
         abilities.Add(new PlayfulTantrum());
@@ -450,7 +482,7 @@ public class Soldier : Unit
     public Soldier(int lv = 1)
     {
         unitName = "Soldier";
-        spriteFilePath = "Art/Placeholder/BasicSlime";
+        spriteFilePath = "Art/CharArt/Soldier/Idle/Soldier Idle1";
         loadSprites();
         setStats(lv);
         abilities.Add(new DutyCalls());
@@ -463,7 +495,7 @@ public class Wizard : Unit
     public Wizard(int lv = 1)
     {
         unitName = "Wizard";
-        spriteFilePath = "Art/Placeholder/Skeletoj";
+        spriteFilePath = "Art/CharArt/Wizard/Bobbing Idle/Blue Wizard Bobbing Idle1";
         loadSprites();
         setStats(lv);
         abilities.Add(new ManaBolt());
@@ -476,7 +508,7 @@ public class BossSlime : Unit
     public BossSlime(int lv = 1)
     {
         unitName = "Suspicious Slime";
-        spriteFilePath = "Art/Placeholder/KingSlime";
+        spriteFilePath = "Art/CharArt/Bosses and Glitch Goop/Glitch Goop";
         loadSprites();
         setStats(lv);
         abilities.Add(new Basic());

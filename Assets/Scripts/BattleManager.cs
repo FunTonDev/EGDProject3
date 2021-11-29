@@ -51,6 +51,8 @@ public class BattleManager : MonoBehaviour
     //Use to determine state of the battle (turns, win/loss, etc.)
     public battleState state;
 
+    public SaveFile sv;
+
     public InputManager inputMan;
 
     //List of the positions of menus
@@ -518,6 +520,7 @@ public class BattleManager : MonoBehaviour
     //Setup stats/game objects for battle
     IEnumerator setupBattle()
     {
+        sv = SaveManager.Load();
         //Add placeholders
         currentUnit = 0;
         for (int i = 0; i < 3; i++) PartyMembers.Add(null);
@@ -525,7 +528,15 @@ public class BattleManager : MonoBehaviour
 
         //Load in from json file or other source. Until available, load in prefabs
         PartyMembers[0] = new Pixal();
-        PartyMembers[1] = new Mama();
+        Debug.Log("H&M - " + sv.helperGot + sv.mamaGot);
+        if (sv.mamaGot)
+        {
+            PartyMembers[1] = new Mama();
+        }
+        if (sv.helperGot)
+        {
+            PartyMembers[2] = new Helper();
+        }
 
         //Set up party unit visuals
         for (int i = 0; i < 3; i++)
@@ -559,12 +570,10 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        //ERROR
-        /*
-        EnemyMembers[0] = new Slime();
-        EnemyMembers[1] = new Skeleton();
-        EnemyMembers[2] = new Hound();
-        */
+        EnemyMembers[0] = new Wizard();
+        EnemyMembers[1] = new Soldier();
+        EnemyMembers[2] = new Bear();
+        
 
         //Set up enemy unit visuals
         for (int i = 0; i < 3; i++)
@@ -595,6 +604,8 @@ public class BattleManager : MonoBehaviour
             }
         }
 
+        StartCoroutine(fadeIn());
+        yield return new WaitForSeconds(0.5f);
         //Change music to play depending on enemies being fought (will check for boss names later)
         if (!bossBattle)
         {
@@ -1573,11 +1584,12 @@ public class BattleManager : MonoBehaviour
     //Fade into the battle scene (from black to screen)
     IEnumerator fadeIn()
     {
-        transform.GetChild(1).Find("Fader").gameObject.SetActive(true);
+        transform.GetChild(0).Find("Fader").gameObject.SetActive(true);
         Color ori = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
-        transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(0, 2f, false);
+        transform.GetChild(0).Find("Fader").GetComponent<Image>().color = ori;
         yield return new WaitForSeconds(0.5f);
+        transform.GetChild(0).Find("Fader").GetComponent<Image>().CrossFadeAlpha(0, 2f, false);
+        yield return new WaitForSeconds(1.0f);
 
     }
 
@@ -1587,7 +1599,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Color ori = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         //transform.GetChild(1).Find("Fader").GetComponent<Image>().color = ori;
-        transform.GetChild(1).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
+        transform.GetChild(0).Find("Fader").GetComponent<Image>().CrossFadeAlpha(1, 2f, false);
     }
 
     //Cause unit to flash a color (ver: 0 == damage/red, 1 == healing/green, 2 == paralyzed)
@@ -1797,7 +1809,6 @@ public class BattleManager : MonoBehaviour
         scroll_speed = 20;
 
         state = battleState.START;
-        StartCoroutine(fadeIn());
         StartCoroutine(setupBattle());
     }
 

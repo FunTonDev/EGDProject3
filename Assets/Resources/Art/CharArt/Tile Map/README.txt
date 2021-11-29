@@ -1,0 +1,1 @@
+These tiles are designed so platforms can be as long as they need to be - the middle tiles mesh together with each other and the end tiles.
