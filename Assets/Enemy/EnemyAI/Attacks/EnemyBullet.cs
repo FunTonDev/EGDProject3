@@ -23,6 +23,7 @@ public class EnemyBullet : MonoBehaviour
         origin = this.transform.position;
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         target = new Vector3(playerPos.position.x, playerPos.position.y, playerPos.position.z);
+
         if(tracking && PlatformerBossAtk3)
         {
             
@@ -30,7 +31,7 @@ public class EnemyBullet : MonoBehaviour
             target.y = 0;
         }
 
-        if (tracking || PlatformerBossAtk3)
+        else if (tracking)
         {
             Invoke("SelfDestruct", 8.0f);
             target.y = 0;
@@ -64,12 +65,16 @@ public class EnemyBullet : MonoBehaviour
 
         if(tracking && PlatformerBossAtk3)
         {
+            /*
             Vector3 dir = target - rb.position;
             dir.Normalize();
-
             Vector3.Cross(dir, this.transform.up);
-
             rb.velocity = transform.up * speed;
+            */
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                        Quaternion.LookRotation(target - transform.position),
+                                                2f * Time.deltaTime);
+            this.transform.position += transform.forward * speed * Time.deltaTime;
         }
 
         else if (tracking)

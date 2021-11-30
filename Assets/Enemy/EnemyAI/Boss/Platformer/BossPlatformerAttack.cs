@@ -396,13 +396,19 @@ public class BossPlatformerAttack : MonoBehaviour
     public void Atk3_P1()
     {
         AtkPart = 1;
-        bool left = true;
-        Vector3 firstNode = Atk1MovePattern[0].position;
+        bool left = false;
+        Vector3 firstNode = Atk1MovePattern[4].position;
 
         Vector3 PlayerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        /*
         //When leftside > PlayerPos.x > bossPos.x  
         if ( ((Atk1MovePattern[0].position.x - 8) > PlayerPos.x) && (PlayerPos.x > this.transform.position.x))
         { left = false; firstNode = Atk1MovePattern[4].position; }
+        */
+
+        //When bossPos.x < PlayerPos.x < rightSide
+        if ((this.transform.position.x < PlayerPos.x) && PlayerPos.x < (Atk1MovePattern[4].position.x + 5))
+        { left = true; firstNode = Atk1MovePattern[0].position; }
 
         BossMovement.SetPathNodes(Atk1MovePattern, left);
         //BossMovement.LookAtPos(PlayerPos);
