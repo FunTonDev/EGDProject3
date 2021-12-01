@@ -78,6 +78,7 @@ public class DutyCalls : Action
     public DutyCalls()
     {
         actionName = "Duty Calls";
+        cost = 3;
         type = 1;
         statusEffect = 3;
         priority = 2;
@@ -90,6 +91,7 @@ public class ToySmack : Action
     public ToySmack()
     {
         actionName = "Plushie Smack";
+        cost = 1;
         type = 0;
         damage = 3;
         priority = 5;
@@ -115,6 +117,7 @@ public class ManaBolt : Action
     public ManaBolt()
     {
         actionName = "Mana Bolt";
+        cost = 2;
         type = 0;
         damage = 4;
         statusEffect = 2;
@@ -286,10 +289,10 @@ public class Unit
                 currentHP = 10;
                 maxStamina = 20;
                 currentStamina = 5;
-                atk = 1;
-                def = 1;
-                spd = 1;
-                lck = 1;
+                atk = 5;
+                def = 5;
+                spd = 5;
+                lck = 5;
                 break;
             case 2:
 
@@ -455,10 +458,12 @@ public class BossSlime : Unit
 {
     public BossSlime(int lv = 1)
     {
-        unitName = "Suspicious Slime";
+        unitName = "Slime Overlord";
         spriteFilePath = "Art/CharArt/Bosses and Glitch Goop/Glitch Goop";
         loadSprites();
         setStats(lv);
-        abilities.Add(new Basic());
+        abilities.Add(new BasicHeal());
+        abilities.Add(new AOE());
+        abilities.Add(new ManaBolt());
     }
 }
