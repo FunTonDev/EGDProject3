@@ -384,29 +384,6 @@ public class Pixal : Unit
         abilities.Add(new DutyCalls());
         abilities.Add(new ManaBolt());
     }
-
-    public override void setStats(int lv = 1)
-    {
-        switch (lv)
-        {
-            case 1:
-                maxHP = 20;
-                maxStamina = 20;
-                atk = 2;
-                def = 2;
-                spd = 2;
-                lck = 4;
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-        }
-    }
 }
 
 public class Mama : Unit
@@ -419,35 +396,6 @@ public class Mama : Unit
         setStats(lv);
         abilities.Add(new BasicHeal());
         abilities.Add(new BasicStim());
-    }
-
-    public override void setStats(int lv = 1)
-    {
-        switch (lv)
-        {
-            case 1:
-                maxHP = 25;
-                maxStamina = 20;
-                atk = 3;
-                def = 1;
-                spd = 3;
-                lck = 2;
-                break;
-            case 2:
-                maxHP = 27;
-                maxStamina = 23;
-                atk = 5;
-                def = 3;
-                spd = 5;
-                lck = 3;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-        }
     }
 }
 
