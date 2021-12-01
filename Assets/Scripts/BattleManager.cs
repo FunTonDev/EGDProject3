@@ -1149,7 +1149,7 @@ public class BattleManager : MonoBehaviour
                         yield return battleEnd();
                     }
                 }
-                if (uni.abilities[ata].statusEffect != 0)
+                if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                 {
                     if (target.statuses[uni.abilities[ata].statusEffect] == -1)
                     {
@@ -1207,7 +1207,7 @@ public class BattleManager : MonoBehaviour
                             yield return battleEnd();
                         }
                     }
-                    if (uni.abilities[ata].statusEffect != 0)
+                    if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                     {
                         if (EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
                         {
@@ -1239,7 +1239,7 @@ public class BattleManager : MonoBehaviour
             {
                 StartCoroutine(flash(val, false, 1));
                 target.takeDamage(-uni.abilities[ata].damage);
-                if (uni.abilities[ata].statusEffect != 0)
+                if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                 {
                     target.statuses[uni.abilities[ata].statusEffect] = 3;
                     yield return textDisplay(target.unitName + " was empowered by their teammate");
@@ -1257,7 +1257,7 @@ public class BattleManager : MonoBehaviour
                         {
                             StartCoroutine(flash(i, false, 1));
                             PartyMembers[i].takeDamage(-uni.abilities[ata].damage);
-                            if (uni.abilities[ata].statusEffect != 0)
+                            if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                             {
                                 PartyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
                                 yield return textDisplay(PartyMembers[i].unitName + " was empowered by their teammate");
@@ -1394,7 +1394,7 @@ public class BattleManager : MonoBehaviour
                     yield return battleEnd();
                 }
             }
-            if (uni.abilities[ata].statusEffect != 0)
+            if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
             {
                 if (target.statuses[uni.abilities[ata].statusEffect] == -1)
                 {
@@ -1457,7 +1457,7 @@ public class BattleManager : MonoBehaviour
                                 yield return battleEnd();
                             }
                         }
-                        if (uni.abilities[ata].statusEffect != 0)
+                        if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                         {
                             if (PartyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
                             {
@@ -1494,7 +1494,7 @@ public class BattleManager : MonoBehaviour
         if (uni.abilities[ata].target == 0)
         {
             target.takeDamage(-uni.abilities[ata].damage);
-            if (uni.abilities[ata].statusEffect != 0)
+            if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
             {
                 target.statuses[uni.abilities[ata].statusEffect] = 3;
                 yield return textDisplay(target.unitName + " was empowered by their teammate");
@@ -1512,7 +1512,7 @@ public class BattleManager : MonoBehaviour
                     if (EnemyMembers[i].currentHP > 0)
                     {
                         EnemyMembers[i].takeDamage(-uni.abilities[ata].damage);
-                        if (uni.abilities[ata].statusEffect != 0)
+                        if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                         {
                             EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
                             yield return textDisplay(EnemyMembers[i].unitName + " was empowered by their teammate");
