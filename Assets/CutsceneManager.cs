@@ -72,6 +72,13 @@ public class CutsceneManager : MonoBehaviour
                 if (!so.gameStart)
                 {
                     image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/Cutscene1-Intro"));
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    List<Sprite> temp = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/Cutscene2-Intro2"));
+                    Debug.Log("TempSize == " + temp.Count);
+                    for (int i = 0; i < temp.Count; i++)
+                    {
+                        image_queue.Add(temp[i]);
+                    }
                     //Conveyor Belt Scene (4)
                     storeText.Add("Ever wonder how Pixels are made?");
                     storeText.Add("Each one is made to serve a purpose");
@@ -79,12 +86,6 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Especially when things get...");
                     storeText.Add("...Interesting...");
                     //Pixal Falls, screen fades to black once pixal falls off
-                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
-                    Sprite[] temp = Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/Cutscene2-Intro2");
-                    for (int i = 0; i < temp.Length; i++)
-                    {
-                        image_queue.Add(temp[i]);
-                    }
                     //Pixal Meets Coder (3)
                     storeText.Add("");
                     storeText.Add("Hmm...this is quite troubling...");
@@ -109,7 +110,12 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Hmm, that’s interesting, I can’t seem to get a read on you. Regardless, something must be done as this goop is everywhere.");
                     storeText.Add("Please, I need your help in getting rid of this virus. Will you aid my cause?");
                     storeText.Add("Ahh, thank you so much uhhh...Pixal! Ah yes, that’s right, that is your name. So, let us get started then...");
+                    storeText.Add("...");
                     //Coder displays map on screen (7)
+                    for (int i = 0; i < 7; i++)
+                    {
+                        image_queue.Add(Resources.Load<Sprite>("Art/BGArt/egd3MAP"));
+                    }
                     storeText.Add("What you are looking at is a map of the games I manage, and as you can see here, these genres have had a high concentration of the virus.");
                     storeText.Add("Unfortunately, the map hasn’t been elucidated since these areas have already been contaminated, so you will be walking among uncharted territories.");
                     storeText.Add("Your job is to go into these areas and exterminate the virus. Be warned, each area is different so you should know what you’re getting yourself into.");
@@ -117,6 +123,8 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("The Shooter is where bullet hell mayhem will ensue.");
                     storeText.Add("Finally, the platformer where a princess must be saved.");
                     storeText.Add("So, have at it and take your pick.");
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    storeText.Add("");
                     //Screen fades to black, back to HUB world
                     nextScene = "HubWorld";
 
@@ -325,10 +333,17 @@ public class CutsceneManager : MonoBehaviour
         storyText.text = "";
     }
 
+    public void AdvanceButton()
+    {
+        advance = true;
+    }
+
     public IEnumerator displayAllText(List<string> tts)
     {
         for (int i = 0; i < tts.Count; i++)
         {
+            Debug.Log("i == " + i + ", image == " + image_queue[i]);
+
             bg.sprite = image_queue[i];
             yield return textDisplay(tts[i], true);
             advance = false;
@@ -347,13 +362,14 @@ public class CutsceneManager : MonoBehaviour
         writing = true;
         for (int i = 0; i < write_queue[0].Length && writing; i++)
         {
-            if (inputMan.inputSubmit != 0.0f && stop && !advance)
+            if ((inputMan.inputSubmit != 0.0f || advance)  && stop && !advance)
             {
                 Debug.Log("Should stop now");
                 Clear();
                 storyText.text = tt;
                 write_queue.RemoveAt(0);
                 writing = false;
+                advance = false;
                 //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
                 break;
             }
