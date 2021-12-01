@@ -1687,7 +1687,7 @@ public class BattleManager : MonoBehaviour
             }
             //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
             int avg = 0;
-            int num = 0;
+            int num = 10;
             int mone = 0;
             avg = avg / num;
             for (int i = 0; i < EnemyMembers.Count; i++)

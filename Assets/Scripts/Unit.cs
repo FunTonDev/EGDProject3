@@ -59,7 +59,7 @@ public class Basic2 : Action
     }
 }
 
-
+//Soldier
 public class SoldierBullet : Action
 {
     public SoldierBullet()
@@ -86,6 +86,8 @@ public class DutyCalls : Action
     }
 }
 
+
+//Bear
 public class ToySmack : Action
 {
     public ToySmack()
@@ -112,6 +114,8 @@ public class PlayfulTantrum : Action
     }
 }
 
+
+//Wizard
 public class ManaBolt : Action
 {
     public ManaBolt()
@@ -127,7 +131,7 @@ public class ManaBolt : Action
 }
 
 
-
+//Basic Stuff
 public class BasicStatus : Action
 {
     public BasicStatus()
@@ -142,7 +146,6 @@ public class BasicStatus : Action
         statusEffect = 1;
     }
 }
-
 
 public class AOE : Action
 {
@@ -171,7 +174,6 @@ public class BasicHeal : Action
         cost = 2;
     }
 }
-
 
 public class BasicStim : Action
 {
@@ -288,7 +290,7 @@ public class Unit
                 maxHP = 20;
                 currentHP = 10;
                 maxStamina = 20;
-                currentStamina = 5;
+                currentStamina = 10;
                 atk = 5;
                 def = 5;
                 spd = 5;
