@@ -308,7 +308,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (inputMan.inputAct5_D && dashCount < 1)   //Dash check
+        if (inputMan.inputFire1_D && dashCount < 1)   //Dash check
         {
             GameObject temp = Instantiate(dashEffect, transform.position, transform.rotation);
             playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);

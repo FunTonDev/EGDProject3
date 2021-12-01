@@ -585,7 +585,7 @@ public class BattleManager : MonoBehaviour
                 {
                     enemyPrefabs[i].GetComponent<SpriteRenderer>().sprite = EnemyMembers[i].sprites[0];
                     enemyIcons[i].gameObject.SetActive(true);
-                    enemyIcons[i].sprite = PartyMembers[i].sprites[0];
+                    enemyIcons[i].sprite = EnemyMembers[i].sprites[0];
                 }
                 else
                 {
