@@ -47,7 +47,7 @@ public class CameraController : MonoBehaviour
         SetCameraMode(States.GameGenre.Platformer);
         isTrackingMovement = true;
         shaking = false;
-        moveAheadMax = 1.5f;
+        moveAheadMax = 0.75f;
         mouseAheadMax = 450.0f;
         camVelX = 0.1f;
         camVelY = 0.1f;
