@@ -106,8 +106,8 @@ public class PlayerController : MonoBehaviour
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
         playerColl = GetComponent<BoxCollider>();
-        hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(0).GetComponent<Image>();
-        extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(0).GetComponent<Image>();
+        hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(1).GetComponent<Image>();
+        extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(1).GetComponent<Image>();
         playerAudS = GetComponent<AudioSource>();
         playerRigB = GetComponent<Rigidbody>();
         playerMeshF = gameObject.transform.GetChild(0).GetComponent<MeshFilter>();

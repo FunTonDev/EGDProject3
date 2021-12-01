@@ -533,9 +533,17 @@ public class BattleManager : MonoBehaviour
         {
             PartyMembers[1] = new Mama();
         }
+        else
+        {
+            PartyMembers[1] = null;
+        }
         if (sv.helperGot)
         {
             PartyMembers[2] = new Helper();
+        }
+        else
+        {
+            PartyMembers[2] = null;
         }
 
         //Set up party unit visuals
@@ -554,6 +562,9 @@ public class BattleManager : MonoBehaviour
                 {
                     //partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
                 }
+                PartyMembers[i].currentHP = PartyMembers[i].maxHP;
+                PartyMembers[i].currentStamina = PartyMembers[i].maxStamina;
+                Debug.Log("Party " + i + " HP == " + PartyMembers[i].currentHP + ", MP == " + PartyMembers[i].currentStamina);
                 partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
                     new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 
                     partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -591,6 +602,8 @@ public class BattleManager : MonoBehaviour
                 {
                    // enemyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
                 }
+                EnemyMembers[i].currentHP = EnemyMembers[i].maxHP;
+                EnemyMembers[i].currentStamina = EnemyMembers[i].maxStamina;
                 enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
                     new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
                     enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1098,6 +1111,7 @@ public class BattleManager : MonoBehaviour
     //target - the target of the ability
     IEnumerator playerAbility(int ata, int val, Unit uni, Unit target)
     {
+        Debug.Log("val == " + val + ", target == " + target);
         bool crite = false;
         bool good = false;
         bool bad = false;
@@ -1342,6 +1356,7 @@ public class BattleManager : MonoBehaviour
     //target - target of attack
     IEnumerator enemyAttack(int ata, int val, Unit uni, Unit target)
     {
+        Debug.Log("val == " + val + ", target == " + target);
         bool crite = false;
         bool good = false;
         bool bad = false;
@@ -1475,6 +1490,7 @@ public class BattleManager : MonoBehaviour
     //An enemy uses a non-offensive ability
     IEnumerator enemyAbility(int ata, int val, Unit uni, Unit target)
     {
+        Debug.Log("val == " + val + ", target == " + target);
         if (uni.abilities[ata].target == 0)
         {
             target.takeDamage(-uni.abilities[ata].damage);
