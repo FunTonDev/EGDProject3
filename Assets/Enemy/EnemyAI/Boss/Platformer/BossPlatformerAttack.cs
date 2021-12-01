@@ -11,10 +11,11 @@ public class BossPlatformerAttack : MonoBehaviour
     [SerializeField] private GameObject Atk3Obj;
         
     BossPlatformerMovement BossMovement;
+    Animator animator;
 
     //Used to keep track of variables in during an attacking phase
     [SerializeField] List<int> AtksForPhase;
-    [SerializeField] int AtkIndex = 0;    
+    [SerializeField] int AtkIndex;    
     bool NewAtkPhase;
     bool attacking;
 
@@ -34,7 +35,7 @@ public class BossPlatformerAttack : MonoBehaviour
     public void AddAtkforPhase(int i) { AtksForPhase.Add(i); }
     public void SetAtkIndex(int index) { AtkIndex = index; }
     public void SetAttacking(bool b) { attacking = b; }
-    public void SetNewAtkPhase(bool b) { attacking = b; }
+    public void SetNewAtkPhase(bool b) { NewAtkPhase = b; }
 
     public int GetAtkForPhase(int index) { return AtksForPhase[index]; }
     public int GetAtkIndex() { return AtkIndex; }
@@ -59,11 +60,11 @@ public class BossPlatformerAttack : MonoBehaviour
         attack3 = false;
         moving = false; ;
         charging = false;
-
+        AtkIndex = 0;
         AtkPart = 0;
 
         BossMovement = this.gameObject.GetComponent<BossPlatformerMovement>();
-
+        animator = this.gameObject.GetComponent<Animator>();
 
     }
 
@@ -72,6 +73,7 @@ public class BossPlatformerAttack : MonoBehaviour
     {
         if (attacking)
         {
+            animator.SetBool("Moving", moving);
             if (attack1)
             {
                 //Perform during Atk1 part 1
@@ -288,6 +290,7 @@ public class BossPlatformerAttack : MonoBehaviour
     IEnumerator Atk1_End()
     {
         attack1 = false;
+        moving = false;
 
         yield return new WaitForSeconds(1);
        
@@ -358,6 +361,7 @@ public class BossPlatformerAttack : MonoBehaviour
     IEnumerator Atk2_End()
     {
         attack2 = false;
+        moving = false;
 
         yield return new WaitForSeconds(1);
 
@@ -449,6 +453,7 @@ public class BossPlatformerAttack : MonoBehaviour
     IEnumerator Atk3_End()
     {
         attack3 = false;
+        moving = false;
 
         yield return new WaitForSeconds(1);
 

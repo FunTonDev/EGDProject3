@@ -27,7 +27,7 @@ public class EnemyBullet : MonoBehaviour
         if(tracking && PlatformerBossAtk3)
         {
             
-            Invoke("SelfDestruct", 5.0f);
+            Invoke("SelfDestruct", 3.5f);
             target.y = 0;
         }
 
@@ -73,7 +73,7 @@ public class EnemyBullet : MonoBehaviour
             */
             transform.rotation = Quaternion.Slerp(transform.rotation,
                                         Quaternion.LookRotation(target - transform.position),
-                                                2f * Time.deltaTime);
+                                                1f * Time.deltaTime);
             this.transform.position += transform.forward * speed * Time.deltaTime;
         }
 
@@ -95,7 +95,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void SelfDestruct()
     {
-        Debug.Log("Bullet SelfDestruct");
+        //Debug.Log("Bullet SelfDestruct");
         Destroy(gameObject);
     }
 
