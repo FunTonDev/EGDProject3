@@ -390,7 +390,7 @@ public class Mama : Unit
 {
     public Mama(int lv = 1)
     {
-        unitName = "Knight";
+        unitName = "Rogue";
         spriteFilePath = "Art/CharArt/Mama Rogue/Idle/Mama Rogue_Idle1";
         loadSprites();
         setStats(lv);
@@ -403,7 +403,7 @@ public class Helper : Unit
 {
     public Helper(int lv = 1)
     {
-        unitName = "Bear";
+        unitName = "Knight";
         spriteFilePath = "Art/CharArt/Knight (Decoration)/Knight Draft Recolored 2";
         loadSprites();
         setStats(lv);

@@ -182,7 +182,7 @@ public class BattleManager : MonoBehaviour
 
     public void playerTurn()
     {
-        DisplayText.text = PartyMembers[currentUnit] + "'s turn\nHP = " + PartyMembers[currentUnit].currentHP + ", MP = " + PartyMembers[currentUnit].currentStamina;
+        DisplayText.text = PartyMembers[currentUnit].unitName + "'s turn\nHP = " + PartyMembers[currentUnit].currentHP + ", MP = " + PartyMembers[currentUnit].currentStamina;
     }
 
     //Function to enter the target/action for an attack
