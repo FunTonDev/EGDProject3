@@ -20,7 +20,7 @@ public static class SaveManager
         }
 
         string json = JsonUtility.ToJson(sv);
-        fileName = "File" + PlayerPrefs.GetInt("SaveNum") + ".txt";
+        fileName = "File" + PlayerPrefs.GetInt("SaveNum");
         File.WriteAllText(dir +  "/" + fileName + PlayerPrefs.GetInt("SaveNum") + ".txt", json);
     }
 

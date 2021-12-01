@@ -348,6 +348,7 @@ public class CutsceneManager : MonoBehaviour
             yield return textDisplay(tts[i], true);
             advance = false;
         }
+        SaveManager.Save(so);
         tranMan.SceneSwitch(nextScene);
     }
 

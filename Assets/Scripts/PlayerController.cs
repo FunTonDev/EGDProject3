@@ -106,8 +106,8 @@ public class PlayerController : MonoBehaviour
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
         playerColl = GetComponent<BoxCollider>();
-        hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(0).GetComponent<Image>();
-        extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(0).GetComponent<Image>();
+        hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(1).GetComponent<Image>();
+        extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(1).GetComponent<Image>();
         playerAudS = GetComponent<AudioSource>();
         playerRigB = GetComponent<Rigidbody>();
         playerMeshF = gameObject.transform.GetChild(0).GetComponent<MeshFilter>();
@@ -308,7 +308,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (inputMan.inputFire1_D && dashCount < 1)   //Dash check
+        if ((inputMan.inputFire1_D || inputMan.inputAct6_D || (inputMan.inputSubmit_D && playerRigB.velocity.x != 0)) && dashCount < 1)   //Dash check
         {
             GameObject temp = Instantiate(dashEffect, transform.position, transform.rotation);
             playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);

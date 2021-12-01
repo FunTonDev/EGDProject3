@@ -59,7 +59,7 @@ public class Basic2 : Action
     }
 }
 
-
+//Soldier
 public class SoldierBullet : Action
 {
     public SoldierBullet()
@@ -78,6 +78,7 @@ public class DutyCalls : Action
     public DutyCalls()
     {
         actionName = "Duty Calls";
+        cost = 3;
         type = 1;
         statusEffect = 3;
         priority = 2;
@@ -85,11 +86,14 @@ public class DutyCalls : Action
     }
 }
 
+
+//Bear
 public class ToySmack : Action
 {
     public ToySmack()
     {
         actionName = "Plushie Smack";
+        cost = 1;
         type = 0;
         damage = 3;
         priority = 5;
@@ -110,11 +114,14 @@ public class PlayfulTantrum : Action
     }
 }
 
+
+//Wizard
 public class ManaBolt : Action
 {
     public ManaBolt()
     {
         actionName = "Mana Bolt";
+        cost = 2;
         type = 0;
         damage = 4;
         statusEffect = 2;
@@ -124,7 +131,7 @@ public class ManaBolt : Action
 }
 
 
-
+//Basic Stuff
 public class BasicStatus : Action
 {
     public BasicStatus()
@@ -139,7 +146,6 @@ public class BasicStatus : Action
         statusEffect = 1;
     }
 }
-
 
 public class AOE : Action
 {
@@ -168,7 +174,6 @@ public class BasicHeal : Action
         cost = 2;
     }
 }
-
 
 public class BasicStim : Action
 {
@@ -285,11 +290,11 @@ public class Unit
                 maxHP = 20;
                 currentHP = 10;
                 maxStamina = 20;
-                currentStamina = 5;
-                atk = 1;
-                def = 1;
-                spd = 1;
-                lck = 1;
+                currentStamina = 10;
+                atk = 5;
+                def = 5;
+                spd = 5;
+                lck = 5;
                 break;
             case 2:
 
@@ -384,70 +389,18 @@ public class Pixal : Unit
         abilities.Add(new DutyCalls());
         abilities.Add(new ManaBolt());
     }
-
-    public override void setStats(int lv = 1)
-    {
-        switch (lv)
-        {
-            case 1:
-                maxHP = 20;
-                maxStamina = 20;
-                atk = 2;
-                def = 2;
-                spd = 2;
-                lck = 4;
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-        }
-    }
 }
 
 public class Mama : Unit
 {
     public Mama(int lv = 1)
     {
-        unitName = "Knight";
+        unitName = "Rogue";
         spriteFilePath = "Art/CharArt/Mama Rogue/Idle/Mama Rogue_Idle1";
         loadSprites();
         setStats(lv);
         abilities.Add(new BasicHeal());
         abilities.Add(new BasicStim());
-    }
-
-    public override void setStats(int lv = 1)
-    {
-        switch (lv)
-        {
-            case 1:
-                maxHP = 25;
-                maxStamina = 20;
-                atk = 3;
-                def = 1;
-                spd = 3;
-                lck = 2;
-                break;
-            case 2:
-                maxHP = 27;
-                maxStamina = 23;
-                atk = 5;
-                def = 3;
-                spd = 5;
-                lck = 3;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-        }
     }
 }
 
@@ -455,7 +408,7 @@ public class Helper : Unit
 {
     public Helper(int lv = 1)
     {
-        unitName = "Bear";
+        unitName = "Knight";
         spriteFilePath = "Art/CharArt/Knight (Decoration)/Knight Draft Recolored 2";
         loadSprites();
         setStats(lv);
@@ -507,10 +460,12 @@ public class BossSlime : Unit
 {
     public BossSlime(int lv = 1)
     {
-        unitName = "Suspicious Slime";
+        unitName = "Slime Overlord";
         spriteFilePath = "Art/CharArt/Bosses and Glitch Goop/Glitch Goop";
         loadSprites();
         setStats(lv);
-        abilities.Add(new Basic());
+        abilities.Add(new BasicHeal());
+        abilities.Add(new AOE());
+        abilities.Add(new ManaBolt());
     }
 }

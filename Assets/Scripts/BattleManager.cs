@@ -182,7 +182,7 @@ public class BattleManager : MonoBehaviour
 
     public void playerTurn()
     {
-        DisplayText.text = PartyMembers[currentUnit] + "'s turn\nHP = " + PartyMembers[currentUnit].currentHP + ", MP = " + PartyMembers[currentUnit].currentStamina;
+        DisplayText.text = PartyMembers[currentUnit].unitName + "'s turn\nHP = " + PartyMembers[currentUnit].currentHP + ", MP = " + PartyMembers[currentUnit].currentStamina;
     }
 
     //Function to enter the target/action for an attack
@@ -533,9 +533,17 @@ public class BattleManager : MonoBehaviour
         {
             PartyMembers[1] = new Mama();
         }
+        else
+        {
+            PartyMembers[1] = null;
+        }
         if (sv.helperGot)
         {
             PartyMembers[2] = new Helper();
+        }
+        else
+        {
+            PartyMembers[2] = null;
         }
 
         //Set up party unit visuals
@@ -554,6 +562,9 @@ public class BattleManager : MonoBehaviour
                 {
                     //partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
                 }
+                PartyMembers[i].currentHP = PartyMembers[i].maxHP;
+                PartyMembers[i].currentStamina = PartyMembers[i].maxStamina;
+                Debug.Log("Party " + i + " HP == " + PartyMembers[i].currentHP + ", MP == " + PartyMembers[i].currentStamina);
                 partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
                     new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 
                     partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -591,6 +602,8 @@ public class BattleManager : MonoBehaviour
                 {
                    // enemyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f);
                 }
+                EnemyMembers[i].currentHP = EnemyMembers[i].maxHP;
+                EnemyMembers[i].currentStamina = EnemyMembers[i].maxStamina;
                 enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
                     new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
                     enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
@@ -1098,6 +1111,7 @@ public class BattleManager : MonoBehaviour
     //target - the target of the ability
     IEnumerator playerAbility(int ata, int val, Unit uni, Unit target)
     {
+        Debug.Log("val == " + val + ", target == " + target);
         bool crite = false;
         bool good = false;
         bool bad = false;
@@ -1135,7 +1149,7 @@ public class BattleManager : MonoBehaviour
                         yield return battleEnd();
                     }
                 }
-                if (uni.abilities[ata].statusEffect != 0)
+                if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                 {
                     if (target.statuses[uni.abilities[ata].statusEffect] == -1)
                     {
@@ -1193,7 +1207,7 @@ public class BattleManager : MonoBehaviour
                             yield return battleEnd();
                         }
                     }
-                    if (uni.abilities[ata].statusEffect != 0)
+                    if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                     {
                         if (EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
                         {
@@ -1225,7 +1239,7 @@ public class BattleManager : MonoBehaviour
             {
                 StartCoroutine(flash(val, false, 1));
                 target.takeDamage(-uni.abilities[ata].damage);
-                if (uni.abilities[ata].statusEffect != 0)
+                if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                 {
                     target.statuses[uni.abilities[ata].statusEffect] = 3;
                     yield return textDisplay(target.unitName + " was empowered by their teammate");
@@ -1243,7 +1257,7 @@ public class BattleManager : MonoBehaviour
                         {
                             StartCoroutine(flash(i, false, 1));
                             PartyMembers[i].takeDamage(-uni.abilities[ata].damage);
-                            if (uni.abilities[ata].statusEffect != 0)
+                            if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                             {
                                 PartyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
                                 yield return textDisplay(PartyMembers[i].unitName + " was empowered by their teammate");
@@ -1342,6 +1356,7 @@ public class BattleManager : MonoBehaviour
     //target - target of attack
     IEnumerator enemyAttack(int ata, int val, Unit uni, Unit target)
     {
+        Debug.Log("val == " + val + ", target == " + target);
         bool crite = false;
         bool good = false;
         bool bad = false;
@@ -1379,7 +1394,7 @@ public class BattleManager : MonoBehaviour
                     yield return battleEnd();
                 }
             }
-            if (uni.abilities[ata].statusEffect != 0)
+            if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
             {
                 if (target.statuses[uni.abilities[ata].statusEffect] == -1)
                 {
@@ -1442,7 +1457,7 @@ public class BattleManager : MonoBehaviour
                                 yield return battleEnd();
                             }
                         }
-                        if (uni.abilities[ata].statusEffect != 0)
+                        if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                         {
                             if (PartyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
                             {
@@ -1475,10 +1490,11 @@ public class BattleManager : MonoBehaviour
     //An enemy uses a non-offensive ability
     IEnumerator enemyAbility(int ata, int val, Unit uni, Unit target)
     {
+        Debug.Log("val == " + val + ", target == " + target);
         if (uni.abilities[ata].target == 0)
         {
             target.takeDamage(-uni.abilities[ata].damage);
-            if (uni.abilities[ata].statusEffect != 0)
+            if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
             {
                 target.statuses[uni.abilities[ata].statusEffect] = 3;
                 yield return textDisplay(target.unitName + " was empowered by their teammate");
@@ -1496,7 +1512,7 @@ public class BattleManager : MonoBehaviour
                     if (EnemyMembers[i].currentHP > 0)
                     {
                         EnemyMembers[i].takeDamage(-uni.abilities[ata].damage);
-                        if (uni.abilities[ata].statusEffect != 0)
+                        if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                         {
                             EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
                             yield return textDisplay(EnemyMembers[i].unitName + " was empowered by their teammate");
@@ -1671,7 +1687,7 @@ public class BattleManager : MonoBehaviour
             }
             //yield return new WaitUntil(new System.Func<bool>(() => InputManager.GetButtonDown("Interact")));
             int avg = 0;
-            int num = 0;
+            int num = 10;
             int mone = 0;
             avg = avg / num;
             for (int i = 0; i < EnemyMembers.Count; i++)
