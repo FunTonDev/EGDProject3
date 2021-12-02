@@ -384,15 +384,16 @@ public class BossPlatformerAttack : MonoBehaviour
 
 
     //Launch slime projectiles in an arc towards player
-    void ArcThrow()
+    void Shoot()
     {
         Quaternion rotation = this.transform.rotation;
-        Quaternion rotationMod = Quaternion.AngleAxis(45f, this.transform.forward);
-        Vector3 dir = rotation * rotationMod * Vector3.forward;
+        Vector3 dir = rotation * Vector3.forward;
 
         Vector3 spawnPos = this.transform.position + dir;
-        spawnPos.y += 1;
-        Instantiate(Atk3Obj, spawnPos, Quaternion.LookRotation(dir));
+        if (numOfAtks == 1)
+        { Instantiate(Atk3Obj, spawnPos, Quaternion.LookRotation(dir)); }
+        else
+        { Instantiate(Atk1Obj, spawnPos, Quaternion.LookRotation(dir)); }
     }
 
     public void Attack3()
@@ -450,13 +451,14 @@ public class BossPlatformerAttack : MonoBehaviour
         Vector3 PlayerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
         BossMovement.LookAtPos(PlayerPos);
         animator.SetBool("Attack3", true);
+
         Debug.Log("Boss Atk3 Charging...");
         yield return new WaitForSeconds(1);
-        ArcThrow();
+        Shoot();
         Debug.Log("Boss Atk3 Fired!");
-        yield return new WaitForSeconds(3);
-        animator.SetBool("Attack3", false);
+        yield return new WaitForSeconds(2);
 
+        animator.SetBool("Attack3", false);
         charging = false;
         numOfAtks--;
     }

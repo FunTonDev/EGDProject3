@@ -9,10 +9,8 @@ public class BossEnemy : MonoBehaviour
     [SerializeField] private string type;                     //Name (Ex: TestBox)
 
     [SerializeField] private int phase;               //currPhase of the boss
-    [SerializeField] private List<float> health;      //List of the bosses health set at the begining of each of their phase
-    [SerializeField] private List<float> armor;       //List of the bosses armor set at the begining of each of their phase
-    private float currHealth;
-    private float currArmor;
+    [SerializeField] private float health;      
+    [SerializeField] private float armor;       
 
     private bool invincible;
     private bool vulnarable;
@@ -50,31 +48,25 @@ public class BossEnemy : MonoBehaviour
         Debug.Log(string.Format("Indroducing Platformer Boss Enemy with health of {1}.", type, health));
     }
 
-    void SetPhase()
-    {
-        currHealth = health[phase-1];
-        currArmor = armor[phase - 1];
-    }
-
     public void TakeDamage(float damage)
     {
         if (vulnarable)
         {
-            if (currArmor > 0)
+            if (armor > 0)
             {
-                currArmor -= (3 / 4) * damage;
-                currHealth -= (1 / 4) * damage;
+                armor -= (3 / 4) * damage;
+                health -= (1 / 4) * damage;
                 Debug.Log(string.Format("Platform Boss took {0} damage to armor and {1} damage to health", (3 / 4) * damage, (1 / 4) * damage));
             }
             else
             {
-                currHealth -= damage;
+                health -= damage;
                 Debug.Log(string.Format("Platform Boss took {0} damage", damage));
             }
 
-            Debug.Log(string.Format("Platform Boss Current Health and Armor: {0} & {1}", currHealth, currArmor));
+            Debug.Log(string.Format("Platform Boss Current Health and Armor: {0} & {1}", health, armor));
 
-            if (currHealth <= 0)
+            if (health <= 0)
             { Death(); }
         }
     }
@@ -99,4 +91,5 @@ public class BossEnemy : MonoBehaviour
         Debug.Log(string.Format("Enemy {0} destroyed", type));
         Destroy(this.gameObject);
     }
+
 }
