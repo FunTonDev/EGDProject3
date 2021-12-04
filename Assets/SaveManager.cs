@@ -64,9 +64,11 @@ public class SaveFile
     public float lastHP = 1.0f;                         //Last known hp value
 
 
-    public bool gameStart;
+    public bool gameStart;                              //Whether Game Started
+
+
     public bool platStart;                              //Whether platformer stage started (whether to display cutscene)
-    public bool inPlat;
+    public bool inPlat;                                 //Check Plat checkpoints
     public bool inPlat2;
     public bool inPlat3;
     public bool platDone;
@@ -89,6 +91,9 @@ public class SaveFile
 
     public bool rpgCollect;
 
+    public int fightLevel = 0;
+
+    public bool bossFight;
 
     public float playerMana;
 

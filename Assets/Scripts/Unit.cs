@@ -15,10 +15,10 @@ public class Action
     public int type;  //0 == attack, 1 == support/buff
 
     public int damageType;  //0 - Type A, 1 - Type B, 2 - Type C  (A > B, B > C, C > A)
-    public int damage;
-    public int manaDamage;
+    public int damage;      //How much HP is decreased/increased
+    public int manaDamage;  //How much MP is decreased/increased
 
-    public int statusEffect = -1;
+    public int statusEffect = -1;   //0 = Corrupted, 1 = Glitchy, 2 = Degradation, 3 = Empowered
 
     public int cost;
 
@@ -266,10 +266,18 @@ public class Unit
 
     public bool takeDamage(int dam)
     {
+        int hurt = dam;
         if (!defending)
-            currentHP -= dam;
+            hurt = hurt/1;
         else
-            currentHP -= dam / 2;
+            hurt = hurt/2;
+
+        if (statuses[2] != -1)
+        {
+            hurt = hurt * 2;
+        }
+
+        currentHP -= dam;
 
         if (currentHP <= 0)
         {
@@ -453,6 +461,19 @@ public class Wizard : Unit
         setStats(lv);
         abilities.Add(new ManaBolt());
         abilities.Add(new BasicHeal());
+    }
+}
+
+public class Slime : Unit
+{
+    public Slime(int lv = 1)
+    {
+        unitName = "Slime";
+        spriteFilePath = "Art/CharArt/Bosses and Glitch Goop/Glitch Goop";
+        loadSprites();
+        setStats(lv);
+        abilities.Add(new Basic());
+        abilities.Add(new BasicStim());
     }
 }
 

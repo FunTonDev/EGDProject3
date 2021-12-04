@@ -120,6 +120,7 @@ public class PlayerController : MonoBehaviour
         }
         SetDefaultValues();
         objective = GameObject.FindGameObjectWithTag("Objective");
+        Debug.Log("OBJ with tage == " + objective);
         tempArrow = Instantiate(arrows);
         tempArrow.transform.SetParent(GameObject.Find("Canvas").transform, false);
         if (gameMan.genreMain == States.GameGenre.None)
@@ -189,7 +190,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     if (screenpos.z < 0) screenpos *= -1;
-                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 3;
+                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 4;
                     screenpos -= screenCenter;
                     float angle = Mathf.Atan2(screenpos.y, screenpos.x);
                     angle -= 90 * Mathf.Deg2Rad;
@@ -200,7 +201,7 @@ public class PlayerController : MonoBehaviour
 
                     float m = cos / sin;
 
-                    Vector3 screenBounds = screenCenter * 0.9f;
+                    Vector3 screenBounds = screenCenter * 0.8f;
 
                     if (cos > 0) screenpos = new Vector3(screenpos.y / m, screenpos.y, 0);
                     else screenpos = new Vector3(-screenpos.y / m, -screenpos.y, 0);
@@ -226,7 +227,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     if (screenpos.z < 0) screenpos *= -1;
-                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
+                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 3;
                     screenpos -= screenCenter;
                     float angle = Mathf.Atan2(screenpos.y, screenpos.x);
                     angle -= 90 * Mathf.Deg2Rad;
@@ -321,6 +322,8 @@ public class PlayerController : MonoBehaviour
             lastDashTime = Time.deltaTime;
         }
         extraBar.fillAmount = -(dashTimer - dashDelayTime) / dashDelayTime;
+
+        if (dashTimer >= dashDelayTime) dashCount = 0;
 
         if (wallJumpTimer <= 0)    //X move check
         {
