@@ -105,8 +105,7 @@ public class BossPlatformerAttack : MonoBehaviour
                     }
 
                     //Move onto next part
-                    else { AtkPart = 3; }
-                    
+                    else { AtkPart = 3; }                    
                 }
 
                 //End Atk
@@ -128,7 +127,7 @@ public class BossPlatformerAttack : MonoBehaviour
                     }
 
                     //Move onto next part
-                    else { Atk2_P2(); }
+                    else { StartCoroutine("Atk2_P2"); }
                 }
 
                 //Perform during Atk2 part 2, charge around screen
@@ -198,15 +197,19 @@ public class BossPlatformerAttack : MonoBehaviour
     }
 
 
-    //Shoot projectiles in all directions
+    //Shoot projectiles in 8 directions, first shot either 0 degrees or 25 degrees above player
     void OmniShot()
     {
+        float angleAdd = 0f;
+        float chance = Random.RandomRange(0, 1);
+        if(chance >= 0.5) { angleAdd = 22.5f; }
+
         int numOfShots = 8;
         float angle = 45f;
         for (int i = 0; i < numOfShots; i++)
         {
             Quaternion rotation = this.transform.rotation;
-            Quaternion rotationMod = Quaternion.AngleAxis(angle * i, this.transform.forward);
+            Quaternion rotationMod = Quaternion.AngleAxis((angle * i) + angleAdd, this.transform.forward);
             Vector3 dir = rotation * rotationMod * Vector3.forward;
             Debug.DrawRay(this.transform.position, dir, Color.red);
 
@@ -253,7 +256,6 @@ public class BossPlatformerAttack : MonoBehaviour
         //Debug.Log("Boss Atk1_P2 called");
         Destination = BossMovement.PathFollow();
         AtkPart = 2;        
-        animator.SetBool("Moving", false);
         moving = true;
 
         //Look at other end
@@ -273,26 +275,25 @@ public class BossPlatformerAttack : MonoBehaviour
     {
         charging = true;
         moving = false;
-        yield return new WaitForSeconds(0.2f);
+        animator.SetBool("Moving", false);
+        yield return new WaitForSeconds(0.1f);
         
         animator.SetBool("Attack1", charging);
 
-        Debug.Log("Boss Atk1 Charging...");
-        yield return new WaitForSeconds(1);
-
-        
+        Debug.Log("Boss Atk1 Charging...");        
     }
 
     public void Atk1_P2_Charging_End_Func()
     {
+        animator.SetBool("Attack1", false);
         StartCoroutine("Atk1_P2_Charging_End");
     }
 
     IEnumerator Atk1_P2_Charging_End()
     {
         Debug.Log("Boss Atk1 Fired!");
-        animator.SetBool("Attack1", false);
-        yield return new WaitForSeconds(0.5f);       
+        
+        yield return new WaitForSeconds(0.4f);       
 
         charging = false;
         moving = true;
@@ -308,7 +309,7 @@ public class BossPlatformerAttack : MonoBehaviour
         attack1 = false;
         moving = false;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.75f);
        
         BossMovement.SetGravity(true);
 
@@ -350,24 +351,23 @@ public class BossPlatformerAttack : MonoBehaviour
         animator.SetBool("Moving", moving);
     }
 
-    void Atk2_P2()
+    IEnumerator Atk2_P2()
     {
         //Debug.Log("Boss Atk1_P1() called");
-        StartCoroutine("Atk2_P2_Charge");
-        
-    }
 
-    //Charge before dashing
-    IEnumerator Atk2_P2_Charge()
-    {
+        BossMovement.LookAtPos(BossMovement.PathFollow());
+
         AtkPart = 2;
         moving = false;
         animator.SetBool("Moving", moving);
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         animator.SetBool("Dashing", true);
         yield return new WaitForSeconds(0.2f);
+    }
 
+    void Atk2_P3()
+    {
         numOfAtks = 5; //Num of nodes enemy must fly to in its dash
         Destination = BossMovement.PathFollow();
 
@@ -375,15 +375,23 @@ public class BossPlatformerAttack : MonoBehaviour
         BossMovement.SetGravity(false);
 
         moving = true;
+    }
+    /*
+    //Charge before dashing
+    IEnumerator Atk2_P3_Dash()
+    {
+       
+
+        
        
     }
-
+    */
     //Reset Gravity for boss and end attack along with providing cooldown for enemy
     IEnumerator Atk2_End()
     {
         attack2 = false;
         moving = false;
-        animator.SetBool("Dashing", moving);
+        animator.SetBool("Dashing", false);
 
         yield return new WaitForSeconds(1.2f);
 
@@ -400,14 +408,28 @@ public class BossPlatformerAttack : MonoBehaviour
     //Launch slime projectiles in an arc towards player
     void Shoot()
     {
+        Vector3 PlayerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        BossMovement.LookAtPos(PlayerPos);
+
         Quaternion rotation = this.transform.rotation;
         Vector3 dir = rotation * Vector3.forward;
 
         Vector3 spawnPos = this.transform.position + dir;
-        if (numOfAtks == 1)
-        { Instantiate(Atk3Obj, spawnPos, Quaternion.LookRotation(dir)); }
-        else
-        { Instantiate(Atk1Obj, spawnPos, Quaternion.LookRotation(dir)); }
+        
+        if (numOfAtks > 0)
+        {            
+            if (numOfAtks == 1)
+            {
+                Instantiate(Atk3Obj, spawnPos, Quaternion.LookRotation(dir));
+                animator.SetBool("Attack3", false); charging = false;
+            }
+            else
+            { Instantiate(Atk1Obj, spawnPos, Quaternion.LookRotation(dir)); }
+
+            Debug.Log("Boss Atk3 Fired!");
+        }
+
+        numOfAtks--;       
     }
 
     public void Attack3()
@@ -417,6 +439,7 @@ public class BossPlatformerAttack : MonoBehaviour
         attack3 = true;
 
         Atk3_P1();
+        numOfAtks--;
     }
 
     //Figure out which side to start attack and move towards it
@@ -450,7 +473,7 @@ public class BossPlatformerAttack : MonoBehaviour
     void Atk3_P2()
     {
         moving = false;
-        animator.SetBool("Moving", moving);
+        animator.SetBool("Moving", false);
         AtkPart = 2;
         numOfAtks = 3; //Num of times enemy shoots projectile
     }
@@ -458,25 +481,17 @@ public class BossPlatformerAttack : MonoBehaviour
     //For attack 
     IEnumerator Atk3_P2_Charging()
     {
-        moving = false;
-        animator.SetBool("Moving", moving);
+        animator.SetBool("Moving", false);
         yield return new WaitForSeconds(0.2f);
         charging = true;
 
         Vector3 PlayerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
         BossMovement.LookAtPos(PlayerPos);
+
         animator.SetBool("Attack3", true);
 
         Debug.Log("Boss Atk3 Charging...");
-        yield return new WaitForSeconds(1);
-        Shoot();
-        Debug.Log("Boss Atk3 Fired!");
-        yield return new WaitForSeconds(2);
-
-        animator.SetBool("Attack3", false);
-
-        charging = false;
-        numOfAtks--;
+        yield return new WaitForSeconds(0.2f);
     }
 
     //End attack

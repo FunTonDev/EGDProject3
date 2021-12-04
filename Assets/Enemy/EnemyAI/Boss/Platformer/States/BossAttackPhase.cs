@@ -91,7 +91,6 @@ public class BossAttackPhase : StateMachineBehaviour
 
     void PerformAtk(int i)
     {
-        i = 1;
         Debug.Log("Boss Performing Atk" + i);
 
         if (i == 1)

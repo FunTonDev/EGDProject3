@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vulnarable
+  m_Name: ExitVulnarable
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,15 +20,11 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 4e4806791591bdd44a35e0bc5241bf44, type: 3}
-    - time: 0.5
-      value: {fileID: 21300000, guid: b324a5e19f25dd34da792b1758bbd1c1, type: 3}
-    - time: 1
       value: {fileID: 21300000, guid: 3048d8f7de549bf499885b9ec8df7521, type: 3}
-    - time: 1.5
+    - time: 0.5
       value: {fileID: 21300000, guid: b6efd77ee91010342a93884279cfcd2b, type: 3}
-    - time: 1.8666667
-      value: {fileID: 21300000, guid: 4e4806791591bdd44a35e0bc5241bf44, type: 3}
+    - time: 0.6666667
+      value: {fileID: 21300000, guid: b6efd77ee91010342a93884279cfcd2b, type: 3}
     attribute: m_Sprite
     path: BossSprite
     classID: 212
@@ -48,22 +44,20 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 4e4806791591bdd44a35e0bc5241bf44, type: 3}
-    - {fileID: 21300000, guid: b324a5e19f25dd34da792b1758bbd1c1, type: 3}
     - {fileID: 21300000, guid: 3048d8f7de549bf499885b9ec8df7521, type: 3}
     - {fileID: 21300000, guid: b6efd77ee91010342a93884279cfcd2b, type: 3}
-    - {fileID: 21300000, guid: 4e4806791591bdd44a35e0bc5241bf44, type: 3}
+    - {fileID: 21300000, guid: b6efd77ee91010342a93884279cfcd2b, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.8833333
+    m_StopTime: 0.68333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0

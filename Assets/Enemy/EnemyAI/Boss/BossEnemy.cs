@@ -10,7 +10,9 @@ public class BossEnemy : MonoBehaviour
 
     [SerializeField] private int phase;               //currPhase of the boss
     [SerializeField] private float health;      
-    [SerializeField] private float armor;       
+    [SerializeField] private float armor;
+
+    float axisLevel;
 
     private bool invincible;
     private bool vulnarable;
@@ -33,19 +35,29 @@ public class BossEnemy : MonoBehaviour
         vulnarable = false;
 
         rgbdy.useGravity = true;
-        phase = 1;              
+                        
+        axisLevel = GameObject.FindGameObjectWithTag("Player").transform.position.z;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        
+        SetAxisLevel();
     }
     
     public virtual void Introduction()
     {
-        Debug.Log(string.Format("Indroducing Platformer Boss Enemy with health of {1}.", type, health));
+        //Debug.Log(string.Format("Indroducing Platformer Boss Enemy with health of {1}.", type, health));
+    }
+
+    public void SetAxisLevel()
+    {
+        Vector3 temp = this.transform.position;
+        temp.z = axisLevel;
+               
+        this.transform.position = temp;
+        this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
     }
 
     public void TakeDamage(float damage)
