@@ -464,6 +464,19 @@ public class Wizard : Unit
     }
 }
 
+public class Slime : Unit
+{
+    public Slime(int lv = 1)
+    {
+        unitName = "Slime";
+        spriteFilePath = "Art/CharArt/Bosses and Glitch Goop/Glitch Goop";
+        loadSprites();
+        setStats(lv);
+        abilities.Add(new Basic());
+        abilities.Add(new BasicStim());
+    }
+}
+
 public class BossSlime : Unit
 {
     public BossSlime(int lv = 1)

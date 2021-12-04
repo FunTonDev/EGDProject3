@@ -581,9 +581,35 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        EnemyMembers[0] = new Wizard();
-        EnemyMembers[1] = new Soldier();
-        EnemyMembers[2] = new Bear();
+        //Get random enemies
+        if (!sv.bossFight)
+        {
+            for (int i = 0; i < sv.fightLevel + 1; i++)
+            {
+                int randy = Random.Range(0, 4);
+                switch (randy)
+                {
+                    case 0:
+                        EnemyMembers[i] = new Slime();
+                        break;
+                    case 1:
+                        EnemyMembers[i] = new Wizard();
+                        break;
+                    case 2:
+                        EnemyMembers[i] = new Soldier();
+                        break;
+                    case 3:
+                        EnemyMembers[i] = new Bear();
+                        break;
+                }
+            }
+        }
+        else
+        {
+            EnemyMembers[0] = new Slime();
+            EnemyMembers[1] = new BossSlime();
+            EnemyMembers[2] = new Slime();
+        }
         
 
         //Set up enemy unit visuals
