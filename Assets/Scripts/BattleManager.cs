@@ -1069,6 +1069,22 @@ public class BattleManager : MonoBehaviour
                     {
                         PartyMembers[i].defending = false;
                         PartyMembers[i].statusTurn();
+                        if (PartyMembers[i].statuses[0] <= 0)
+                        {
+                            partyIcons[i].transform.GetChild(0).gameObject.SetActive(false);
+                        }
+                        if (PartyMembers[i].statuses[1] <= 0)
+                        {
+                            partyIcons[i].transform.GetChild(1).gameObject.SetActive(false);
+                        }
+                        if (PartyMembers[i].statuses[2] <= 0)
+                        {
+                            partyIcons[i].transform.GetChild(2).gameObject.SetActive(false);
+                        }
+                        if (PartyMembers[i].statuses[3] <= 0)
+                        {
+                            partyIcons[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
+                        }
                         partyPrefabs[i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
                     }
                 }
@@ -1161,12 +1177,15 @@ public class BattleManager : MonoBehaviour
                             {
                                 case 0:
                                     yield return textDisplay(target.unitName + "was inflicted with corruption", true);
+                                    enemyIcons[val].transform.GetChild(0).gameObject.SetActive(true);
                                     break;
                                 case 1:
                                     yield return textDisplay(target.unitName + "was inflicted with glitchy-ness", true);
+                                    enemyIcons[val].transform.GetChild(1).gameObject.SetActive(true);
                                     break;
                                 case 2:
                                     yield return textDisplay(target.unitName + "was inflicted with degradation", true);
+                                    enemyIcons[val].transform.GetChild(2).gameObject.SetActive(true);
                                     break;
                             }
                         }
@@ -1218,12 +1237,15 @@ public class BattleManager : MonoBehaviour
                                 switch (uni.abilities[ata].statusEffect)
                                 {
                                     case 0:
+                                        enemyIcons[i].transform.GetChild(0).gameObject.SetActive(true);
                                         yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with corruption", true);
                                         break;
                                     case 1:
+                                        enemyIcons[i].transform.GetChild(1).gameObject.SetActive(true);
                                         yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with glitchy-ness", true);
                                         break;
                                     case 2:
+                                        enemyIcons[i].transform.GetChild(2).gameObject.SetActive(true);
                                         yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with degradation", true);
                                         break;
                                 }
@@ -1242,6 +1264,7 @@ public class BattleManager : MonoBehaviour
                 if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                 {
                     target.statuses[uni.abilities[ata].statusEffect] = 3;
+                    partyIcons[val].GetComponent<Image>().color = new Color(1.0f, 212f/255f, 0.0f);
                     yield return textDisplay(target.unitName + " was empowered by their teammate");
                 }
                 partyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[val].currentHP / PartyMembers[val].maxHP,
@@ -1260,6 +1283,7 @@ public class BattleManager : MonoBehaviour
                             if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                             {
                                 PartyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
+                                partyIcons[i].GetComponent<Image>().color = new Color(1.0f, 212f / 255f, 0.0f);
                                 yield return textDisplay(PartyMembers[i].unitName + " was empowered by their teammate");
                             }
                             partyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP,
@@ -1405,12 +1429,15 @@ public class BattleManager : MonoBehaviour
                         switch (uni.abilities[ata].statusEffect)
                         {
                             case 0:
+                                partyIcons[val].transform.GetChild(0).gameObject.SetActive(true);
                                 yield return textDisplay(target.unitName + "was inflicted with corruption", true);
                                 break;
                             case 1:
+                                partyIcons[val].transform.GetChild(1).gameObject.SetActive(true);
                                 yield return textDisplay(target.unitName + "was inflicted with glitchy-ness", true);
                                 break;
                             case 2:
+                                partyIcons[val].transform.GetChild(2).gameObject.SetActive(true);
                                 yield return textDisplay(target.unitName + "was inflicted with degradation", true);
                                 break;
                         }
@@ -1468,12 +1495,15 @@ public class BattleManager : MonoBehaviour
                                     switch (uni.abilities[ata].statusEffect)
                                     {
                                         case 0:
+                                            partyIcons[i].transform.GetChild(0).gameObject.SetActive(true);
                                             yield return textDisplay(PartyMembers[i].unitName + "was inflicted with corruption", true);
                                             break;
                                         case 1:
+                                            partyIcons[i].transform.GetChild(1).gameObject.SetActive(true);
                                             yield return textDisplay(PartyMembers[i].unitName + "was inflicted with glitchy-ness", true);
                                             break;
                                         case 2:
+                                            partyIcons[i].transform.GetChild(2).gameObject.SetActive(true);
                                             yield return textDisplay(PartyMembers[i].unitName + "was inflicted with degradation", true);
                                             break;
                                     }
@@ -1497,6 +1527,7 @@ public class BattleManager : MonoBehaviour
             if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
             {
                 target.statuses[uni.abilities[ata].statusEffect] = 3;
+                enemyIcons[val].GetComponent<Image>().color = new Color(1.0f, 212f / 255f, 0.0f); ;
                 yield return textDisplay(target.unitName + " was empowered by their teammate");
             }
             StartCoroutine(flash(val, true, 1));
@@ -1515,6 +1546,7 @@ public class BattleManager : MonoBehaviour
                         if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
                         {
                             EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
+                            enemyIcons[i].GetComponent<Image>().color = new Color(1.0f, 212f / 255f, 0.0f); ;
                             yield return textDisplay(EnemyMembers[i].unitName + " was empowered by their teammate");
                         }
                         StartCoroutine(flash(i, true, 1));
