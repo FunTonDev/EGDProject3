@@ -35,6 +35,8 @@ public class ShooterEnemy : Enemy
 
     [SerializeField] private GameObject AttackObj;
 
+    private Animator animator;
+
     //For FoV script
     public float GetDetctRadius() { return detctRadius; }
     public float GetAtkDist() { return AtkDist; }
@@ -45,6 +47,7 @@ public class ShooterEnemy : Enemy
     public override void ClassStart()
     {
         attacking = false;
+        animator = this.gameObject.GetComponent<Animator>();
     }
 
     public override void ClassUpdate()
@@ -84,6 +87,8 @@ public class ShooterEnemy : Enemy
         {
             agroMode = true;
             ChasePlayer();
+            
+
         }
 
 
@@ -95,12 +100,10 @@ public class ShooterEnemy : Enemy
         }
 
         else if(PlayerInBufferRange)
-        {
-            
+        {    
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
                                             Quaternion.LookRotation(player.transform.position - this.transform.position),
-                                                        6.0f * Time.deltaTime);          
-
+                                                        6.0f * Time.deltaTime);
         }
 
         //base.SetAxisLevel();
@@ -156,9 +159,7 @@ public class ShooterEnemy : Enemy
                     turnLeft = !turnLeft;
                     //Debug.Log("turnLeft switched");
                 }
-            }
-            
-            
+            }           
         }
 
         //Follow path if one given
@@ -188,6 +189,8 @@ public class ShooterEnemy : Enemy
         {
             this.transform.LookAt(player.transform.position);
             NavAgent.SetDestination(base.PathFollow());
+
+            animator.SetBool("Walking", true);
         }
 
         //Enemy follows player to chase him down if they are not within buffer dist
@@ -195,6 +198,8 @@ public class ShooterEnemy : Enemy
         {
             this.transform.LookAt(player.transform.position);
             NavAgent.SetDestination(player.transform.position);
+
+            animator.SetBool("Walking", true);
         }
 
     }
@@ -275,7 +280,9 @@ public class ShooterEnemy : Enemy
             {
                 StartCoroutine("MeleeAttack");
             }
-            
+
+            animator.SetBool("Attack", true);
+
         }        
     }
 

@@ -248,7 +248,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &118157169
 MonoBehaviour:
@@ -563,7 +563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &226293440
 Transform:
   m_ObjectHideFlags: 0
@@ -581,7 +581,7 @@ Transform:
   - {fileID: 1842225331}
   - {fileID: 1663138043}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &256778899 stripped
 Transform:
@@ -1066,7 +1066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &476186029
 Transform:
   m_ObjectHideFlags: 0
@@ -1078,10 +1078,11 @@ Transform:
   m_LocalPosition: {x: -13.387144, y: -406.754, z: 310.78278}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 748097912}
   - {fileID: 1064606259}
   - {fileID: 732356324}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &512087226
 PrefabInstance:
@@ -1444,7 +1445,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 476186029}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &732356325
 Rigidbody:
@@ -1518,7 +1519,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &748097909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1609,11 +1610,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748097908}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 13.387144, y: 416.754, z: -310.78278}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 476186029}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &770632308
@@ -1646,7 +1647,7 @@ Transform:
   - {fileID: 1267126646}
   - {fileID: 2002044677}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &804505628
 GameObject:
@@ -2268,7 +2269,7 @@ Transform:
   - {fileID: 1408019518}
   - {fileID: 1142259054}
   m_Father: {fileID: 476186029}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1068804847
 PrefabInstance:
@@ -2517,7 +2518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1142259054
 Transform:
   m_ObjectHideFlags: 0
@@ -3205,7 +3206,7 @@ Transform:
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1539979615 stripped
 Transform:
@@ -4183,7 +4184,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!4 &157875627235356419 stripped
 Transform:
@@ -4200,6 +4201,10 @@ PrefabInstance:
     - target: {fileID: 7509052449194524331, guid: 93d741565e98919489267624ebf98661, type: 3}
       propertyPath: m_Name
       value: 'ShooterTestEnemyBoss (Sentry) '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7509052449194524331, guid: 93d741565e98919489267624ebf98661, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7509052449194524340, guid: 93d741565e98919489267624ebf98661, type: 3}
       propertyPath: m_RootOrder
@@ -4428,6 +4433,10 @@ PrefabInstance:
     - target: {fileID: 4537878545519909083, guid: 36f65b69ad3309a4c9e1e118bab9db2f, type: 3}
       propertyPath: m_Name
       value: ShooterTestEnemyBoss (Juggernaut)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537878545519909083, guid: 36f65b69ad3309a4c9e1e118bab9db2f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36f65b69ad3309a4c9e1e118bab9db2f, type: 3}
