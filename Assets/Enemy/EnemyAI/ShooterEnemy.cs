@@ -190,7 +190,7 @@ public class ShooterEnemy : Enemy
             this.transform.LookAt(player.transform.position);
             NavAgent.SetDestination(base.PathFollow());
 
-            animator.SetBool("Walking", true);
+           //animator.SetBool("Walking", true);
         }
 
         //Enemy follows player to chase him down if they are not within buffer dist
@@ -199,7 +199,7 @@ public class ShooterEnemy : Enemy
             this.transform.LookAt(player.transform.position);
             NavAgent.SetDestination(player.transform.position);
 
-            animator.SetBool("Walking", true);
+            //animator.SetBool("Walking", true);
         }
 
     }
