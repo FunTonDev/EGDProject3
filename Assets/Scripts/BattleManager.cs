@@ -264,6 +264,7 @@ public class BattleManager : MonoBehaviour
 
     public void makeMenuVisible(int num)
     {
+        //Make actions menu visible
         if (num == 0)
         {
             actionBackground.transform.GetChild(0).GetComponent<Text>().text = "Actions";
@@ -313,6 +314,7 @@ public class BattleManager : MonoBehaviour
                     PartyMembers[currentUnit].abilities[0].cost + "MP ";
             }
         }
+        //Make attack menu visible
         else if (num == 1)
         {
             if (currentActionType.Equals(""))
@@ -327,7 +329,22 @@ public class BattleManager : MonoBehaviour
             menus[1].SetActive(false);
             menus[2].SetActive(true);
             menus[3].SetActive(false);
+            for (int i = 0; i < 3; i++)
+            {
+                if (EnemyMembers[i] != null)
+                {
+                    if (EnemyMembers[i].currentHP <= 0)
+                    {
+                        menus[2].transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    menus[2].transform.GetChild(i).gameObject.SetActive(false);
+                }
+            }
         }
+        //Make support menu visible
         else if (num == 2)
         {
             if (currentActionType.Equals(""))
@@ -342,6 +359,20 @@ public class BattleManager : MonoBehaviour
             menus[1].SetActive(false);
             menus[2].SetActive(false);
             menus[3].SetActive(true);
+            for (int i = 0; i < 3; i++)
+            {
+                if (PartyMembers[i] != null)
+                {
+                    if (PartyMembers[i].currentHP <= 0)
+                    {
+                        menus[3].transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    menus[3].transform.GetChild(i).gameObject.SetActive(false);
+                }
+            }
         }
         else if (num == 3)
         {
