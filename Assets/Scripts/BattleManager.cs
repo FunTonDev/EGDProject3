@@ -377,9 +377,12 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < EnemyMembers.Count; i++)
         {
-            if (EnemyMembers[i].currentHP > 0)
+            if (EnemyMembers[i] != null)
             {
-                other += 1;
+                if (EnemyMembers[i].currentHP > 0)
+                {
+                    other += 1;
+                }
             }
         }
         //For each of the enemies present
@@ -565,12 +568,8 @@ public class BattleManager : MonoBehaviour
                 PartyMembers[i].currentHP = PartyMembers[i].maxHP;
                 PartyMembers[i].currentStamina = PartyMembers[i].maxStamina;
                 Debug.Log("Party " + i + " HP == " + PartyMembers[i].currentHP + ", MP == " + PartyMembers[i].currentStamina);
-                partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale =
-                    new Vector3(1.0f * PartyMembers[i].currentHP / PartyMembers[i].maxHP, 
-                    partyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
-                partyPrefabs[i].transform.GetChild(1).GetComponent<SpriteRenderer>().transform.localScale =
-                    new Vector3(1.0f * PartyMembers[i].currentStamina / PartyMembers[i].maxStamina,
-                    partyPrefabs[i].transform.GetChild(1).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
+                partyIcons[i].transform.Find("HPBar").GetChild(1).GetComponent<Image>().fillAmount = PartyMembers[i].currentHP / PartyMembers[i].maxHP;
+                partyIcons[i].transform.Find("MPBar").GetChild(1).GetComponent<Image>().fillAmount = PartyMembers[i].currentStamina / PartyMembers[i].maxStamina;
                 activeUnits += 1;
             }
             else
@@ -602,6 +601,7 @@ public class BattleManager : MonoBehaviour
                         EnemyMembers[i] = new Bear();
                         break;
                 }
+                activeEnemies += 1;
             }
         }
         else
@@ -609,6 +609,7 @@ public class BattleManager : MonoBehaviour
             EnemyMembers[0] = new Slime();
             EnemyMembers[1] = new BossSlime();
             EnemyMembers[2] = new Slime();
+            activeEnemies = 3;
         }
         
 
@@ -783,7 +784,14 @@ public class BattleManager : MonoBehaviour
                 //Check if an enemy should take damage from a status effect
                 else
                 {
-                    if (EnemyMembers[ind].currentHP <= 0)
+                    if (EnemyMembers[ind] != null)
+                    {
+                        if (EnemyMembers[ind].currentHP <= 0)
+                        {
+                            continue;
+                        }
+                    }
+                    else
                     {
                         continue;
                     }
@@ -1069,9 +1077,12 @@ public class BattleManager : MonoBehaviour
                 int tempED = 0;
                 for (int i = 0; i < EnemyMembers.Count; i++)
                 {
-                    if (EnemyMembers[i].currentHP <= 0)
+                    if (EnemyMembers[i] != null)
                     {
-                        tempED += 1;
+                        if (EnemyMembers[i].currentHP <= 0)
+                        {
+                            tempED += 1;
+                        }
                     }
                 }
                 if (partyDeaths >= activeUnits || tempPA == tempPD)
@@ -1079,7 +1090,7 @@ public class BattleManager : MonoBehaviour
                     state = battleState.LOSE;
                     yield return battleEnd();
                 }
-                else if (enemyDeaths >= EnemyMembers.Count || tempED >= EnemyMembers.Count)
+                else if (enemyDeaths >= EnemyMembers.Count || tempED >= activeEnemies)
                 {
                     state = battleState.WIN;
                     yield return battleEnd();
@@ -1172,8 +1183,8 @@ public class BattleManager : MonoBehaviour
                     crite = true;
                 }
 
-                StartCoroutine(flash(val, true, 0));
                 target.takeDamage(dami);
+                StartCoroutine(flash(val, true, 0));
                 enemyPrefabs[val].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[val].currentHP / EnemyMembers[val].maxHP,
                     enemyPrefabs[val].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                 if (crite)
@@ -1233,8 +1244,8 @@ public class BattleManager : MonoBehaviour
                     {
                         crite = false;
                     }
-                    StartCoroutine(flash(i, true, 0));
                     EnemyMembers[i].takeDamage(dami);
+                    StartCoroutine(flash(i, true, 0));
                     enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
                         enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
                     if (crite)
@@ -1285,8 +1296,8 @@ public class BattleManager : MonoBehaviour
         {
             if (uni.abilities[ata].target == 0)
             {
-                StartCoroutine(flash(val, false, 1));
                 target.takeDamage(-uni.abilities[ata].damage);
+                StartCoroutine(flash(val, false, 1));
                 if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                 {
                     target.statuses[uni.abilities[ata].statusEffect] = 3;
@@ -1304,8 +1315,9 @@ public class BattleManager : MonoBehaviour
                     {
                         if (PartyMembers[i].currentHP > 0)
                         {
-                            StartCoroutine(flash(i, false, 1));
                             PartyMembers[i].takeDamage(-uni.abilities[ata].damage);
+                            StartCoroutine(flash(i, false, 1));
+                            
                             if (uni.abilities[ata].statusEffect != -1 && uni.abilities[ata].statusEffect != 0)
                             {
                                 PartyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
@@ -1348,8 +1360,9 @@ public class BattleManager : MonoBehaviour
             tv++;
         }
         float dif = target.currentHP;
-        StartCoroutine(flash(tv, true, 0));
         bool dead = target.takeDamage(val);
+        StartCoroutine(flash(tv, true, 0));
+        
 
         if (dif > 0)
         {
@@ -1697,6 +1710,14 @@ public class BattleManager : MonoBehaviour
             case 0:
                 yield return new WaitForSeconds(0.5f);
                 uni.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
+                if (!enemy)
+                {
+                    partyIcons[index].transform.Find("HPBar").GetChild(1).GetComponent<Image>().fillAmount = PartyMembers[index].currentHP / PartyMembers[index].maxHP;
+                }
+                else
+                {
+                    enemyIcons[index].transform.Find("HPBar").GetChild(1).GetComponent<Image>().fillAmount = EnemyMembers[index].currentHP / EnemyMembers[index].maxHP;
+                }
                 playSound(0);
                 yield return new WaitForSeconds(0.5f);
                 break;
