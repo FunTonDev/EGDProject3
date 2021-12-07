@@ -36,6 +36,7 @@ public class RPG_FOV : MonoBehaviour
             
             if (hitInfo.collider.tag == "Player")
             {
+                Debug.Log("Player spotted!");
                 return true;
             }
         }
