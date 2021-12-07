@@ -2,31 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class RPGGridGenerator : MonoBehaviour
 {
+    //[Header("USER INPUT")]
     [Header("Components")]
     [SerializeField] private GameObject gridUnit;
-    [SerializeField] private Transform gridContainer;
+    [SerializeField] private List<Mesh> meshes;
 
     [Header("Variables")]
-    public uint totalX;
-    public uint totalY;
-    public uint totalZ;
-    public bool decayX;
-    public bool decayZ;
+    public int terrainID;
+    public Vector3 size;
     public Quaternion targetRot;
-    private float tileSize;
+    public int xChange;
+    public int zChange;
 
-    private void Awake()
+    private void Start()
     {
-        int xDiff = 0, zDiff = 0;
-        Debug.Log(gameObject.name);
-        tileSize = 1;
-        for (int i = 0; i < totalY; i++)
+        GameObject model = transform.GetChild(0).gameObject;
+        Transform gridContainer = transform.GetChild(1);
+        int tileSize = 1, xDiff = 0, zDiff = 0;
+
+        if (terrainID < -1 || terrainID > 1)
         {
-            for (int j = 0; j < totalZ - zDiff; j++, zDiff -= decayZ ? 1 : 0)
+            Debug.LogError(string.Format("Terrain[{0}] not given proper ID", gameObject.name));
+            return;
+        }
+        else if (terrainID == 1)
+        {
+            model.transform.localPosition = new Vector3(-1.67f, 0.0f, 1.67f);
+            model.transform.localScale = Vector3.one * 5;
+        }
+
+        model.GetComponent<MeshFilter>().mesh = meshes[terrainID];
+        for (int i = 0; i < size.y; i++, zDiff += zChange)
+        {
+            for (int j = 0; j < size.z + zDiff; j++, xDiff += xChange)
             {
-                for (int k = 0; k < totalX - xDiff; k++, xDiff -= decayX ? 1 : 0)
+                for (int k = 0; k < size.x + xDiff; k++)
                 {
                     Vector3 pos = new Vector3(gridContainer.position.x + tileSize * k, gridContainer.position.y + tileSize * i, gridContainer.position.z - tileSize * j);
                     GameObject newUnit = Instantiate(gridUnit, pos, gridContainer.transform.rotation, gridContainer);
