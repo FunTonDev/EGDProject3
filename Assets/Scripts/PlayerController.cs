@@ -102,6 +102,10 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         so = SaveManager.Load();
+        if (so.lastPosition != new Vector3(0.0f, 0.0f, 0.0f))
+        {
+            transform.position = so.lastPosition;
+        }
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
@@ -463,10 +467,29 @@ public class PlayerController : MonoBehaviour
             GenreCosmeticUpdate(-1);
             playerAudS.PlayOneShot(playerClips[6]);
             Destroy(Instantiate(deathPrefab, transform.position, transform.rotation), 4.0f);
+            StartCoroutine(Respawn());
         }
         damageTimer = change < 0 ? damageDelayTime : damageTimer;
         hpBar.fillAmount = currentHP / maxHP;
         return currentHP;
+    }
+
+    public IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(2f);
+        SaveManager.Save(so);
+        if (playerPrimaryGenre == States.GameGenre.Platformer)
+        {
+            tranMan.SceneSwitch("PlatformerWorld");
+        }
+        else if (playerPrimaryGenre == States.GameGenre.Shooter)
+        {
+            tranMan.SceneSwitch("ShooterWorld");
+        }
+        else if (playerPrimaryGenre == States.GameGenre.RPG)
+        {
+            tranMan.SceneSwitch("RPGWorld");
+        }
     }
 
     /*============================================================================

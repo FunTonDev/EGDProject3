@@ -16,6 +16,7 @@ public class RPG_Enemy : Enemy
     [HideInInspector] public GameObject closestTile;
 
     private SaveFile SavingObject;
+    private Vector3 plaPosition;
 
 
     [SerializeField] private bool looping;
@@ -261,6 +262,7 @@ public class RPG_Enemy : Enemy
 
             fought = true;
             SavingObject.fightLevel = fightLvl;
+            SavingObject.lastPosition = plaPosition; 
             TransitionManager tm = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
             SaveManager.Save(SavingObject);
             tm.SceneSwitch("RPGBattle");
@@ -272,6 +274,7 @@ public class RPG_Enemy : Enemy
     {
         if(collision.gameObject.tag == "Player")
         {
+            plaPosition = collision.transform.position;
             InitiateBattle();
         }
     }

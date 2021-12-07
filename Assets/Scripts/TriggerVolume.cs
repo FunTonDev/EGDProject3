@@ -79,7 +79,7 @@ public class TriggerVolume : MonoBehaviour
                         PlayerModeUpdate();
                         break;
                     case States.VolumeType.Transition:
-                        tranMan.SceneSwitch(targetScene);
+                        tranMan.SceneSwitch(targetScene, true);
                         break;
                 }
             }

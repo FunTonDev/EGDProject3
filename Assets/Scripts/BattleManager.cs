@@ -1867,7 +1867,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("GameOverScene");
+            SceneManager.LoadScene("HubWorld");
         }
     }
 
