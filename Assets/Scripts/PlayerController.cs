@@ -379,11 +379,16 @@ public class PlayerController : MonoBehaviour
             yClampVel = Mathf.Clamp(Mathf.Abs(playerRigB.velocity.y), 0, maxYVelocity * xSin) * Mathf.Sign(playerRigB.velocity.y);
         }
 
+        
+
         if (closestTile != null)
         {
             closestTile.GetComponent<GridUnit>().occupied = inputMan.inputX == 0 && inputMan.inputY == 0;
             transform.position = closestTile.GetComponent<GridUnit>().occupied ? closestTile.transform.position : transform.position;
         }  
+
+
+
         playerRigB.velocity = new Vector3(xClampVel, yClampVel, zClampVel);
     }
 
