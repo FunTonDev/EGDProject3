@@ -3960,13 +3960,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridUnit: {fileID: 433616653620920157, guid: 5ca05b3be77f8c44e9b662030097d5d5, type: 3}
-  gridContainer: {fileID: 1306112512}
-  totalX: 50
-  totalY: 1
-  totalZ: 50
-  decayX: 0
-  decayZ: 0
+  meshes: []
+  terrainID: 0
+  size: {x: 0, y: 0, z: 0}
   targetRot: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  xChange: 0
+  zChange: 0
 --- !u!1 &690178181
 GameObject:
   m_ObjectHideFlags: 0
@@ -4659,6 +4658,8 @@ MonoBehaviour:
   maxLookTime: 2
   directions: 01010101
   closestTile: {fileID: 0}
+  looping: 0
+  pathForward: 0
   fightLvl: 0
 --- !u!114 &827126100
 MonoBehaviour:
@@ -10978,75 +10979,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2125487599}
   m_CullTransparentMesh: 1
---- !u!1001 &1860058870117112147
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_RootOrder
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 66.72554
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.2036476
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -9.181889
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 724092297104147251, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5402511223284673482, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: m_Name
-      value: RPG_Enemy&Path
-      objectReference: {fileID: 0}
-    - target: {fileID: 9190394380013416958, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: pathNodes.Array.data[0]
-      value: 
-      objectReference: {fileID: 1443887985}
-    - target: {fileID: 9190394380013416958, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: pathNodes.Array.data[1]
-      value: 
-      objectReference: {fileID: 72139717}
-    - target: {fileID: 9190394380013416958, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
-      propertyPath: pathNodes.Array.data[2]
-      value: 
-      objectReference: {fileID: 324072642}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 79c1069458e713c4794cb894dfbf9293, type: 3}
 --- !u!1001 &2060718623541157860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11112,7 +11044,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7595088790794416030, guid: 0c4146f54d2a5644994c3a5bf04f3efd, type: 3}
       propertyPath: m_Name
-      value: RPG_Enemy
+      value: RPG_SlimeEnemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c4146f54d2a5644994c3a5bf04f3efd, type: 3}

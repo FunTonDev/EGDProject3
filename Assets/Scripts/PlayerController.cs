@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System;
 public class PlayerController : MonoBehaviour
 {
-    private SaveFile so;
+    public SaveFile so;
     private GameManager gameMan;
     private InputManager inputMan;
     private TransitionManager tranMan;

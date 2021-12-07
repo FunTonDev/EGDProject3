@@ -37,7 +37,7 @@ public class RPG_Enemy : Enemy
         lookingInDir = false;
         fought = false;
 
-        SavingObject = GameObject.Find("[MANAGER]").GetComponent<GameManager>().sv;
+        SavingObject = GameObject.Find("PlayerPrefab").GetComponent<PlayerController>().so;
 
         if (looping)
         {
@@ -84,7 +84,9 @@ public class RPG_Enemy : Enemy
         }
 
         else
-        { base.Death(); }
+        {
+            //base.Death(); 
+        }
 
         
     }
