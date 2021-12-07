@@ -18,7 +18,8 @@ public class RPG_Enemy : Enemy
     private SaveFile SavingObject;
 
 
-    private bool pathForward;
+    [SerializeField] private bool looping;
+    [SerializeField] private bool pathForward;
     private bool lookingInDir;
     private bool playerSpotted;
     private bool fought;
@@ -31,12 +32,19 @@ public class RPG_Enemy : Enemy
     public Transform GetPathNode(int index) {return pathNodes[index];}
 
     public override void ClassStart()
-    {
-        pathForward = true;
+    {        
         lookingInDir = false;
         fought = false;
 
         SavingObject = GameObject.Find("[MANAGER]").GetComponent<GameManager>().sv;
+
+        if (looping)
+        {
+            if (1f < Random.Range(0, 2f)) { pathForward = true; }
+            else { pathForward = false; }
+        }
+
+        else { pathForward = true; }
     }
 
     public override void ClassUpdate()
@@ -73,30 +81,47 @@ public class RPG_Enemy : Enemy
                 Move(Vector3.zero);
             }
         }
-        
+
+        else
+        { base.Death(); }
 
         
     }
 
     public override Vector3 PathFollow()
-    {
-        int nodeDir = 0;
-
-        if (pathForward)
-        { nodeDir = 1; }
-
-        else { nodeDir = -1; }
-
+    {        
         Vector3 newPos = this.transform.position;
 
         //Continue towards node
         //if (.1 < Vector3.Distance(this.transform.position, pathNodes[this.currNode].GetComponent<Transform>().position))
         if(this.transform.position != pathNodes[this.currNode].GetComponent<Transform>().position)
         { newPos = pathNodes[this.currNode].GetComponent<Transform>().position;}
-
+        
         //Find next node
+        else if (looping)
+        {
+            int nodeDir = 0;
+            if (pathForward) { nodeDir = 1; }
+            else { nodeDir = -1; }
+
+            this.currNode = (this.currNode + nodeDir);
+
+            if (currNode == -1 && !pathForward)
+            { this.currNode = pathNodes.Count-1; }
+
+            else if (currNode == pathNodes.Count && pathForward)
+            { this.currNode = 0; }
+
+            newPos = pathNodes[this.currNode].GetComponent<Transform>().position;
+        }
+                
         else
-        {                    
+        {
+            int nodeDir = 0;
+
+            if (pathForward) { nodeDir = 1; }
+            else { nodeDir = -1; }
+
             this.currNode = (this.currNode + nodeDir);
 
             if (currNode == -1 || currNode == pathNodes.Count)

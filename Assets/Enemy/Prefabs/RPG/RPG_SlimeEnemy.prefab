@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2060718624689444680}
   - component: {fileID: 2060718624689444681}
   m_Layer: 7
-  m_Name: RPG_Enemy
+  m_Name: RPG_SlimeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -177,7 +177,7 @@ MonoBehaviour:
   type: 
   health: 0
   atkDamage: 0
-  moveSpd: 1
+  moveSpd: 3
   armor: 0
   detectionLvl: 0
   platformer: 0
@@ -193,6 +193,7 @@ MonoBehaviour:
   maxLookTime: 2
   directions: 00000000
   closestTile: {fileID: 0}
+  looping: 0
   fightLvl: 1
 --- !u!1 &7595088791413030117
 GameObject:

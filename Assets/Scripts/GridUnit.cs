@@ -36,8 +36,8 @@ public class GridUnit : MonoBehaviour
     {
         if (coll.gameObject.tag == "PathNode")
         {
-            coll.transform.position = transform.position;
-            coll.gameObject.active = false;
+            //coll.transform.position = transform.position;
+            //coll.gameObject.active = false;
         }
     }
 

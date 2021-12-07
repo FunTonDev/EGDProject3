@@ -69,7 +69,8 @@ public abstract class Enemy : MonoBehaviour
             axisLevel = player.transform.position.y;
         }
 
-        rgbdy.velocity = new Vector3(0, rgbdy.velocity.y, 0);
+        if (!rpg) { rgbdy.velocity = new Vector3(0, rgbdy.velocity.y, 0); }
+
 
         /*
         else
@@ -131,7 +132,7 @@ public abstract class Enemy : MonoBehaviour
     public void SetAxisLevel()
     {
         Vector3 temp = this.transform.position;
-        if (shooter || rpg)
+        if (shooter)
         { temp.y = axisLevel; }
 
         else if (platformer)
@@ -170,7 +171,7 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-    private void Death()
+    public void Death()
     {
         Debug.Log(string.Format("Enemy {0} destroyed", type));
         Destroy(this.gameObject);
