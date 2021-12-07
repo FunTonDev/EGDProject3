@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 572480498493286533}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: 0}
+  m_LocalPosition: {x: 4, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 997856918012602311}
@@ -140,7 +140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474536354563733828}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 997856918012602311}
@@ -286,7 +286,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2434877244934263074}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: -3}
+  m_LocalPosition: {x: 4, y: 0, z: -4}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 997856918012602311}
@@ -524,6 +524,14 @@ PrefabInstance:
     - target: {fileID: 2060718624689444681, guid: 0c4146f54d2a5644994c3a5bf04f3efd, type: 3}
       propertyPath: looping
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2060718624689444681, guid: 0c4146f54d2a5644994c3a5bf04f3efd, type: 3}
+      propertyPath: moveSpd
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2060718624689444681, guid: 0c4146f54d2a5644994c3a5bf04f3efd, type: 3}
+      propertyPath: TileVisionRange
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2060718624689444681, guid: 0c4146f54d2a5644994c3a5bf04f3efd, type: 3}
       propertyPath: pathNodes.Array.size
