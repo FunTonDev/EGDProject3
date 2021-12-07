@@ -1263,59 +1263,62 @@ public class BattleManager : MonoBehaviour
             else
             {
                 for (int i = 0; i < 3; i++)
-                { 
-                    dami = uni.abilities[ata].damage * (uni.getAtk() / EnemyMembers[i].getDef());
-                    int crit = Random.Range(1, 101);
-                    if (crit <= (uni.lck / 4) + 3)
+                {
+                    if (EnemyMembers[i] != null)
                     {
-                        dami += (dami / 2);
-                        crite = true;
-                    }
-                    else
-                    {
-                        crite = false;
-                    }
-                    EnemyMembers[i].takeDamage(dami);
-                    StartCoroutine(flash(i, true, 0));
-                    enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
-                        enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
-                    if (crite)
-                    {
-                        yield return textDisplay("It's a critical hit!", true);
-                        skipper = true;
-                    }
-                    if (EnemyMembers[i].currentHP <= 0)
-                    {
-                        enemyDeaths++;
-                        yield return unitDeath(EnemyMembers[i]);
-                        if (enemyDeaths >= EnemyMembers.Count)
+                        dami = uni.abilities[ata].damage * (uni.getAtk() / EnemyMembers[i].getDef());
+                        int crit = Random.Range(1, 101);
+                        if (crit <= (uni.lck / 4) + 3)
                         {
-                            state = battleState.WIN;
-                            yield return battleEnd();
+                            dami += (dami / 2);
+                            crite = true;
                         }
-                    }
-                    if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
-                    {
-                        if (EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
+                        else
                         {
-                            int rando = Random.Range(0, EnemyMembers[i].lck);
-                            if (rando == 0)
+                            crite = false;
+                        }
+                        EnemyMembers[i].takeDamage(dami);
+                        StartCoroutine(flash(i, true, 0));
+                        enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
+                            enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
+                        if (crite)
+                        {
+                            yield return textDisplay("It's a critical hit!", true);
+                            skipper = true;
+                        }
+                        if (EnemyMembers[i].currentHP <= 0)
+                        {
+                            enemyDeaths++;
+                            yield return unitDeath(EnemyMembers[i]);
+                            if (enemyDeaths >= EnemyMembers.Count)
                             {
-                                EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
-                                switch (uni.abilities[ata].statusEffect)
+                                state = battleState.WIN;
+                                yield return battleEnd();
+                            }
+                        }
+                        if (uni.abilities[ata].statusEffect != 0 && uni.abilities[ata].statusEffect != -1)
+                        {
+                            if (EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] == -1)
+                            {
+                                int rando = Random.Range(0, EnemyMembers[i].lck);
+                                if (rando == 0)
                                 {
-                                    case 0:
-                                        enemyIcons[i].transform.GetChild(0).gameObject.SetActive(true);
-                                        yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with corruption", true);
-                                        break;
-                                    case 1:
-                                        enemyIcons[i].transform.GetChild(1).gameObject.SetActive(true);
-                                        yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with glitchy-ness", true);
-                                        break;
-                                    case 2:
-                                        enemyIcons[i].transform.GetChild(2).gameObject.SetActive(true);
-                                        yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with degradation", true);
-                                        break;
+                                    EnemyMembers[i].statuses[uni.abilities[ata].statusEffect] = 3;
+                                    switch (uni.abilities[ata].statusEffect)
+                                    {
+                                        case 0:
+                                            enemyIcons[i].transform.GetChild(0).gameObject.SetActive(true);
+                                            yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with corruption", true);
+                                            break;
+                                        case 1:
+                                            enemyIcons[i].transform.GetChild(1).gameObject.SetActive(true);
+                                            yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with glitchy-ness", true);
+                                            break;
+                                        case 2:
+                                            enemyIcons[i].transform.GetChild(2).gameObject.SetActive(true);
+                                            yield return textDisplay(EnemyMembers[i].unitName + "was inflicted with degradation", true);
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -1401,9 +1404,12 @@ public class BattleManager : MonoBehaviour
         }
         for (int i = 0; i < EnemyMembers.Count; i++)
         {
-            if (EnemyMembers[i].currentHP < 0) EnemyMembers[i].currentHP = 0;
-            enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
-                enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
+            if (EnemyMembers[i] != null)
+            {
+                if (EnemyMembers[i].currentHP < 0) EnemyMembers[i].currentHP = 0;
+                enemyPrefabs[i].transform.GetChild(0).localScale = new Vector3(1.0f * EnemyMembers[i].currentHP / EnemyMembers[i].maxHP,
+                    enemyPrefabs[i].transform.GetChild(0).GetComponent<SpriteRenderer>().transform.localScale.y, 0.0f);
+            }
         }
         //uni.setSP(uni.currentSP - 2);
 
@@ -1867,7 +1873,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("GameOverScene");
+            SceneManager.LoadScene("HubWorld");
         }
     }
 

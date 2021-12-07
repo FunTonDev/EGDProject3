@@ -16,6 +16,7 @@ public class RPG_Enemy : Enemy
     [HideInInspector] public GameObject closestTile;
 
     private SaveFile SavingObject;
+    private Vector3 plaPosition;
 
 
     [SerializeField] private bool looping;
@@ -36,12 +37,12 @@ public class RPG_Enemy : Enemy
         lookingInDir = false;
         fought = false;
 
-        SavingObject = GameObject.Find("[MANAGER]").GetComponent<GameManager>().sv;
+        SavingObject = GameObject.Find("PlayerPrefab").GetComponent<PlayerController>().so;
 
         if (looping)
         {
-            if (1f < Random.Range(0, 2f)) { pathForward = true; }
-            else { pathForward = false; }
+            if (1 < Random.Range(0, 2)) { pathForward = false; }
+            else { pathForward = true; }
         }
 
         else { pathForward = true; }
@@ -83,7 +84,9 @@ public class RPG_Enemy : Enemy
         }
 
         else
-        { base.Death(); }
+        {
+            //base.Death(); 
+        }
 
         
     }
@@ -261,6 +264,7 @@ public class RPG_Enemy : Enemy
 
             fought = true;
             SavingObject.fightLevel = fightLvl;
+            SavingObject.lastPosition = plaPosition; 
             TransitionManager tm = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
             SaveManager.Save(SavingObject);
             tm.SceneSwitch("RPGBattle");
@@ -272,6 +276,7 @@ public class RPG_Enemy : Enemy
     {
         if(collision.gameObject.tag == "Player")
         {
+            plaPosition = collision.transform.position;
             InitiateBattle();
         }
     }

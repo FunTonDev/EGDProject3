@@ -1,0 +1,3 @@
+The clouds and sky parallax left to right.
+
+The main background also can loop left to right slightly, but not parallax all the way.

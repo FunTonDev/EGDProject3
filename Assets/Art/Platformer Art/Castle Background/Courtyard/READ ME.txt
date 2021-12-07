@@ -1,0 +1,1 @@
+The birds, clouds, and sky are made to parallax from left to right behind the castle.

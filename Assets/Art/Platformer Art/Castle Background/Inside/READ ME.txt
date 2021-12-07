@@ -1,0 +1,3 @@
+These layers all line up left to right, and will parallax from left to right smoothly.
+
+the cloud and sky layers can move independently of the others, at different speeds, to create more of a parallaxing effect.

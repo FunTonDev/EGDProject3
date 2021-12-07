@@ -28,8 +28,12 @@ public class TransitionManager : MonoBehaviour
         navSource.PlayOneShot(tClip);
     }
 
-    public void SceneSwitch(string sceneStr)
+    public void SceneSwitch(string sceneStr, bool res = false)
     {
+        if (res)
+        {
+            so.lastPosition = new Vector3(0.0f, 0.0f, 0.0f);
+        }
         Debug.Log("Go to next scene");
         string sceneText = "Loading ";
         switch (sceneStr)
@@ -49,6 +53,10 @@ public class TransitionManager : MonoBehaviour
                 {
                     sceneStr = "CutsceneScene";
                 }*/
+                break;
+            case "RPGBattle":
+                sceneText += "Into Battle";
+                so.currentGenre = 3;
                 break;
             case "ShooterWorld":
                 sceneText += "Shooter Jungle";
