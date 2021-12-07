@@ -71,7 +71,7 @@ public class TriggerVolume : MonoBehaviour
     {
         if (coll.gameObject.tag != "PathNode")
         {
-            if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
+            if (coll.gameObject.tag == "Player")
             {
                 switch (volumeType)
                 {
@@ -91,7 +91,7 @@ public class TriggerVolume : MonoBehaviour
     {
         if(coll.gameObject.tag != "PathNode")
         {
-            if (coll.gameObject.name.Substring(0, 12) == "PlayerPrefab")
+            if (coll.gameObject.tag == "Player")
             {
                 if (volumeType == States.VolumeType.Damage && damageTimer <= 0)
                 {
