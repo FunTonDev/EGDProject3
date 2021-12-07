@@ -9,10 +9,10 @@ public class BossEnemy : MonoBehaviour
     [SerializeField] private string type;                     //Name (Ex: TestBox)
 
     [SerializeField] private int phase;               //currPhase of the boss
-    [SerializeField] private List<float> health;      //List of the bosses health set at the begining of each of their phase
-    [SerializeField] private List<float> armor;       //List of the bosses armor set at the begining of each of their phase
-    private float currHealth;
-    private float currArmor;
+    [SerializeField] private float health;      
+    [SerializeField] private float armor;
+
+    float axisLevel;
 
     private bool invincible;
     private bool vulnarable;
@@ -22,7 +22,7 @@ public class BossEnemy : MonoBehaviour
     public void SetInvincible(bool t) { invincible = t; }
     public void SetVulnarable(bool t) { vulnarable = t; }
     public bool GetInvincible() { return invincible; }
-    public bool GetVulnarable() { return vulnarable; }
+    public bool GetVulnarablity() { return vulnarable; }
 
 
     // Start is called before the first frame update
@@ -35,51 +35,73 @@ public class BossEnemy : MonoBehaviour
         vulnarable = false;
 
         rgbdy.useGravity = true;
-        phase = 1;              
+                        
+        axisLevel = GameObject.FindGameObjectWithTag("Player").transform.position.z;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        
+        SetAxisLevel();
     }
     
     public virtual void Introduction()
     {
-        Debug.Log(string.Format("Indroducing Platformer Boss Enemy with health of {1}.", type, health));
+        //Debug.Log(string.Format("Indroducing Platformer Boss Enemy with health of {1}.", type, health));
     }
 
-    void SetPhase()
+    public void SetAxisLevel()
     {
-        currHealth = health[phase-1];
-        currArmor = armor[phase - 1];
+        Vector3 temp = this.transform.position;
+        temp.z = axisLevel;
+               
+        this.transform.position = temp;
+        this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
     }
-
-
 
     public void TakeDamage(float damage)
     {
-        if (currArmor > 0)
+        if (vulnarable)
         {
-            currArmor -= (3 / 4) * damage;
-            currHealth -= (1 / 4) * damage;
-            Debug.Log(string.Format("Enemy {0} took {1} damage", type, (1 / 4) * damage));
-        }
-        else
-        {
-            currHealth -= damage;
-            Debug.Log(string.Format("Enemy {0} took {1} damage", type, damage));
-        }
+            if (armor > 0)
+            {
+                armor -= (3 / 4) * damage;
+                health -= (1 / 4) * damage;
+                Debug.Log(string.Format("Platform Boss took {0} damage to armor and {1} damage to health", (3 / 4) * damage, (1 / 4) * damage));
+            }
+            else
+            {
+                health -= damage;
+                Debug.Log(string.Format("Platform Boss took {0} damage", damage));
+            }
 
-        if (currHealth <= 0)
-        { Death(); }
+            Debug.Log(string.Format("Platform Boss Current Health and Armor: {0} & {1}", health, armor));
 
+            if (health <= 0)
+            { Death(); }
+        }
     }
+
+    public void BecomeVulnarable()
+    {
+        StartCoroutine("VulnarableTimer");
+    }
+
+    IEnumerator VulnarableTimer()
+    {
+        vulnarable = true;
+
+        yield return new WaitForSeconds(6);
+
+        vulnarable = false;
+    }
+
 
     public void Death()
     {
         Debug.Log(string.Format("Enemy {0} destroyed", type));
         Destroy(this.gameObject);
     }
+
 }

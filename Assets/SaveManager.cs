@@ -20,8 +20,8 @@ public static class SaveManager
         }
 
         string json = JsonUtility.ToJson(sv);
-
-        File.WriteAllText(dir +  "/" + fileName + PlayerPrefs.GetInt("SaveNum") + ".txt", json);
+        fileName = "File" + PlayerPrefs.GetInt("SaveNum");
+        File.WriteAllText(dir +  "/" + fileName + ".txt", json);
     }
 
     //Load data from SaveFile.savenum
@@ -29,6 +29,7 @@ public static class SaveManager
     {
         fileName = "File" + PlayerPrefs.GetInt("SaveNum") + ".txt";
         string fPath = Application.streamingAssetsPath + directory + "/" + fileName;
+        Debug.Log("File path - " + fPath);
         SaveFile sf = new SaveFile();
 
         if (File.Exists(fPath))
@@ -63,9 +64,11 @@ public class SaveFile
     public float lastHP = 1.0f;                         //Last known hp value
 
 
-    public bool gameStart;
+    public bool gameStart;                              //Whether Game Started
+
+
     public bool platStart;                              //Whether platformer stage started (whether to display cutscene)
-    public bool inPlat;
+    public bool inPlat;                                 //Check Plat checkpoints
     public bool inPlat2;
     public bool inPlat3;
     public bool platDone;
@@ -88,6 +91,9 @@ public class SaveFile
 
     public bool rpgCollect;
 
+    public int fightLevel = 0;
+
+    public bool bossFight;
 
     public float playerMana;
 

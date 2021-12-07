@@ -45,7 +45,7 @@ public class PlatformerEnemy : Enemy
         {
             //Look at player wheen shooting
             if (vertical)
-            { this.transform.LookAt(player.transform);}
+            { LookAtPos(player.transform.position);}
             
             Attack();            
         }
@@ -154,9 +154,32 @@ public class PlatformerEnemy : Enemy
             this.transform.eulerAngles = new Vector3(0, 90, 0);
             facingLeft = false;
         }
-    }         
+    }
 
-    private void OnCollisionEnter(Collision collision)
+    public void LookAtPos(Vector3 pos)
+    {
+        //Vector3 flipped = this.transform.localScale;
+        //flipped.z *= -1f;
+
+        if ((pos.x < this.transform.position.x) && !facingLeft)
+        {
+            //this.transform.localScale = flipped;
+            Face(false);
+
+            //Debug.Log("Boss Flipped"); 
+        }
+
+        else if ((pos.x > this.transform.position.x) && facingLeft)
+        {
+            //this.transform.localScale = flipped;
+            Face(true);
+
+            //Debug.Log("Boss Flipped");
+        }
+    }
+
+
+        private void OnCollisionEnter(Collision collision)
     {
 /*        //Checks to see if 
         if(collision.collider.tag == "Player")

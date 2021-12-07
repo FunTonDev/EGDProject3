@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     public AudioClip RPGMusic2;
     public AudioClip HubMusic;
 
+    public SaveFile sv;
+
     [Header("Cinematic Variables")]
     public float duration;
 
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
         //DontDestroyOnLoad(gameObject);
         SetUpScene();
         gameAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
+        sv = SaveManager.Load();
     }
 
     private void SetUpScene()

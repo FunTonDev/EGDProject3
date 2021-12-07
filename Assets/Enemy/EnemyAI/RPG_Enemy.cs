@@ -15,10 +15,15 @@ public class RPG_Enemy : Enemy
    
     [HideInInspector] public GameObject closestTile;
 
+    private SaveFile SavingObject;
+
+
     private bool pathForward;
     private bool lookingInDir;
     private bool playerSpotted;
     private bool fought;
+
+    [SerializeField] private int fightLvl;
 
     //For the FOV Script
     public int GetTileVisionRange() { return TileVisionRange; }
@@ -30,40 +35,45 @@ public class RPG_Enemy : Enemy
         pathForward = true;
         lookingInDir = false;
         fought = false;
+
+        SavingObject = GameObject.Find("[MANAGER]").GetComponent<GameManager>().sv;
     }
 
     public override void ClassUpdate()
     {
         playerSpotted = CheckForPlayer();
 
+        if (!fought)
+        {
+            //Stop Coroutine
+            if (playerSpotted && lookingInDir)
+            {
+                StopCoroutine("LookInAllDir");
+                lookingInDir = false;
+            }
+
+            if (playerSpotted)
+            {
+                InitiateBattle();
+            }
+
+            //When arriving at a node, looking in specific directions   
+            else if (this.transform.position == pathNodes[this.currNode].position && !lookingInDir)
+            {
+                lookingInDir = true;
+
+                if (closestTile != null)
+                { closestTile.GetComponent<GridUnit>().occupied = rgbdy.velocity.magnitude == 0; }
+
+                StartCoroutine("LookInAllDir");
+            }
+
+            else if (this.transform.position != pathNodes[this.currNode].position && !lookingInDir)
+            {
+                Move(Vector3.zero);
+            }
+        }
         
-        //Stop Coroutine
-        if(playerSpotted && lookingInDir)
-        {
-            StopCoroutine("LookInAllDir");
-            lookingInDir = false;
-        }
-
-        if (playerSpotted)
-        {
-
-        }
-
-        //When arriving at a node, looking in specific directions   
-        else if (this.transform.position == pathNodes[this.currNode].position && !lookingInDir)
-        {
-            lookingInDir = true;
-
-            if (closestTile != null)
-            { closestTile.GetComponent<GridUnit>().occupied = rgbdy.velocity.magnitude == 0; }
-
-            StartCoroutine("LookInAllDir");            
-        }
-
-        else if(this.transform.position != pathNodes[this.currNode].position && !lookingInDir)
-        {
-            Move(Vector3.zero);            
-        }
 
         
     }
@@ -220,7 +230,25 @@ public class RPG_Enemy : Enemy
 
     public void InitiateBattle()
     {
-        fought = true;
+        if (!fought)
+        {
+            Debug.Log("Enemy Initiating Battle");
+
+            fought = true;
+            SavingObject.fightLevel = fightLvl;
+            TransitionManager tm = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
+            SaveManager.Save(SavingObject);
+            tm.SceneSwitch("RPGBattle");
+        }
+                     
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            InitiateBattle();
+        }
     }
 
     /*

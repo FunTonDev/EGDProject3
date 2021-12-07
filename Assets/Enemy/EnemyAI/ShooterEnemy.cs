@@ -9,6 +9,7 @@ public class ShooterEnemy : Enemy
     //[SerializeField] private NavMeshAgent agent;
 
     [Header("Enemey Type")]
+    [SerializeField] private bool boss;       //A boss
     [SerializeField] private bool ranged;    //Melee or ranged attacked
     [SerializeField] private bool follow;   //For ranged enemies, if true chase down player to shoot, else stay in place/path when attack
     [SerializeField] private bool sentry;  //Doesn't move from initial spot
@@ -34,6 +35,8 @@ public class ShooterEnemy : Enemy
 
     [SerializeField] private GameObject AttackObj;
 
+    private Animator animator;
+
     //For FoV script
     public float GetDetctRadius() { return detctRadius; }
     public float GetAtkDist() { return AtkDist; }
@@ -44,6 +47,7 @@ public class ShooterEnemy : Enemy
     public override void ClassStart()
     {
         attacking = false;
+        animator = this.gameObject.GetComponent<Animator>();
     }
 
     public override void ClassUpdate()
@@ -83,6 +87,8 @@ public class ShooterEnemy : Enemy
         {
             agroMode = true;
             ChasePlayer();
+            
+
         }
 
 
@@ -94,12 +100,10 @@ public class ShooterEnemy : Enemy
         }
 
         else if(PlayerInBufferRange)
-        {
-            
+        {    
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
                                             Quaternion.LookRotation(player.transform.position - this.transform.position),
-                                                        6.0f * Time.deltaTime);          
-
+                                                        6.0f * Time.deltaTime);
         }
 
         //base.SetAxisLevel();
@@ -155,9 +159,7 @@ public class ShooterEnemy : Enemy
                     turnLeft = !turnLeft;
                     //Debug.Log("turnLeft switched");
                 }
-            }
-            
-            
+            }           
         }
 
         //Follow path if one given
@@ -187,6 +189,8 @@ public class ShooterEnemy : Enemy
         {
             this.transform.LookAt(player.transform.position);
             NavAgent.SetDestination(base.PathFollow());
+
+           //animator.SetBool("Walking", true);
         }
 
         //Enemy follows player to chase him down if they are not within buffer dist
@@ -194,6 +198,8 @@ public class ShooterEnemy : Enemy
         {
             this.transform.LookAt(player.transform.position);
             NavAgent.SetDestination(player.transform.position);
+
+            //animator.SetBool("Walking", true);
         }
 
     }
@@ -229,10 +235,11 @@ public class ShooterEnemy : Enemy
     }
 
     IEnumerator RangedAttack()
-    {        
-        yield return new WaitForSeconds(1);
-
-        Debug.Log("Ranged attacked called");
+    {
+        if (boss) { yield return new WaitForSeconds(0.5f); }
+        else { yield return new WaitForSeconds(1); }
+        
+        //Debug.Log("Ranged attacked called");
 
         Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
         Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver
@@ -243,15 +250,15 @@ public class ShooterEnemy : Enemy
 
     IEnumerator MeleeAttack()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
-        Debug.Log("Melee attacked called");
+        //Debug.Log("Melee attacked called");
 
         Vector3 spawnPos = this.transform.position + (this.transform.forward * 0.75f);
         spawnPos.y = 0.5f;
         Instantiate(AttackObj, spawnPos, this.transform.rotation);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         attacking = false;
         timeBtwAtk = StartTimeBtwAtk;
@@ -273,7 +280,9 @@ public class ShooterEnemy : Enemy
             {
                 StartCoroutine("MeleeAttack");
             }
-            
+
+            animator.SetBool("Attack", true);
+
         }        
     }
 
@@ -295,7 +304,6 @@ public class ShooterEnemy : Enemy
     public bool PlayerInAttackVision()
     {
         return this.GetComponent<FieldOfView>().FindVisibleTargets();
-
     }
 
     public bool PlayerInBufferCircle()
@@ -310,13 +318,6 @@ public class ShooterEnemy : Enemy
 
         return stop;
     }
-
-    IEnumerator waiter()
-    {
-        //Wait for 4 seconds
-        yield return new WaitForSeconds(2);
-    }
-
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -12,19 +12,26 @@ public class EnemyBullet : MonoBehaviour
     //[SerializeField] private bool PlatformerEnemy;
     [SerializeField] private bool PlatformerBossAtk3;
 
+    private Rigidbody rb;
     private Transform playerPos;
     private Vector3 target;
     private Vector3 origin;
 
     void Start()
     {
-
-
+        rb = this.GetComponent<Rigidbody>();
         origin = this.transform.position;
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         target = new Vector3(playerPos.position.x, playerPos.position.y, playerPos.position.z);
 
-        if (tracking || PlatformerBossAtk3)
+        if(tracking && PlatformerBossAtk3)
+        {
+            
+            Invoke("SelfDestruct", 3.5f);
+            target.y = 0;
+        }
+
+        else if (tracking)
         {
             Invoke("SelfDestruct", 8.0f);
             target.y = 0;
@@ -37,6 +44,7 @@ public class EnemyBullet : MonoBehaviour
 
     void Update()
     {
+        /*
         if (PlatformerBossAtk3)
         {
             // Compute the next position, with arc added in
@@ -51,10 +59,23 @@ public class EnemyBullet : MonoBehaviour
 
             // Rotate to face the next position, and then move there
             this.transform.rotation = LookAtTarget(nextPos - transform.position);
-            this.transform.position = nextPos;
-                        
+            this.transform.position = nextPos;                        
         }
+        */
 
+        if(tracking && PlatformerBossAtk3)
+        {
+            /*
+            Vector3 dir = target - rb.position;
+            dir.Normalize();
+            Vector3.Cross(dir, this.transform.up);
+            rb.velocity = transform.up * speed;
+            */
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                        Quaternion.LookRotation(target - transform.position),
+                                                1f * Time.deltaTime);
+            this.transform.position += transform.forward * speed * Time.deltaTime;
+        }
 
         else if (tracking)
         {            
@@ -74,7 +95,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void SelfDestruct()
     {
-        Debug.Log("Bullet SelfDestruct");
+        //Debug.Log("Bullet SelfDestruct");
         Destroy(gameObject);
     }
 

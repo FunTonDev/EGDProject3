@@ -12,6 +12,9 @@ public class GameMenuManager : MonoBehaviour
     public List<Button> mainButtons;
     public List<Button> optionButtons;
     public List<Button> rpgButtons;
+    public Image platIcon;
+    public Image shotIcon;
+    public Image rpgIcon;
 
     [Header("Variables")]
     [HideInInspector] public int mainIndex;
@@ -24,8 +27,33 @@ public class GameMenuManager : MonoBehaviour
      ============================================================================*/
     private void Start()
     {
+        SaveFile sv = SaveManager.Load();
         gameMan = GameObject.Find("[MANAGER]").GetComponent<GameManager>();
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
+        if (GameObject.Find("PlatBase") != null)
+        {
+            platIcon = GameObject.Find("PlatBase").transform.GetChild(0).GetComponent<Image>();
+            if (sv.platDone)
+            {
+                platIcon.color = new Color(1.0f, 0.0f, 0.0f);
+            }
+        }
+        if (GameObject.Find("ShotBase") != null)
+        {
+            shotIcon = GameObject.Find("ShotBase").transform.GetChild(0).GetComponent<Image>();
+            if (sv.shotDone)
+            {
+                shotIcon.color = new Color(0.0f, 1.0f, 0.0f);
+            }
+        }
+        if (GameObject.Find("RPGBase") != null)
+        {
+            rpgIcon = GameObject.Find("RPGBase").transform.GetChild(0).GetComponent<Image>();
+            if (sv.rpgDone)
+            {
+                rpgIcon.color = new Color(0.0f, 0.0f, 1.0f);
+            }
+        }
         mainIndex = 0;
         optionsIndex = 0;
         currentSection = States.MenuSection.Main;

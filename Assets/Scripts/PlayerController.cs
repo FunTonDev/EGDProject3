@@ -106,8 +106,8 @@ public class PlayerController : MonoBehaviour
         inputMan = GameObject.Find("[MANAGER]").GetComponent<InputManager>();
         tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
         playerColl = GetComponent<BoxCollider>();
-        hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(0).GetComponent<Image>();
-        extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(0).GetComponent<Image>();
+        hpBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("HealthBase").GetChild(1).GetComponent<Image>();
+        extraBar = GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("DashBase").GetChild(1).GetComponent<Image>();
         playerAudS = GetComponent<AudioSource>();
         playerRigB = GetComponent<Rigidbody>();
         playerMeshF = gameObject.transform.GetChild(0).GetComponent<MeshFilter>();
@@ -120,6 +120,7 @@ public class PlayerController : MonoBehaviour
         }
         SetDefaultValues();
         objective = GameObject.FindGameObjectWithTag("Objective");
+        Debug.Log("OBJ with tage == " + objective);
         tempArrow = Instantiate(arrows);
         tempArrow.transform.SetParent(GameObject.Find("Canvas").transform, false);
         if (gameMan.genreMain == States.GameGenre.None)
@@ -189,7 +190,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     if (screenpos.z < 0) screenpos *= -1;
-                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 3;
+                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 4;
                     screenpos -= screenCenter;
                     float angle = Mathf.Atan2(screenpos.y, screenpos.x);
                     angle -= 90 * Mathf.Deg2Rad;
@@ -200,7 +201,7 @@ public class PlayerController : MonoBehaviour
 
                     float m = cos / sin;
 
-                    Vector3 screenBounds = screenCenter * 0.9f;
+                    Vector3 screenBounds = screenCenter * 0.8f;
 
                     if (cos > 0) screenpos = new Vector3(screenpos.y / m, screenpos.y, 0);
                     else screenpos = new Vector3(-screenpos.y / m, -screenpos.y, 0);
@@ -226,7 +227,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     if (screenpos.z < 0) screenpos *= -1;
-                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
+                    Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 3;
                     screenpos -= screenCenter;
                     float angle = Mathf.Atan2(screenpos.y, screenpos.x);
                     angle -= 90 * Mathf.Deg2Rad;
@@ -308,7 +309,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (inputMan.inputAct5_D && dashCount < 1)   //Dash check
+        if ((inputMan.inputFire1_D || inputMan.inputAct6_D || (inputMan.inputSubmit_D && playerRigB.velocity.x != 0)) && dashCount < 1)   //Dash check
         {
             GameObject temp = Instantiate(dashEffect, transform.position, transform.rotation);
             playerRigB.AddForce(new Vector3(inputMan.inputX * dashForce, 0, 0), ForceMode.VelocityChange);
@@ -321,6 +322,8 @@ public class PlayerController : MonoBehaviour
             lastDashTime = Time.deltaTime;
         }
         extraBar.fillAmount = -(dashTimer - dashDelayTime) / dashDelayTime;
+
+        if (dashTimer >= dashDelayTime) dashCount = 0;
 
         if (wallJumpTimer <= 0)    //X move check
         {
