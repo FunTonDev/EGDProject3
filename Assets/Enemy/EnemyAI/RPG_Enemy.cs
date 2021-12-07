@@ -41,8 +41,8 @@ public class RPG_Enemy : Enemy
 
         if (looping)
         {
-            if (1f < Random.Range(0, 2f)) { pathForward = true; }
-            else { pathForward = false; }
+            if (1 < Random.Range(0, 2)) { pathForward = false; }
+            else { pathForward = true; }
         }
 
         else { pathForward = true; }
