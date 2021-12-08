@@ -92,7 +92,7 @@ public class BossEnemy : MonoBehaviour
     {
         vulnarable = true;
         Debug.LogError("Platformer Boss is now Vulnarable");
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(4.5f);
 
         vulnarable = false;
     }

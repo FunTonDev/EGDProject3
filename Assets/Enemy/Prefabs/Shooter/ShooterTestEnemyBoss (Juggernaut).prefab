@@ -121,11 +121,11 @@ MonoBehaviour:
   minAtkDist: 10
   maxAtkDist: 20
   BufferDist: 5
-  RotSpd: 2
+  RotSpd: 3
   AtkAngle: 30
   rotAngle: 0
-  StartTimeBtwAtk: 1.5
-  AttackObj: {fileID: 2315463149150691004, guid: be4cefc542b824a45ab3dfc84bb756de, type: 3}
+  StartTimeBtwAtk: 1
+  AttackObj: {fileID: 2315463149150691004, guid: 58be0d718c953204597bd8a184471a47, type: 3}
 --- !u!114 &9217211614284462118
 MonoBehaviour:
   m_ObjectHideFlags: 0

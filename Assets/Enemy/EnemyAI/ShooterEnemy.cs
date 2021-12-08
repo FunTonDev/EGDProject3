@@ -236,8 +236,8 @@ public class ShooterEnemy : Enemy
 
     IEnumerator RangedAttack()
     {
-        if (boss) { yield return new WaitForSeconds(0.5f); }
-        else { yield return new WaitForSeconds(1); }
+        if (boss) { yield return new WaitForSeconds(0.25f); }
+        else { yield return new WaitForSeconds(0.6f); }
         
        Debug.Log("Ranged attacked called");
 
