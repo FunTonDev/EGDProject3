@@ -193,7 +193,7 @@ public class RPG_Enemy : Enemy
 
     float RandomTime()
     {
-        return Random.RandomRange(minLookTime, maxLookTime);
+        return Random.Range(minLookTime, maxLookTime+1);
     }
 
     bool ChanceToLookInDir()

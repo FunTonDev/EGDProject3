@@ -64,20 +64,9 @@ public abstract class Enemy : MonoBehaviour
     {
         ClassUpdate();
 
-        if (shooter)
-        {
-            axisLevel = player.transform.position.y;
-        }
 
-        if (!rpg) { rgbdy.velocity = new Vector3(0, rgbdy.velocity.y, 0); }
+        rgbdy.velocity = new Vector3(0, rgbdy.velocity.y, 0); 
 
-
-        /*
-        else
-        {
-            axisLevel = player.transform.position.z;
-        }
-        */
     }
     
 
@@ -126,19 +115,23 @@ public abstract class Enemy : MonoBehaviour
     public virtual void Move(Vector3 Pos)
     {
         transform.position = Vector3.MoveTowards(transform.position, Pos, moveSpd * Time.deltaTime);
-        SetAxisLevel();
+        SetAxisLevel(); 
     }
 
     public void SetAxisLevel()
     {
+        
+        
         Vector3 temp = this.transform.position;
         if (shooter)
         { temp.y = axisLevel; }
 
         else if (platformer)
-        { temp.z = axisLevel; }
-                
+            { temp.z = axisLevel; }
+
         this.transform.position = temp;
+        
+        
         this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y, 0);
     }
 
@@ -190,8 +183,8 @@ public abstract class Enemy : MonoBehaviour
 
             else if (tV.primaryGenre == States.GameGenre.RPG)
             {
-                this.transform.position = new Vector3(this.transform.position.x, tV.transform.position.y, this.transform.position.z);
-                axisLevel = tV.transform.position.y;
+                //this.transform.position = new Vector3(this.transform.position.x, tV.transform.position.y, this.transform.position.z);
+                //axisLevel = tV.transform.position.y;
             }
 
         }
