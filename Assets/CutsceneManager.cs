@@ -43,6 +43,7 @@ public class CutsceneManager : MonoBehaviour
     private bool ender = false;
     private bool advance = false;
     private bool trackPos = false;
+    private bool theEnd = false;
 
     // Start is called before the first frame update
     void Start()
@@ -143,11 +144,12 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Eureka! Now that we have more information and the games are decontaminated, we can finally move on to exterminating the source.");
                     //A new doorway opens up, leading to forbo
                     storeText.Add("I am not sure what will happen here. Whatever it is though, I have faith it can’t hurt you, as long as you do not let it. Good luck, friend");
-                    storeText.Add("");
-                    storeText.Add("");
-                    storeText.Add("");
-                    storeText.Add("");
-                    storeText.Add("");
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    storeText.Add("...");
+                    storeText.Add("To Be Continued...");
+                    nextScene = "MenuScene";
                 }
                 break;
             case 1:         //Platformer events
@@ -242,6 +244,10 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");// End Platformer section //13
                     so.platDone = true;
                     nextScene = "HubWorld";
+                    if (so.shotDone && so.rpgDone)
+                    {
+                        theEnd = true;
+                    }
                     trackPos = true;
                 }
                 break;
@@ -358,6 +364,10 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Excuse my language, but that sounds fucked up. I can’t believe my game was already bugged by a fake ad.");//16
                     storeText.Add("Rookie mistakes these players. Well, I know what to patch next, so keep up the good work!");// End Shooter section //17
                     so.shotDone = true;
+                    if (so.platDone && so.rpgDone)
+                    {
+                        theEnd = true;
+                    }
                     nextScene = "HubWorld";
                     trackPos = true;
                     //nextScene = "ShooterWorld";
@@ -396,6 +406,8 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("Good grief, you must be some kind of panacea. Please, let me join you, I must help relieve my village from this sickness.");//11
                     //-Pixal nods and they both head toward the goop.-
                     storeText.Add("'The Motherly Rogue joined your Party'");//12
+                    so.mamaGot = true;
+                    so.helperGot = true;
                     nextScene = "RPGWorld";
                 }
                 else if (!so.inRPG2) //CutsceneR3-Meaning
@@ -430,6 +442,10 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("The Panacea... We did it...");//4
                     //She opens it up and takes a swig. The woman then starts to heal. As the woman is healing, Pixal grabs the goop and then starts to purify and absorb the data.-
                     /*SCENE 5*/
+                    for (int i = 0; i < 15; i++)
+                    {
+                        image_queue.Insert(4, Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    }
                     storeText.Add("Do you take this man to be your lawfully wedded husband?");
                     storeText.Add("I do");
                     storeText.Add("Do you take this woman to be your lawfully wedded wife?");
@@ -465,6 +481,10 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("That woman was named after someone special to me...");//20
                     //Fade to black
                     so.rpgDone = true;
+                    if (so.platDone && so.shotDone)
+                    {
+                        theEnd = true;
+                    }
                     nextScene = "HubWorld";
                     trackPos = true;
                 }
@@ -511,6 +531,10 @@ public class CutsceneManager : MonoBehaviour
             advance = false;
         }
         SaveManager.Save(so);
+        if (nextScene == "HubWorld" && theEnd)
+        {
+            nextScene = "CutsceneScene";
+        }
         tranMan.SceneSwitch(nextScene);
     }
 

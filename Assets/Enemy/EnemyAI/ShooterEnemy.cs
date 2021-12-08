@@ -335,10 +335,22 @@ public class ShooterEnemy : Enemy
         //Bullet hit enemy, enemy takes damage
         else if(collision.collider.tag == "Bullet")
         {
+            if (boss && this.health - 5 <= 0)
+            {
+                StartCoroutine(StartTransition());
+            }
             base.TakeDamage(5);
             agroMode = true;
             this.transform.LookAt(player.transform.position);
         }
+    }
+
+    private IEnumerator StartTransition()
+    {
+        yield return new WaitForSeconds(2f);
+
+        TransitionManager tran = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
+        tran.SceneSwitch("CutsceneScene", true);
     }
 
 

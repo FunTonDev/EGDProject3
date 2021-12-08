@@ -67,6 +67,21 @@ public class GameManager : MonoBehaviour
                 Destroy(GameObject.Find("Cutscene2S"));
             }
         }
+        else if (sv.currentGenre == 3)
+        {
+            if (sv.inRPG)
+            {
+                Destroy(GameObject.Find("CutsceneR1"));
+            }
+            if (sv.inRPG2)
+            {
+                Destroy(GameObject.Find("CutsceneR2"));
+            }
+            if (sv.inRPG3)
+            {
+                Destroy(GameObject.Find("CutsceneR3"));
+            }
+        }
     }
 
     private void SetUpScene()

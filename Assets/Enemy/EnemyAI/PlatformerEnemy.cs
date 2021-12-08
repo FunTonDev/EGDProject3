@@ -11,7 +11,8 @@ public class PlatformerEnemy : Enemy
     [SerializeField] private bool ranged;         //If true, enemy can perform ranged attacks
     [SerializeField] private bool fullRanged;    //If true, enemy can perform attack in any direction
     [SerializeField] private float range;       //Dist of their attack range
-    private bool PlayerInRange;                 
+    private bool PlayerInRange;
+    private bool boss;
 
     [SerializeField] private float StartTimeBtwAtk;   //Starting time till next attack
     private float timeBtwAtk;                       //Time left till next attack

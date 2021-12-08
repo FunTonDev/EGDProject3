@@ -1880,7 +1880,10 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (state != battleState.LOSE)
         {
-            SceneManager.LoadScene("RPGWorld");
+            if (!bossBattle)
+                SceneManager.LoadScene("RPGWorld");
+            else
+                SceneManager.LoadScene("CutsceneScene");
         }
         else
         {

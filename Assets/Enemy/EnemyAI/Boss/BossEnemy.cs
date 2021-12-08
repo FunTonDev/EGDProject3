@@ -77,7 +77,10 @@ public class BossEnemy : MonoBehaviour
             }
             //Debug.Log(string.Format("Platform Boss Current Health and Armor: {0} & {1}", health, armor));
             if (health <= 0)
-            { Death(); }
+            {
+                StartCoroutine(StartTransition());
+                Death();
+            }
         }
     }
 
@@ -98,6 +101,14 @@ public class BossEnemy : MonoBehaviour
     {
         //Debug.Log(string.Format("Enemy {0} destroyed", type));
         Destroy(this.gameObject);
+    }
+
+    private IEnumerator StartTransition()
+    {
+        yield return new WaitForSeconds(2f);
+
+        TransitionManager tran = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
+        tran.SceneSwitch("CutsceneScene", true);
     }
 
 }
