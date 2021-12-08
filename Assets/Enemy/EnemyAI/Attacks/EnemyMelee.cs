@@ -25,6 +25,7 @@ public class EnemyMelee : MonoBehaviour
     {
         if(collision.collider.tag == "Player")
         {
+            collision.gameObject.GetComponent<PlayerController>().HealthUpdate(-2);
             Debug.Log("MeleeHitbox Hit Player");
         }
 
