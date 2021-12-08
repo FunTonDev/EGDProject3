@@ -4396,7 +4396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6625932939615670206, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
       propertyPath: targetScene
-      value: HubWorld
+      value: CutsceneScene
       objectReference: {fileID: 0}
     - target: {fileID: 6625932939615670206, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
       propertyPath: primaryGenre
@@ -18596,7 +18596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6625932939615670206, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
       propertyPath: targetScene
-      value: HubWorld
+      value: CutsceneScene
       objectReference: {fileID: 0}
     - target: {fileID: 6625932939615670206, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
       propertyPath: primaryGenre
