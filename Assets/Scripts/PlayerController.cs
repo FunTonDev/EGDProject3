@@ -537,12 +537,18 @@ public class PlayerController : MonoBehaviour
 
     private bool EnemyCheck(Collision coll)
     {
-        if(coll.gameObject.tag == "Enemy")
+        Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
+        Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
+        Debug.DrawLine(rightPos, rightPos - transform.up * 0.4f);
+        Debug.DrawLine(leftPos, leftPos - transform.up * 0.4f);
+
+        if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "Boss")
         {
-            Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
-            Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
-            if(Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
-                                        | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))   //LEFT CAST
+            
+            /*if (Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
+                                        | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))   //LEFT CAST*/
+            if (Physics.Raycast(rightPos, -transform.up, 0.4f)   //RIGHT CAST
+                                        | Physics.Raycast(leftPos, -transform.up, 0.4f))   //LEFT CAST
             {
                 try
                 {
@@ -558,7 +564,13 @@ public class PlayerController : MonoBehaviour
                     }
                     catch (Exception e2)
                     {
-
+                        try
+                        {
+                            BossEnemy bScript = coll.collider.GetComponent<BossEnemy> ();
+                            bScript.TakeDamage(40);
+                            Debug.LogWarning("BOI HIT EM " + bScript.health);
+                        }
+                        catch (Exception e3){}
                     }
                 }
                 playerRigB.AddForce(transform.up * 25000.0f, ForceMode.Force);
@@ -579,7 +591,13 @@ public class PlayerController : MonoBehaviour
                     }
                     catch (Exception e2)
                     {
-
+                        try
+                        {
+                            BossEnemy bScript = coll.collider.GetComponent<BossEnemy>();
+                            HealthUpdate(-3);
+                            Debug.LogWarning("BOI GOT HIT: " + currentHP);
+                        }
+                        catch (Exception e3) { }
                     }
                 }
                 if (transform.position.x >= coll.transform.position.x)
