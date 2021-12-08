@@ -364,47 +364,72 @@ public class CutsceneManager : MonoBehaviour
                 }
                 break;
             case 3:         //RPG events
-                if (!so.rpgStart)
+                if (!so.rpgStart) //CutsceneR1-Start
                 {
                     //Background = forest/plains
                     //Pixal finds trail of slime, follows it
                     //Some gameplay/movement
+                    //storeText.Add("");
+                    storeText.Add("");//1
+                    storeText.Add("");//2
+                    storeText.Add("");//3
+                    storeText.Add("");//4
+                    storeText.Add("");//5
                     so.playerMana = 10f;
                     nextScene = "RPGWorld";
                 }
-                else if (!so.inRPG)
+                else if (!so.inRPG) //CutsceneR2-Rogue
                 {
                     //Pixal attacked by slime, but slime is defeated by Mama Rogue (jumps out of nowhere)
-                    storeText.Add("Well, I haven’t seen the likes of you before, luckily I came just in time.");
-                    //Pixal thanks her and moves to leave
-                    storeText.Add("Wait, don’t go yet! You and I are both on the same mission; To figure out where this pestilence comes from!");
+                    storeText.Add("");//1
+                    storeText.Add("");//2
+                    storeText.Add("");//3
+                    storeText.Add("");//4
+                    storeText.Add("Well, I haven’t seen the likes of you before, luckily I came just in time."); //5
+                    storeText.Add("");//6 //Pixal thanks her and moves to leave
+                    storeText.Add("Wait, don’t go yet! You and I are both on the same mission; To figure out where this pestilence comes from!");//7
                     //As she finishes her statement, she starts coughing up a liquid that looks similar to the glitch goop. Some of the goop lands on Pixal.
-                    storeText.Add("Oh heavens, I am so sorry! Hurry, we must clean before you’re infected!");
+                    storeText.Add("");//8
+                    storeText.Add("Oh heavens, I am so sorry! Hurry, we must clean before you’re infected!");//9
                     //As the woman is reaching for her things, she notices that Pixal is unaffected.-
-                    storeText.Add("Good grief, you must be some kind of panacea. Please, let me join you, I must help relieve my village from this sickness.");
+                    storeText.Add("");//10
+                    storeText.Add("Good grief, you must be some kind of panacea. Please, let me join you, I must help relieve my village from this sickness.");//11
                     //-Pixal nods and they both head toward the goop.-
-                    storeText.Add("'The Motherly Rogue joined your Party'");
+                    storeText.Add("'The Motherly Rogue joined your Party'");//12
                     nextScene = "RPGWorld";
                 }
-                else if (!so.inRPG2)
+                else if (!so.inRPG2) //CutsceneR3-Meaning
                 {
                     //As they continue walking thru the forest, mama rogue stops and walks infront of Pixal to tell it something-
-                    storeText.Add("I was wondering where I’ve seen you from, and it hit me: you’re a pixel. So, how did you escape the factory?");
-                    storeText.Add("...");
-                    storeText.Add("Not much of a talker I see, just like someone I used to know.");
-                    storeText.Add("Well, I’d say you’re a lucky pixel, it’s rare when to see one loose, it’s been years. You can become whatever you want, so choose wisely when you do.");
+                    storeText.Add("");//1
+                    storeText.Add("I was wondering where I’ve seen you from, and it hit me: you’re a pixel.");//2
+                    storeText.Add("So, how did you escape the factory?");//3
+                    storeText.Add("...");//4
+                    storeText.Add("Not much of a talker I see, just like someone I used to know.");//5
+                    storeText.Add("Well, I’d say you’re a lucky pixel, it’s rare when to see one loose, it’s been years.");//6
+                    storeText.Add("You can become whatever you want, so choose wisely when you do.");//7
+                    storeText.Add("");//8
+                    storeText.Add("");//9
                 }
-                else if (!so.inRPG3)
+                else if (!so.inRPG3) //CutsceneR4-Boss
                 {
-                    storeText.Add("We’re close");
+                    storeText.Add("");//1
+                    storeText.Add("We’re close");//2
+                    storeText.Add("");//3
+                    storeText.Add("");//4
+                    storeText.Add("");//5
                     //They approach a giant blob (Setting is either in a cave or deep in the forest). The giant blob looks at Pixal and the woman and then attacks.
-                    storeText.Add("Here we go!");
+                    storeText.Add("Here we go!");//6
                 }
-                else
+                else //CutsceneR5-Final
                 {
                     //The glitch is defeated and is deflated. The goop then falls off from the shape of a heart shaped flask.-
-                    storeText.Add("The Panacea... We did it...");
+                    storeText.Add("");//1
+                    storeText.Add("");//2
+                    storeText.Add("");//3
+                    storeText.Add("The Panacea... We did it...");//4
                     //She opens it up and takes a swig. The woman then starts to heal. As the woman is healing, Pixal grabs the goop and then starts to purify and absorb the data.-
+                    /*SCENE 5*/
                     storeText.Add("Do you take this man to be your lawfully wedded husband?");
                     storeText.Add("I do");
                     storeText.Add("Do you take this woman to be your lawfully wedded wife?");
@@ -420,13 +445,28 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("It’s like you don’t even love us!");
                     storeText.Add("You know that’s not true, what I do is for you guys...");
                     storeText.Add("Shut up! You do this for yourself! Your precious game is SO IMPORTANT, I get it, now get out of my face! *coughs*");
-                    //End Black Screen
+                    //End Black Screen & Scene 5
                     //As Pixal is leaving the forest, he looks behind and notices the woman isn’t following him. It sees that the woman is collapsed over the panacea, holding it dearly.-
-                    storeText.Add("Here, go on ahead and deliver it to my people");
+                    storeText.Add("");//6
+                    storeText.Add("");//7
+                    storeText.Add("");//8
+                    storeText.Add("Here, go on ahead and deliver it to my people");//9
                     //Pixal is worried (show expression)
-                    storeText.Add("Don’t worry about me... I'll be fine, I just need to... rest this weary body for a bit.");
-                    storeText.Add("The name is Barbara by the way");
+                    storeText.Add("");//10
+                    storeText.Add("");//11
+                    storeText.Add("Don’t worry about me... I'll be fine, I just need to... rest this weary body for a bit.");//12
+                    storeText.Add("");//13
+                    storeText.Add("The name is Barbara by the way");//14
+                    storeText.Add("");//15
+                    storeText.Add("");//16
+                    storeText.Add("");//17 //Black Screen to Hub world
+                    storeText.Add("");//18
+                    storeText.Add("Well, be glad that at least the sacrifice was not in vain. I know it hurts, I feel it too.");//19
+                    storeText.Add("That woman was named after someone special to me...");//20
                     //Fade to black
+                    so.rpgDone = true;
+                    nextScene = "HubWorld";
+                    trackPos = true;
                 }
                 break;
         }
