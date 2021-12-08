@@ -78,6 +78,7 @@ public class SaveFile
 
     public bool shotStart;
     public bool inShot;
+    public bool inShot1;
     public bool shotDone;
 
     public bool shotCollect;
