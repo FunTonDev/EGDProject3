@@ -103,7 +103,7 @@ public abstract class Enemy : MonoBehaviour
         else if (rpg) { genre += "RPG"; }
 
 
-        Debug.Log(string.Format("Indroducing {0} enemy with health of {1} in {2} genre.", type, health, genre));
+        //Debug.Log(string.Format("Indroducing {0} enemy with health of {1} in {2} genre.", type, health, genre));
     }
     
     //Gets the transform of the current node

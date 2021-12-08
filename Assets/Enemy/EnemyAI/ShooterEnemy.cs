@@ -47,7 +47,7 @@ public class ShooterEnemy : Enemy
     public override void ClassStart()
     {
         attacking = false;
-        animator = this.gameObject.GetComponent<Animator>();
+        //animator = this.gameObject.GetComponent<Animator>();
     }
 
     public override void ClassUpdate()
@@ -239,7 +239,7 @@ public class ShooterEnemy : Enemy
         if (boss) { yield return new WaitForSeconds(0.5f); }
         else { yield return new WaitForSeconds(1); }
         
-        //Debug.Log("Ranged attacked called");
+       Debug.Log("Ranged attacked called");
 
         Vector3 spawnPos = this.transform.position + (this.transform.forward * 1);
         Instantiate(AttackObj, spawnPos, this.transform.rotation);    //Old ver

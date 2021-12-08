@@ -111,8 +111,8 @@ MonoBehaviour:
   shooter: 1
   rpg: 0
   pathNodes: []
-  boss: 0
-  ranged: 0
+  boss: 1
+  ranged: 1
   follow: 1
   sentry: 0
   turnLeft: 0

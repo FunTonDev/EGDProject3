@@ -274,7 +274,7 @@ MonoBehaviour:
   shooter: 1
   rpg: 0
   pathNodes: []
-  boss: 0
+  boss: 1
   ranged: 1
   follow: 0
   sentry: 1
