@@ -288,6 +288,7 @@ public class CutsceneManager : MonoBehaviour
                     //Background = forest/plains
                     //Pixal finds trail of slime, follows it
                     //Some gameplay/movement
+                    so.playerMana = 10f;
                     nextScene = "RPGWorld";
                 }
                 else if (!so.inRPG)
