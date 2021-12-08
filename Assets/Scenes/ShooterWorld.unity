@@ -18627,7 +18627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9203740052528324407, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
       propertyPath: m_Name
-      value: TriggerVolume (3)
+      value: Cutscene2S
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
