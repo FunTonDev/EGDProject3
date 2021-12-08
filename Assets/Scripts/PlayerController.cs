@@ -174,6 +174,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()       //Handles live/uneven changes
     {
+        Vector3 rightPos = transform.position + new Vector3(0.2f, 0, 0);
+        Vector3 leftPos = transform.position + new Vector3(-0.2f, 0, 0);
+        Debug.DrawLine(rightPos, rightPos - transform.up * 0.4f, Color.green);
+        Debug.DrawLine(leftPos, leftPos - transform.up * 0.4f, Color.green);
         if (!gameMan.paused)
         {
             TimerUpdate();
@@ -537,79 +541,47 @@ public class PlayerController : MonoBehaviour
 
     private bool EnemyCheck(Collision coll)
     {
-        Vector3 rightPos = transform.position + new Vector3(0.275f, 0, 0);
-        Vector3 leftPos = transform.position + new Vector3(-0.275f, 0, 0);
-        Debug.DrawLine(rightPos, rightPos - transform.up * 0.4f);
-        Debug.DrawLine(leftPos, leftPos - transform.up * 0.4f);
-
         if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "Boss")
         {
-            
-            /*if (Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
-                                        | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))   //LEFT CAST*/
-            if (Physics.Raycast(rightPos, -transform.up, 0.4f)   //RIGHT CAST
-                                        | Physics.Raycast(leftPos, -transform.up, 0.4f))   //LEFT CAST
+            Vector3 rightPos = transform.position + new Vector3(0.25f, 0, 0);
+            Vector3 leftPos = transform.position + new Vector3(-0.25f, 0, 0);
+            //Debug.LogWarning("RC1: " + Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask));
+            //Debug.LogWarning("RC2: " + Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask));
+            Debug.DrawLine(rightPos, rightPos - transform.up * 0.4f, Color.green);
+            Debug.DrawLine(leftPos, leftPos - transform.up * 0.4f, Color.green);
+            /*if (Physics.Raycast(rightPos, -Vector3.up, 0.4f)   //RIGHT CAST
+                                        | Physics.Raycast(leftPos, -Vector3.up, 0.4f))  */ //LEFT CAST
+            if (Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
+                            | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))  //LEFT CAST
             {
-                try
+                Debug.LogWarning("ALPHA");
+                if (coll.gameObject.tag == "Enemy")
                 {
                     PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
                     pScript.TakeDamage(pScript.GetHealth());
                 }
-                catch (Exception e1)
+                else
                 {
-                    try
-                    {
-                        ShooterEnemy sScript = coll.collider.GetComponent<ShooterEnemy>();
-                        sScript.TakeDamage(sScript.GetHealth());
-                    }
-                    catch (Exception e2)
-                    {
-                        try
-                        {
-                            BossEnemy bScript = coll.collider.GetComponent<BossEnemy> ();
-                            bScript.TakeDamage(40);
-                            Debug.LogWarning("BOI HIT EM " + bScript.health);
-                        }
-                        catch (Exception e3){}
-                    }
+                    BossEnemy bScript = coll.collider.gameObject.GetComponent<BossEnemy>();
+                    bScript.TakeDamage(80.0f);
                 }
                 playerRigB.AddForce(transform.up * 25000.0f, ForceMode.Force);
             }
             else
             {
-                try
+                Debug.LogWarning("BETA");
+                if (coll.gameObject.tag == "Enemy")
                 {
                     PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
                     HealthUpdate(-pScript.GetAtkDamage());
                 }
-                catch (Exception e1)
-                {
-                    try
-                    {
-                        ShooterEnemy sScript = coll.collider.GetComponent<ShooterEnemy>();
-                        HealthUpdate(-sScript.GetAtkDamage());
-                    }
-                    catch (Exception e2)
-                    {
-                        try
-                        {
-                            BossEnemy bScript = coll.collider.GetComponent<BossEnemy>();
-                            HealthUpdate(-3);
-                            Debug.LogWarning("BOI GOT HIT: " + currentHP);
-                        }
-                        catch (Exception e3) { }
-                    }
-                }
-                if (transform.position.x >= coll.transform.position.x)
-                {
-                    Vector3 pushDir = (5 * Vector3.right + Vector3.up).normalized;
-                    playerRigB.AddForce(pushDir * 30000.0f, ForceMode.Force);
-                }
                 else
                 {
-                    Vector3 pushDir = (5 * -Vector3.right + Vector3.up).normalized;
-                    playerRigB.AddForce(pushDir * 30000.0f, ForceMode.Force);
+                    BossEnemy bScript = coll.collider.GetComponent<BossEnemy>();
+                    HealthUpdate(-3);
                 }
+                Vector3 pushDir = Vector3.right * (transform.position.x >= coll.transform.position.x ? 1 : -1);
+                playerRigB.AddForce((10 * pushDir + Vector3.up).normalized * 30000.0f, ForceMode.Force);
             }
             return true;
         }

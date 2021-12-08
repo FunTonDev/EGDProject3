@@ -84,7 +84,7 @@ public class CameraController : MonoBehaviour
         switch(playerPrefab.GetComponent<PlayerController>().playerPrimaryGenre)
         {
             case (States.GameGenre.Platformer):
-                playerDiff += CharMoveBiasUpdate();
+                //playerDiff += CharMoveBiasUpdate();
                 break;
             case (States.GameGenre.Shooter):
                 playerDiff += ADSBiasUpdate();// + CursorBiasUpdate();

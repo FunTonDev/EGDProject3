@@ -9,13 +9,13 @@ public class BossEnemy : MonoBehaviour
     [SerializeField] private string type;                     //Name (Ex: TestBox)
 
     [SerializeField] private int phase;               //currPhase of the boss
-    [SerializeField] public float health;      
+    [SerializeField] private float health;      
     [SerializeField] private float armor;
 
     float axisLevel;
 
     private bool invincible;
-    private bool vulnarable;
+    public bool vulnarable;
 
     protected Rigidbody rgbdy;
 
@@ -62,13 +62,14 @@ public class BossEnemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        Debug.LogWarning(vulnarable);
         if (vulnarable)
         {
             if (armor > 0)
             {
-                armor -= (3 / 4) * damage;
-                health -= (1 / 4) * damage;
-                Debug.Log(string.Format("Platform Boss took {0} damage to armor and {1} damage to health", (3 / 4) * damage, (1 / 4) * damage));
+                armor -= 0.75f * damage;
+                health -= 0.25f * damage;
+                Debug.Log(string.Format("Platform Boss took {0} damage to armor and {1} damage to health", 0.75f * damage, 0.25f * damage));
             }
             else
             {
@@ -91,7 +92,7 @@ public class BossEnemy : MonoBehaviour
     IEnumerator VulnarableTimer()
     {
         vulnarable = true;
-        Debug.LogError("Platformer Boss is now Vulnarable");
+        Debug.LogError("Platformer Boss is now vulnerable");
         yield return new WaitForSeconds(4.5f);
 
         vulnarable = false;
