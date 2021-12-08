@@ -206,6 +206,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add(""); //17
                     nextScene = "PlatformerWorld";
                     so.inPlat = true;
+                    so.lastPosition.x += 10;
                 }
                 else if (!so.inPlat2) //Cutscene-P3-Princess
                 {
@@ -218,6 +219,7 @@ public class CutsceneManager : MonoBehaviour
                     //-The princess is seen crying, then she sees Pixal, and then proceeds to attack-
                     //Use all cutscenes
                     so.inPlat2 = true;
+                    so.lastPosition.x -= 3;
                     nextScene = "PlatformerWorld";
                 }
                 else //Cutscene-P4-Final
@@ -317,6 +319,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//13 // End this scene
                     nextScene = "ShooterWorld";
                     so.inShot = true;
+                    so.lastPosition.z -= 2;
                 }
                 else if (!so.inShot1) //CutsceneS3-Horde
                 {
@@ -333,6 +336,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//9
                     nextScene = "ShooterWorld";
                     so.inShot1 = true;
+                    so.lastPosition.z += 2;
                 }
                 //After shooter horde battle
                 else //CutsceneS4-Final
@@ -421,6 +425,7 @@ public class CutsceneManager : MonoBehaviour
                     so.mamaGot = true;
                     so.helperGot = true;
                     so.inRPG = true;
+                    so.lastPosition.x -= 10;
                     nextScene = "RPGWorld";
                 }
                 else if (!so.inRPG2) //CutsceneR3-Meaning
@@ -436,6 +441,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("You can become whatever you want, so choose wisely when you do.");//7
                     storeText.Add("");//8
                     storeText.Add("");//9
+                    so.lastPosition.z -= 10;
                     so.inRPG2 = true;
                 }
                 else if (!so.inRPG3) //CutsceneR4-Boss
@@ -448,6 +454,8 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//5
                     //They approach a giant blob (Setting is either in a cave or deep in the forest). The giant blob looks at Pixal and the woman and then attacks.
                     storeText.Add("Here we go!");//6
+                    nextScene = "RPGBattle";
+                    so.bossFight = true;
                     so.inRPG3 = true;
                 }
                 else //CutsceneR5-Final

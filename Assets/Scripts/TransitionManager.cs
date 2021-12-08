@@ -92,6 +92,7 @@ public class TransitionManager : MonoBehaviour
 
         Debug.Log("Go to next scene -- " + sceneStr);
         string sceneText = "Loading ";
+        int ori = so.currentGenre;
         switch (sceneStr)
         {
             case "HubWorld":
@@ -133,6 +134,10 @@ public class TransitionManager : MonoBehaviour
             case "MenuScene":
                 sceneText = "Leaving the System";
                 break;
+        }
+        if (ori != so.currentGenre)
+        {
+            so.lastPosition = new Vector3(0, 0, 0);
         }
         Debug.Log("Next scene = " + sceneStr);
         loadingGroup.transform.GetChild(1).GetComponent<Text>().text = sceneText;
