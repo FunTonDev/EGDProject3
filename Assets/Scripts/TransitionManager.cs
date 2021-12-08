@@ -86,6 +86,61 @@ public class TransitionManager : MonoBehaviour
         SaveManager.Save(so);
         SceneManager.LoadSceneAsync(sceneStr);
     }
+    public void SceneSwitch(string sceneStr)
+    {
+        so = SaveManager.Load();
+
+        Debug.Log("Go to next scene -- " + sceneStr);
+        string sceneText = "Loading ";
+        switch (sceneStr)
+        {
+            case "HubWorld":
+                sceneText += "Central Hub";
+                so.currentGenre = 0;
+                if (!so.gameStart)
+                {
+                    sceneStr = "CutsceneScene";
+                }
+                break;
+            case "RPGWorld":
+                sceneText += "Fantasy Plains";
+                so.currentGenre = 3;
+                if (!so.rpgStart)
+                {
+                    sceneStr = "CutsceneScene";
+                }
+                break;
+            case "RPGBattle":
+                sceneText += "Into Battle";
+                so.currentGenre = 3;
+                break;
+            case "ShooterWorld":
+                sceneText += "Shooter Jungle";
+                so.currentGenre = 2;
+                if (!so.shotStart)
+                {
+                    sceneStr = "CutsceneScene";
+                }
+                break;
+            case "PlatformerWorld":
+                sceneText += "Platformer Kingdom";
+                so.currentGenre = 1;
+                if (!so.platStart)
+                {
+                    sceneStr = "CutsceneScene";
+                }
+                break;
+            case "MenuScene":
+                sceneText = "Leaving the System";
+                break;
+        }
+        Debug.Log("Next scene = " + sceneStr);
+        loadingGroup.transform.GetChild(1).GetComponent<Text>().text = sceneText;
+        loadingGroup.SetActive(true);
+        StartCoroutine(TextUpdater(sceneText));
+        SaveManager.Save(so);
+        SceneManager.LoadSceneAsync(sceneStr);
+    }
 
     public IEnumerator TextUpdater(string ori)
     {
