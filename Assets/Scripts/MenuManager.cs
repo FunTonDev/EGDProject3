@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;  //Remove later, reserve scene changes for TRANSITIONMANAGER
@@ -258,6 +259,42 @@ public class MenuManager : MonoBehaviour
                 currentSection = States.MenuSection.Play;
                 playIndex = 0;
                 panels[1].SetActive(true);
+                string f1 = "File1.txt";
+                string f2 = "File2.txt";
+                string f3 = "File3.txt";
+                string fPath1 = Application.streamingAssetsPath + "/Saves/" + f1;
+                string fPath2 = Application.streamingAssetsPath + "/Saves/" + f2;
+                string fPath3 = Application.streamingAssetsPath + "/Saves/" + f3;
+                if (File.Exists(fPath1))
+                {
+                    Debug.Log("T1");
+                    string json = File.ReadAllText(fPath1);
+                    SaveFile sf = JsonUtility.FromJson<SaveFile>(json);
+                    if (sf.gameStart)
+                    {
+                        panels[1].transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Slot 1/nActive Save File";
+                    }
+                }
+                if (File.Exists(fPath2))
+                {
+                    Debug.Log("T2");
+                    string json = File.ReadAllText(fPath2);
+                    SaveFile sf = JsonUtility.FromJson<SaveFile>(json);
+                    if (sf.gameStart)
+                    {
+                        panels[1].transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Slot 2/nActive Save File";
+                    }
+                }
+                if (File.Exists(fPath3))
+                {
+                    Debug.Log("T3");
+                    string json = File.ReadAllText(fPath3);
+                    SaveFile sf = JsonUtility.FromJson<SaveFile>(json);
+                    if (sf.gameStart)
+                    {
+                        panels[1].transform.GetChild(2).GetChild(0).GetComponent<Text>().text = "Slot 3/nActive Save File";
+                    }
+                }
                 break;
             case 2:
                 currentSection = States.MenuSection.Options;

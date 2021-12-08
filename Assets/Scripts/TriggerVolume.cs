@@ -81,6 +81,11 @@ public class TriggerVolume : MonoBehaviour
                     case States.VolumeType.Transition:
                         tranMan.SceneSwitch(targetScene, true);
                         break;
+                    case States.VolumeType.Cutscene:
+                        coll.GetComponent<PlayerController>().so.lastPosition = coll.transform.position;
+                        SaveManager.Save(coll.GetComponent<PlayerController>().so);
+                        tranMan.SceneSwitch("CutsceneScene");
+                        break;
                 }
             }
         }
