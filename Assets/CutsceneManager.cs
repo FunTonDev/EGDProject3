@@ -161,6 +161,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");
                     storeText.Add("*Pixal learned to jump!*");
                     nextScene = "PlatformerWorld";
+                    so.platStart = true;
                 }
                 else if (!so.inPlat) //Cutscene-P2-Cecilia
                 {   //Numbers are the corresponding scenes
@@ -193,6 +194,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add(""); //16
                     storeText.Add(""); //17
                     nextScene = "PlatformerWorld";
+                    so.inPlat = true;
                 }
                 else if (!so.inPlat2) //Cutscene-P3-Princess
                 {
@@ -204,6 +206,7 @@ public class CutsceneManager : MonoBehaviour
                     //-Pixal enters the princesss throne-
                     //-The princess is seen crying, then she sees Pixal, and then proceeds to attack-
                     //Use all cutscenes
+                    so.inPlat2 = true;
                     nextScene = "PlatformerWorld";
                 }
                 else //Cutscene-P4-Final
@@ -245,6 +248,7 @@ public class CutsceneManager : MonoBehaviour
             case 2:         //Shooter events
                 if (!so.shotStart) //CutsceneS1-Start
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneS1-Start"));
                     /*
                      * -Scene: Pixal enters the jungle level, where he is trapped in a cage (or Bear Trap) by the main soldier guy of the level that 
                      * Pixal will save. After capturing Pixal, the main soldier guy appears out of the bushes-
@@ -270,9 +274,12 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//17
                     storeText.Add("");//18
                     nextScene = "ShooterWorld";
+                    nextScene = "ShooterWorld";
+                    so.shotStart = true;
                 }
                 else if (!so.inShot) //CutsceneS2-Soldier
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneS2-Soldier"));
                     //storeText.Add(""); 
                     //Normal soldier talking
                     storeText.Add("");//1
@@ -293,9 +300,12 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//11
                     storeText.Add("Just go...");//12
                     storeText.Add("");//13 // End this scene
+                    nextScene = "ShooterWorld";
+                    so.inShot = true;
                 }
                 else if (!so.inShot1) //CutsceneS3-Horde
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneS3-Horde"));
                     //
                     storeText.Add("");//1
                     storeText.Add("");//2
@@ -306,10 +316,13 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//7
                     storeText.Add("");//8
                     storeText.Add("");//9
+                    nextScene = "ShooterWorld";
+                    so.inShot1 = true;
                 }
                 //After shooter horde battle
                 else //CutsceneS4-Final
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneS4-Final"));
                     storeText.Add("");//1
                     storeText.Add("");//2
                     storeText.Add("");//3
@@ -318,6 +331,10 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//6
                     storeText.Add("");//7 //Black Screen
                     /*BLACK SCREEN IS IMG07*/
+                    for (int i = 0; i < 7; i++)
+                    {
+                        image_queue.Insert(6, Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    }
                     storeText.Add("Alright, if I want to work in that company someday, its time to put in the grind!");
                     storeText.Add("...");
                     storeText.Add("I don’t know how dad does this, maybe he’ll have a solution, I hope he won’t mind if I login to his laptop to see how he does some pathfinding algorithms.");

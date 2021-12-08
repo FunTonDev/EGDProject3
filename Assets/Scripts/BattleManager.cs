@@ -114,6 +114,9 @@ public class BattleManager : MonoBehaviour
     public AudioSource seSource;
     public AudioSource musicSource;
 
+    public SpriteRenderer back;
+    public SpriteRenderer floor;
+
     public Image fader;
 
 
@@ -248,6 +251,10 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            if (PartyMembers[currentUnit].abilities[num].cost > PartyMembers[currentUnit].currentStamina)
+            {
+                DisplayText.text = "Not enough energy to use";
+            }
             currentAction = num;
             if (PartyMembers[currentUnit].abilities[num].type == 1)
             {
@@ -637,6 +644,8 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            back.sprite = Resources.Load<Sprite>("Art/BGArt/Cave");
+            floor.color = new Color(50f/255f, 58f/255f, 52/255f);
             EnemyMembers[0] = new Slime();
             EnemyMembers[1] = new BossSlime();
             EnemyMembers[2] = new Slime();

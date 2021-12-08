@@ -127,6 +127,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("OBJ with tage == " + objective);
         tempArrow = Instantiate(arrows);
         tempArrow.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        tempArrow.SetActive(false);
         if (gameMan.genreMain == States.GameGenre.None)
         {
             if (GameObject.Find("Canvas").transform.Find("GamePanel").transform.Find("PlatBase").GetChild(0).GetComponent<Image>() != null)
