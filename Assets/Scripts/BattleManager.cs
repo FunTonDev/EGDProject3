@@ -648,6 +648,8 @@ public class BattleManager : MonoBehaviour
             floor.color = new Color(50f/255f, 58f/255f, 52/255f);
             EnemyMembers[0] = new Slime();
             EnemyMembers[1] = new BossSlime();
+            enemyPrefabs[1].GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
+            enemyPrefabs[1].transform.localScale.Set(12, 11, 0);
             EnemyMembers[2] = new Slime();
             activeEnemies = 3;
         }
