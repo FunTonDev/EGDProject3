@@ -174,10 +174,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()       //Handles live/uneven changes
     {
-        Vector3 rightPos = transform.position + new Vector3(0.2f, 0, 0);
-        Vector3 leftPos = transform.position + new Vector3(-0.2f, 0, 0);
-        Debug.DrawLine(rightPos, rightPos - transform.up * 0.4f, Color.green);
-        Debug.DrawLine(leftPos, leftPos - transform.up * 0.4f, Color.green);
         if (!gameMan.paused)
         {
             TimerUpdate();
@@ -187,7 +183,7 @@ public class PlayerController : MonoBehaviour
         {
             if (playerPrimaryGenre == States.GameGenre.Platformer || playerPrimaryGenre == States.GameGenre.None)
             {
-                Debug.Log("Objective good");
+                //Debug.Log("Objective good");
                 Vector3 screenpos = Camera.main.WorldToScreenPoint(objective.transform.position);
                 if (screenpos.z > 0 &&
                     screenpos.x > 0 && screenpos.x < Screen.width &&
@@ -224,7 +220,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Objective good");
+                //Debug.Log("Objective good");
                 Vector3 screenpos = Camera.main.WorldToScreenPoint(objective.transform.position);
                 if (screenpos.z > 0 &&
                     screenpos.x > 0 && screenpos.x < Screen.width &&
@@ -545,16 +541,9 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 rightPos = transform.position + new Vector3(0.25f, 0, 0);
             Vector3 leftPos = transform.position + new Vector3(-0.25f, 0, 0);
-            //Debug.LogWarning("RC1: " + Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask));
-            //Debug.LogWarning("RC2: " + Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask));
-            Debug.DrawLine(rightPos, rightPos - transform.up * 0.4f, Color.green);
-            Debug.DrawLine(leftPos, leftPos - transform.up * 0.4f, Color.green);
-            /*if (Physics.Raycast(rightPos, -Vector3.up, 0.4f)   //RIGHT CAST
-                                        | Physics.Raycast(leftPos, -Vector3.up, 0.4f))  */ //LEFT CAST
             if (Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
                             | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))  //LEFT CAST
             {
-                Debug.LogWarning("ALPHA");
                 if (coll.gameObject.tag == "Enemy")
                 {
                     PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
@@ -569,7 +558,6 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("BETA");
                 if (coll.gameObject.tag == "Enemy")
                 {
                     PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();

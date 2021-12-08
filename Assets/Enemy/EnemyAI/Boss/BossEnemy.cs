@@ -62,23 +62,20 @@ public class BossEnemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.LogWarning(vulnarable);
         if (vulnarable)
         {
             if (armor > 0)
             {
                 armor -= 0.75f * damage;
                 health -= 0.25f * damage;
-                Debug.Log(string.Format("Platform Boss took {0} damage to armor and {1} damage to health", 0.75f * damage, 0.25f * damage));
+                //Debug.Log(string.Format("Platform Boss took {0} damage to armor and {1} damage to health", 0.75f * damage, 0.25f * damage));
             }
             else
             {
                 health -= damage;
-                Debug.Log(string.Format("Platform Boss took {0} damage", damage));
+                //Debug.Log(string.Format("Platform Boss took {0} damage", damage));
             }
-
-            Debug.Log(string.Format("Platform Boss Current Health and Armor: {0} & {1}", health, armor));
-
+            //Debug.Log(string.Format("Platform Boss Current Health and Armor: {0} & {1}", health, armor));
             if (health <= 0)
             { Death(); }
         }
@@ -92,16 +89,14 @@ public class BossEnemy : MonoBehaviour
     IEnumerator VulnarableTimer()
     {
         vulnarable = true;
-        Debug.LogError("Platformer Boss is now vulnerable");
         yield return new WaitForSeconds(4.5f);
-
         vulnarable = false;
     }
 
 
     public void Death()
     {
-        Debug.Log(string.Format("Enemy {0} destroyed", type));
+        //Debug.Log(string.Format("Enemy {0} destroyed", type));
         Destroy(this.gameObject);
     }
 
