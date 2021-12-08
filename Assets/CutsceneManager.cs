@@ -305,6 +305,10 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("You shouldn’t even be here, you...you pixel?");//4
                     storeText.Add("Why the hell would the task force send something that hasn’t even been assigned to a game yet?!");//5
                     //Injured soldier talking
+                    for (int i = 0; i < 3; i++)
+                    {
+                        image_queue.Insert(5, image_queue[5]);
+                    }
                     storeText.Add("You lucky son of a bitch! I wish I was never assigned! Do you think I like being a soldier in a shooting game?!");//6
                     storeText.Add("Do you know what it’s like to die in combat everyday just for someone else’s enjoyment?!");//6
                     storeText.Add("Fuck, this thing didn’t even finish me off! Kill me please!!!");//6

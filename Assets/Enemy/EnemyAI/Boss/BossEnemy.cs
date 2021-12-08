@@ -79,7 +79,7 @@ public class BossEnemy : MonoBehaviour
             if (health <= 0)
             {
                 StartCoroutine(StartTransition());
-                Death();
+                //Death();
             }
         }
     }
@@ -105,10 +105,11 @@ public class BossEnemy : MonoBehaviour
 
     private IEnumerator StartTransition()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         TransitionManager tran = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
         tran.SceneSwitch("CutsceneScene", true);
+        Death();
     }
 
 }
