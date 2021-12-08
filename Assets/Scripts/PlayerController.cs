@@ -537,41 +537,45 @@ public class PlayerController : MonoBehaviour
 
     private bool EnemyCheck(Collision coll)
     {
-        if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "Boss")
+        if (playerPrimaryGenre == States.GameGenre.Platformer)
         {
-            Vector3 rightPos = transform.position + new Vector3(0.25f, 0, 0);
-            Vector3 leftPos = transform.position + new Vector3(-0.25f, 0, 0);
-            if (Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
-                            | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))  //LEFT CAST
+            if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "Boss")
             {
-                if (coll.gameObject.tag == "Enemy")
+                Vector3 rightPos = transform.position + new Vector3(0.25f, 0, 0);
+                Vector3 leftPos = transform.position + new Vector3(-0.25f, 0, 0);
+                if (Physics.Raycast(rightPos, -transform.up, 0.4f, hazardMask)   //RIGHT CAST
+                                | Physics.Raycast(leftPos, -transform.up, 0.4f, hazardMask))  //LEFT CAST
                 {
-                    PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
-                    pScript.TakeDamage(pScript.GetHealth());
+                    if (coll.gameObject.tag == "Enemy")
+                    {
+                        PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
+                        pScript.TakeDamage(pScript.GetHealth());
+                    }
+                    else
+                    {
+                        BossEnemy bScript = coll.collider.gameObject.GetComponent<BossEnemy>();
+                        bScript.TakeDamage(80.0f);
+                    }
+                    playerRigB.AddForce(transform.up * 25000.0f, ForceMode.Force);
                 }
                 else
                 {
-                    BossEnemy bScript = coll.collider.gameObject.GetComponent<BossEnemy>();
-                    bScript.TakeDamage(80.0f);
+                    if (coll.gameObject.tag == "Enemy")
+                    {
+                        PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
+                        HealthUpdate(-pScript.GetAtkDamage());
+                    }
+                    else
+                    {
+                        BossEnemy bScript = coll.collider.GetComponent<BossEnemy>();
+                        HealthUpdate(-3);
+                    }
+                    Vector3 pushDir = Vector3.right * (transform.position.x >= coll.transform.position.x ? 1 : -1);
+                    playerRigB.AddForce((10 * pushDir + Vector3.up).normalized * 30000.0f, ForceMode.Force);
                 }
-                playerRigB.AddForce(transform.up * 25000.0f, ForceMode.Force);
+                return true;
             }
-            else
-            {
-                if (coll.gameObject.tag == "Enemy")
-                {
-                    PlatformerEnemy pScript = coll.collider.GetComponent<PlatformerEnemy>();
-                    HealthUpdate(-pScript.GetAtkDamage());
-                }
-                else
-                {
-                    BossEnemy bScript = coll.collider.GetComponent<BossEnemy>();
-                    HealthUpdate(-3);
-                }
-                Vector3 pushDir = Vector3.right * (transform.position.x >= coll.transform.position.x ? 1 : -1);
-                playerRigB.AddForce((10 * pushDir + Vector3.up).normalized * 30000.0f, ForceMode.Force);
-            }
-            return true;
+            return false;
         }
         return false;
     }

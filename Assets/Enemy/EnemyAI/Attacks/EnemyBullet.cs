@@ -103,9 +103,12 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.gameObject.tag != "Boss")
         {
-            if (collision.gameObject.name.Substring(0, 12) == "PlayerPrefab")
+            if (collision.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<PlayerController>().HealthUpdate(-1);
+                if (collision.gameObject.name.Substring(0, 12) == "PlayerPrefab")
+                {
+                    collision.gameObject.GetComponent<PlayerController>().HealthUpdate(-1);
+                }
             }
             SelfDestruct();
         }
