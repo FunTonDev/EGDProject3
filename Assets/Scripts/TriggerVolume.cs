@@ -53,7 +53,7 @@ public class TriggerVolume : MonoBehaviour
                 damage = -Mathf.Abs(isKillVolume ? float.MaxValue : damage);
                 damageTimer = 0;
                 break;
-            case States.VolumeType.Transition:
+            default:
                 tranMan = GameObject.Find("[MANAGER]").GetComponent<TransitionManager>();
                 break;
         } 

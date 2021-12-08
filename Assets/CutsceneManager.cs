@@ -183,6 +183,10 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add(""); //8
                     storeText.Add(""); //9
                     storeText.Add(""); //10
+                    for (int i = 0; i < 7; i++)
+                    {
+                        image_queue.Insert(9, image_queue[9]);
+                    }
                     //Pixal then air dashes and hits the cage Cecilia is in. As the cage breaks, she falls down and sticks the landing, thus talking to Pixal-
                     storeText.Add("Thank you so much, when the princess said ‘hang out’, I thought she meant something different."); //11
                     storeText.Add("Huh, looks like you haven’t been assigned yet, what is your name by the way?"); //11
