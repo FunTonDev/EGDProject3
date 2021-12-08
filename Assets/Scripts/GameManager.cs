@@ -45,6 +45,28 @@ public class GameManager : MonoBehaviour
         SetUpScene();
         gameAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
         sv = SaveManager.Load();
+        if (sv.currentGenre == 1)
+        {
+            if (sv.inPlat)
+            {
+                Destroy(GameObject.Find("Cutscene1P"));
+            }
+            if (sv.inPlat2)
+            {
+                Destroy(GameObject.Find("Cutscene2P"));
+            }
+        }
+        else if (sv.currentGenre == 2)
+        {
+            if (sv.inShot)
+            {
+                Destroy(GameObject.Find("Cutscene1S"));
+            }
+            if (sv.inShot1)
+            {
+                Destroy(GameObject.Find("Cutscene2S"));
+            }
+        }
     }
 
     private void SetUpScene()
