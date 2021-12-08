@@ -9,7 +9,7 @@ public class BossEnemy : MonoBehaviour
     [SerializeField] private string type;                     //Name (Ex: TestBox)
 
     [SerializeField] private int phase;               //currPhase of the boss
-    [SerializeField] private float health;      
+    [SerializeField] public float health;      
     [SerializeField] private float armor;
 
     float axisLevel;
@@ -91,7 +91,7 @@ public class BossEnemy : MonoBehaviour
     IEnumerator VulnarableTimer()
     {
         vulnarable = true;
-
+        Debug.LogError("Platformer Boss is now Vulnarable");
         yield return new WaitForSeconds(6);
 
         vulnarable = false;
