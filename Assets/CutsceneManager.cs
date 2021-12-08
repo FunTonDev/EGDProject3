@@ -243,29 +243,81 @@ public class CutsceneManager : MonoBehaviour
                 }
                 break;
             case 2:         //Shooter events
-                if (!so.shotStart)
+                if (!so.shotStart) //CutsceneS1-Start
                 {
                     /*
                      * -Scene: Pixal enters the jungle level, where he is trapped in a cage (or Bear Trap) by the main soldier guy of the level that 
                      * Pixal will save. After capturing Pixal, the main soldier guy appears out of the bushes-
                      * */
-                    storeText.Add("Well well well, look what we have here, a Pixel. I wonder if you’re with em");
+                    storeText.Add("");//1
+                    storeText.Add("");//2
+                    storeText.Add("Well well well, look what we have here, a Pixel. I wonder if you’re with em"); //3
                     //-MS then whips out a piece of glitch goop-
-                    storeText.Add("We’ll put it to the test then...");
-                    //Soldier puts goop on pixal
-                    storeText.Add("Well son of a Gun, looks like ye ain’t affected by this slop, ya should have said somethin sooner!");
-                    //-The soldier then releases Pixal from the trap-
-                    storeText.Add("Thank goodness they sent in reinforcements, although I’m not sure why they sent in a plain ol’ pixel to help with this crap we’re dealing with.");
-                    storeText.Add("There has been a damn trojan infestation here and its been messin things up, but then that thing... that damn thing... It morphed with it!");
-                    storeText.Add("And now it’s out here shootin the shit and making everything worse! At the rate things are goin, we might even have to go offli-");
+                    storeText.Add("We’ll put it to the test then..."); //4
+                    storeText.Add(""); //Soldier puts goop on pixal //5
+                    storeText.Add("Well I'll be a son of a bitch, looks like ye ain’t affected by this slop, ya should have said somethin sooner!"); //6
+                    storeText.Add(""); //-The soldier then releases Pixal from the trap- //7
+                    storeText.Add("Thank goodness they sent in reinforcements, although I’m not sure why they sent in a plain ol’ pixel to help with this crap we’re dealing with."); //8
+                    storeText.Add("There has been a damn trojan infestation here and its been messin things up, but then that thing... that damn thing... It morphed with it!"); //9
+                    storeText.Add("And now it’s out here shootin the shit and making everything worse! At the rate things are goin, we might even have to go offli-"); //10
                     //Sudenly, the monster MS was talking about appears out of nowhere and then takes away MS. As MS is being dragged off, he drops his gun. Pixal picks up the dropped gun and then follows the trail of the monster-
-                    storeText.Add("'Obtained GUN'");
+                    storeText.Add("");//11
+                    storeText.Add("");//12
+                    storeText.Add("");//13
+                    storeText.Add("");//14
+                    storeText.Add("");//15
+                    storeText.Add("'Obtained GUN'");//16
+                    storeText.Add("");//17
+                    storeText.Add("");//18
                     nextScene = "ShooterWorld";
                 }
-                //After shooter horde battle
-                else
+                else if (!so.inShot) //CutsceneS2-Soldier
                 {
-                    //Black Screen
+                    //storeText.Add(""); 
+                    //Normal soldier talking
+                    storeText.Add("");//1
+                    storeText.Add("");//2
+                    storeText.Add("Run, run while ya still can! It may be too late for me, but not you.");//3
+                    storeText.Add("You shouldn’t even be here, you...you pixel?");//4
+                    storeText.Add("Why the hell would the task force send something that hasn’t even been assigned to a game yet?!");//5
+                    //Injured soldier talking
+                    storeText.Add("You lucky son of a bitch! I wish I was never assigned! Do you think I like being a soldier in a shooting game?!");//6
+                    storeText.Add("Do you know what it’s like to die in combat everyday just for someone else’s enjoyment?!");//6
+                    storeText.Add("Fuck, this thing didn’t even finish me off! Kill me please!!!");//6
+                    /*NOTE: Past three lines were all Img06*/
+                    storeText.Add(""); //Pixal brings out glitch goop //7
+                    storeText.Add("Oh shit, yeah that thing went that way."); //8
+                    //storeText.Add(""); //Soldier shows what way the glitch went
+                    storeText.Add("I don’t have much time left, so please take this from me, I know you will make good use of it, just tell me family I love them..."); //9
+                    storeText.Add("");//10
+                    storeText.Add("");//11
+                    storeText.Add("Just go...");//12
+                    storeText.Add("");//13 // End this scene
+                }
+                else if (!so.inShot1) //CutsceneS3-Horde
+                {
+                    //
+                    storeText.Add("");//1
+                    storeText.Add("");//2
+                    storeText.Add("");//3
+                    storeText.Add("");//4
+                    storeText.Add("");//5
+                    storeText.Add("");//6
+                    storeText.Add("");//7
+                    storeText.Add("");//8
+                    storeText.Add("");//9
+                }
+                //After shooter horde battle
+                else //CutsceneS4-Final
+                {
+                    storeText.Add("");//1
+                    storeText.Add("");//2
+                    storeText.Add("");//3
+                    storeText.Add("");//4
+                    storeText.Add("");//5
+                    storeText.Add("");//6
+                    storeText.Add("");//7 //Black Screen
+                    /*BLACK SCREEN IS IMG07*/
                     storeText.Add("Alright, if I want to work in that company someday, its time to put in the grind!");
                     storeText.Add("...");
                     storeText.Add("I don’t know how dad does this, maybe he’ll have a solution, I hope he won’t mind if I login to his laptop to see how he does some pathfinding algorithms.");
@@ -274,12 +326,24 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("SHIT, NOO!!!");
                     storeText.Add("I DIDN’T MEAN TO SEARCH FOR HOT SINGLES IN MY AREA!");
                     storeText.Add("I Need to fix this, hopefully I can get rid of the virus before before dad checks...");
-                    //End of black screen, pixal helps up soldier guy
-                    storeText.Add("Thanks for saving my ass Pixal, you not only helped clear the malware, but also defeated that glitch as well. For that, you have my gratitude.");
-                    //Pixal tries giving back gun
-                    storeText.Add("No no, that’s yours soldier, you made better use of it than I did.");
-                    //Pixal nods and leaves
-                    nextScene = "ShooterWorld";
+                    //End of black screen
+                    /*END BLACK SCREEN OF IMG07*/
+                    //pixal helps up soldier guy
+                    storeText.Add("");//8
+                    storeText.Add("");//9
+                    storeText.Add("Thanks for saving my ass Pixal, you not only helped clear the malware, but also defeated that glitch as well. For that, you have my gratitude."); //10
+                    storeText.Add("");//11 //Pixal tries giving back gun
+                    storeText.Add("No no, that’s yours soldier, you made better use of it than I did.");//11
+                    storeText.Add("");//12 //Pixal nods and leaves
+                    storeText.Add("");//13
+                    storeText.Add("");//14 //Black Screen
+                    storeText.Add("");// -Pixal Shows Coder the data from the goop he purified- //15  
+                    storeText.Add("Excuse my language, but that sounds fucked up. I can’t believe my game was already bugged by a fake ad.");//16
+                    storeText.Add("Rookie mistakes these players. Well, I know what to patch next, so keep up the good work!");// End Shooter section //17
+                    so.shotDone = true;
+                    nextScene = "HubWorld";
+                    trackPos = true;
+                    //nextScene = "ShooterWorld";
                 }
                 break;
             case 3:         //RPG events
