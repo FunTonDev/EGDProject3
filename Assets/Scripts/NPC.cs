@@ -6,7 +6,7 @@ using TMPro;
 
 public class NPC : MonoBehaviour
 {
-    public string npcName;
+    public string npcName = "";
 
     public List<string> textDesc;
     public List<string> write_queue;
@@ -84,7 +84,14 @@ public class NPC : MonoBehaviour
         }
         for (int i = 0; i < tts.Count; i++)
         {
-            yield return textDisplay(npcName + ": " + tts[i]);
+            if (npcName != "")
+            {
+                yield return textDisplay(npcName + ": " + tts[i]);
+            }
+            else
+            {
+                yield return textDisplay(tts[i]);
+            }
         }
         for (int x = 0; x < dialogueBox.transform.childCount; x++)
         {
