@@ -42,6 +42,7 @@ public class CutsceneManager : MonoBehaviour
     private bool writing;
     private bool ender = false;
     private bool advance = false;
+    private bool trackPos = false;
 
     // Start is called before the first frame update
     void Start()
@@ -163,6 +164,7 @@ public class CutsceneManager : MonoBehaviour
                 }
                 else if (!so.inPlat) //Cutscene-P2-Cecilia
                 {   //Numbers are the corresponding scenes
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneP2-Cecilia"));
                     storeText.Add(""); //1
                     storeText.Add(""); //2
                     storeText.Add("“Hey you! Uhh, do you think you can help me out here? Just uhh, jump and get me, I know you can do it! I believe in you!”"); //3
@@ -194,16 +196,29 @@ public class CutsceneManager : MonoBehaviour
                 }
                 else if (!so.inPlat2) //Cutscene-P3-Princess
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneP3-Princess"));
+                    for (int i = 0; i < 10; i++)
+                    {
+                        storeText.Add("");
+                    }
                     //-Pixal enters the princesss throne-
                     //-The princess is seen crying, then she sees Pixal, and then proceeds to attack-
                     //Use all cutscenes
+                    nextScene = "PlatformerWorld";
                 }
                 else //Cutscene-P4-Final
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneP4-Final"));
                     //-Pixal eventually knocks the goop off the princesss crown. The princess then sits back on her rump and begins to cry while pointing at the goop-
                     storeText.Add("I want my daddy!!!"); //1
                     //-Pixal then approaches the goop and purifies the data- //2-3
+                    storeText.Add("");
+                    storeText.Add("");
                     //Black Screen //4
+                    for (int i = 0; i < 6; i++)
+                    {
+                        image_queue.Insert(3, Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    }
                     storeText.Add("Daddy is very nice");
                     storeText.Add("Daddy would play castle with me");
                     storeText.Add("Daddy would call me his princess");
@@ -213,12 +228,18 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("I miss my daddy");
                     //
                     //-Seeing the data, Pixal then makes a new crown that the Queen can wear.Offering it to her, she takes it, then disappears, leaving Pixal be, where it can return back to the hub -
+                    storeText.Add("");
+                    storeText.Add("");
+                    storeText.Add("");
+                    storeText.Add("");
                     //5-9
                     //BlackScreen //10
-                    // -Pixal Shows Coder the data from the goop he purified- //11
+                    storeText.Add("");// -Pixal Shows Coder the data from the goop he purified- //11  
                     storeText.Add("I see, so the file was vulnerable for that reason. Well, I know what to fix for the next patch update. Good work.") ;//12
-                    // End Platformer section //13
-                    nextScene = "PlatformerWorld";
+                    storeText.Add("");// End Platformer section //13
+                    so.platDone = true;
+                    nextScene = "HubWorld";
+                    trackPos = true;
                 }
                 break;
             case 2:         //Shooter events
