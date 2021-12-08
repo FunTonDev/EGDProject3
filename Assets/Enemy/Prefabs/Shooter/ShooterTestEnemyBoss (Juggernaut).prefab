@@ -105,7 +105,7 @@ MonoBehaviour:
   health: 300
   atkDamage: 2
   moveSpd: 3
-  armor: 100
+  armor: 0
   detectionLvl: 1
   platformer: 0
   shooter: 1

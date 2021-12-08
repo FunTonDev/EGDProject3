@@ -125,6 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1a0688c9c6c304f99eb3fa6b6ba9e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 3.5
   tracking: 0
   PlatformerBossAtk3: 0

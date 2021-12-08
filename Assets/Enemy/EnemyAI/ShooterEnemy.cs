@@ -281,7 +281,7 @@ public class ShooterEnemy : Enemy
                 StartCoroutine("MeleeAttack");
             }
 
-            animator.SetBool("Attack", true);
+            //animator.SetBool("Attack", true);
 
         }        
     }
