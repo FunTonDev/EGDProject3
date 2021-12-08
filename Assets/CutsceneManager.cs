@@ -151,6 +151,11 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("To Be Continued...");
                     nextScene = "MenuScene";
                 }
+                else
+                {
+                    nextScene = "HubWorld";
+                    tranMan.SceneSwitch(nextScene);
+                }
                 break;
             case 1:         //Platformer events
                 if (!so.platStart)
@@ -240,7 +245,7 @@ public class CutsceneManager : MonoBehaviour
                     //5-9
                     //BlackScreen //10
                     storeText.Add("");// -Pixal Shows Coder the data from the goop he purified- //11  
-                    storeText.Add("I see, so the file was vulnerable for that reason. Well, I know what to fix for the next patch update. Good work.") ;//12
+                    storeText.Add("I see, so the file was vulnerable for that reason. Well, I know what to fix for the next patch update. Good work.");//12
                     storeText.Add("");// End Platformer section //13
                     so.platDone = true;
                     nextScene = "HubWorld";
@@ -376,6 +381,7 @@ public class CutsceneManager : MonoBehaviour
             case 3:         //RPG events
                 if (!so.rpgStart) //CutsceneR1-Start
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneR1-Start"));
                     //Background = forest/plains
                     //Pixal finds trail of slime, follows it
                     //Some gameplay/movement
@@ -387,9 +393,11 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//5
                     so.playerMana = 10f;
                     nextScene = "RPGWorld";
+                    so.rpgStart = true;
                 }
                 else if (!so.inRPG) //CutsceneR2-Rogue
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneR2-Rogue"));
                     //Pixal attacked by slime, but slime is defeated by Mama Rogue (jumps out of nowhere)
                     storeText.Add("");//1
                     storeText.Add("");//2
@@ -408,10 +416,12 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("'The Motherly Rogue joined your Party'");//12
                     so.mamaGot = true;
                     so.helperGot = true;
+                    so.inRPG = true;
                     nextScene = "RPGWorld";
                 }
                 else if (!so.inRPG2) //CutsceneR3-Meaning
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneR3-Meaning"));
                     //As they continue walking thru the forest, mama rogue stops and walks infront of Pixal to tell it something-
                     storeText.Add("");//1
                     storeText.Add("I was wondering where I’ve seen you from, and it hit me: you’re a pixel.");//2
@@ -422,9 +432,11 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("You can become whatever you want, so choose wisely when you do.");//7
                     storeText.Add("");//8
                     storeText.Add("");//9
+                    so.inRPG2 = true;
                 }
                 else if (!so.inRPG3) //CutsceneR4-Boss
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneR4-Boss"));
                     storeText.Add("");//1
                     storeText.Add("We’re close");//2
                     storeText.Add("");//3
@@ -432,9 +444,11 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//5
                     //They approach a giant blob (Setting is either in a cave or deep in the forest). The giant blob looks at Pixal and the woman and then attacks.
                     storeText.Add("Here we go!");//6
+                    so.inRPG3 = true;
                 }
                 else //CutsceneR5-Final
                 {
+                    image_queue = new List<Sprite>(Resources.LoadAll<Sprite>("CutsceneAssets/Game_Select_Images/CutsceneR5-Final"));
                     //The glitch is defeated and is deflated. The goop then falls off from the shape of a heart shaped flask.-
                     storeText.Add("");//1
                     storeText.Add("");//2
@@ -490,6 +504,16 @@ public class CutsceneManager : MonoBehaviour
                 }
                 break;
         }
+        if (storeText == null)
+        {
+            storeText = new List<string>();
+            storeText.Add("");
+        }
+        if (image_queue == null)
+        {
+            image_queue = new List<Sprite>();
+            image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+        }
         StartCoroutine(displayAllText(storeText));
 
     }
@@ -522,6 +546,8 @@ public class CutsceneManager : MonoBehaviour
 
     public IEnumerator displayAllText(List<string> tts)
     {
+        Debug.Log("Images - " + image_queue.Count);
+        Debug.Log("Text - " + tts.Count);
         for (int i = 0; i < tts.Count; i++)
         {
             Debug.Log("i == " + i + ", image == " + image_queue[i]);
@@ -531,10 +557,15 @@ public class CutsceneManager : MonoBehaviour
             advance = false;
         }
         SaveManager.Save(so);
-        if (nextScene == "HubWorld" && theEnd)
+        Debug.Log("RStart - " + so.rpgStart);
+        Debug.Log("Next current scene == " + nextScene);
+        Debug.Log("The end -- " + theEnd);
+        if (nextScene.Equals("HubWorld") && theEnd)
         {
+            Debug.Log("THis shouldn't activate");
             nextScene = "CutsceneScene";
         }
+        Debug.Log("Next scene == " + nextScene);
         tranMan.SceneSwitch(nextScene);
     }
 

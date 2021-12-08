@@ -6365,7 +6365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6625932939615670206, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
       propertyPath: targetScene
-      value: RPGBattle
+      value: RPGWorld
       objectReference: {fileID: 0}
     - target: {fileID: 6625932939615670206, guid: eb2e0ca4f621d774e8bd675455ab404b, type: 3}
       propertyPath: isKillVolume
@@ -6873,15 +6873,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7072953450747654076, guid: 3f531089aeff1dc479ec09a7130ce1c5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 100.63227
+      value: 104.89
       objectReference: {fileID: 0}
     - target: {fileID: 7072953450747654076, guid: 3f531089aeff1dc479ec09a7130ce1c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.76505
+      value: -15.94
       objectReference: {fileID: 0}
     - target: {fileID: 7072953450747654076, guid: 3f531089aeff1dc479ec09a7130ce1c5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.8544855
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7072953450747654076, guid: 3f531089aeff1dc479ec09a7130ce1c5, type: 3}
       propertyPath: m_LocalRotation.w
