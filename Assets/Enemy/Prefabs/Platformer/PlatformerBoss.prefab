@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5606531909161204202}
   - component: {fileID: 1178206218760992133}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BossSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7932845156533450754}
   - component: {fileID: 7932845156533450755}
   - component: {fileID: 7932845156533450752}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlatformerBoss
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -228,6 +228,7 @@ MonoBehaviour:
   phase: 0
   health: 100
   armor: 50
+  vulnarable: 0
 --- !u!1 &7932845156005073190
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +240,7 @@ GameObject:
   - component: {fileID: 7932845156005073191}
   - component: {fileID: 7932845156005073189}
   - component: {fileID: 7932845156005073188}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +321,7 @@ GameObject:
   - component: {fileID: 7932845156319878826}
   - component: {fileID: 7932845156319878824}
   - component: {fileID: 7932845156319878827}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}

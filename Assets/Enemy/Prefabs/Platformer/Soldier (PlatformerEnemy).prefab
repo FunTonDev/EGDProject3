@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4479934465076515011}
   - component: {fileID: 4479934465076515009}
   - component: {fileID: 4486310177291311079}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Soldier (PlatformerEnemy)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 4473703490069860702}
   - component: {fileID: 7170428651872165169}
   - component: {fileID: 6527480480416439123}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
