@@ -161,35 +161,49 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("*Pixal learned to jump!*");
                     nextScene = "PlatformerWorld";
                 }
-                else if (!so.inPlat)
-                { 
-                    storeText.Add("“Hey you! Uhh, do you think you can help me out here? Just uhh, jump and get me, I know you can do it! I believe in you!”");
+                else if (!so.inPlat) //Cutscene-P2-Cecilia
+                {   //Numbers are the corresponding scenes
+                    storeText.Add(""); //1
+                    storeText.Add(""); //2
+                    storeText.Add("“Hey you! Uhh, do you think you can help me out here? Just uhh, jump and get me, I know you can do it! I believe in you!”"); //3
+                    storeText.Add(""); //4
+                    storeText.Add(""); //5
+                    storeText.Add(""); //6
+                    storeText.Add(""); //7
+                    storeText.Add(""); //8
+                    storeText.Add(""); //9
+                    storeText.Add(""); //10
                     //Pixal then air dashes and hits the cage Cecilia is in. As the cage breaks, she falls down and sticks the landing, thus talking to Pixal-
-                    storeText.Add("Thank you so much, when the princess said ‘hang out’, I thought she meant something different.");
-                    storeText.Add("Huh, looks like you haven’t been assigned yet, what is your name by the way?");
-                    storeText.Add("Well Pixal, thank you for saving my rump, much appreciated.");
-                    storeText.Add("Man, seeing the way you look reminds me of the good ol’ factory days where we all would just bum around, waiting for our calling...");
-                    storeText.Add("Thankfully though, I feel like I became who I was meant to be: a Jokester whose job it was to make people smile and protect those I love.");
-                    storeText.Add("What I will say though is that it is hard sometimes to always put up a positive front, even when sometimes deep down I do get sad,");
-                    storeText.Add("but seeing those smiles always warms my heart and reminds why I do what I do.");
-                    storeText.Add("Lately however, the princess ain’t doing much smiling, and that don’t make me smile.");
+                    storeText.Add("Thank you so much, when the princess said ‘hang out’, I thought she meant something different."); //11
+                    storeText.Add("Huh, looks like you haven’t been assigned yet, what is your name by the way?"); //11
+                    storeText.Add("Well Pixal, thank you for saving my rump, much appreciated."); //11
+                    storeText.Add("Man, seeing the way you look reminds me of the good ol’ factory days where we all would just bum around, waiting for our calling..."); //11
+                    storeText.Add("Thankfully though, I feel like I became who I was meant to be: a Jokester whose job it was to make people smile and protect those I love."); //11
+                    storeText.Add("What I will say though is that it is hard sometimes to always put up a positive front, even when sometimes deep down I do get sad,"); //11
+                    storeText.Add("but seeing those smiles always warms my heart and reminds why I do what I do."); //11
+                    storeText.Add("Lately however, the princess ain’t doing much smiling, and that don’t make me smile."); //11
                     //Pixal shows Cecilia the glitch goop (either as hat or in central area
-                    storeText.Add("Now wait a minute, that’s the same stuff the princess got on her crown, maybe thats why she’s been acting up lately. Please save her, she’s that way!");
+                    storeText.Add(""); //12
+                    storeText.Add("Now wait a minute, that’s the same stuff the princess got on her crown, maybe thats why she’s been acting up lately.");// Please save her, she’s that way!"); //13
+                    storeText.Add("Please save her, she’s that way!"); //14
+                    storeText.Add(""); //15
                     //Pixal goes off to save the princess (moves right off screen
-                    storeText.Add("");
+                    storeText.Add(""); //16
+                    storeText.Add(""); //17
                     nextScene = "PlatformerWorld";
                 }
-                else if (!so.inPlat2)
+                else if (!so.inPlat2) //Cutscene-P3-Princess
                 {
                     //-Pixal enters the princesss throne-
                     //-The princess is seen crying, then she sees Pixal, and then proceeds to attack-
+                    //Use all cutscenes
                 }
-                else
+                else //Cutscene-P4-Final
                 {
                     //-Pixal eventually knocks the goop off the princesss crown. The princess then sits back on her rump and begins to cry while pointing at the goop-
-                    storeText.Add("I want my daddy!!!");
-                    //-Pixal then approaches the goop and purifies the data-
-                    //Black Screen
+                    storeText.Add("I want my daddy!!!"); //1
+                    //-Pixal then approaches the goop and purifies the data- //2-3
+                    //Black Screen //4
                     storeText.Add("Daddy is very nice");
                     storeText.Add("Daddy would play castle with me");
                     storeText.Add("Daddy would call me his princess");
@@ -199,6 +213,11 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("I miss my daddy");
                     //
                     //-Seeing the data, Pixal then makes a new crown that the Queen can wear.Offering it to her, she takes it, then disappears, leaving Pixal be, where it can return back to the hub -
+                    //5-9
+                    //BlackScreen //10
+                    // -Pixal Shows Coder the data from the goop he purified- //11
+                    storeText.Add("I see, so the file was vulnerable for that reason. Well, I know what to fix for the next patch update. Good work.") ;//12
+                    // End Platformer section //13
                     nextScene = "PlatformerWorld";
                 }
                 break;
