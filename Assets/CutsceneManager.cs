@@ -141,9 +141,12 @@ public class CutsceneManager : MonoBehaviour
                 }
                 else if (so.platDone && so.shotDone && so.rpgDone)
                 {
+                    image_queue = new List<Sprite>();
                     storeText.Add("Eureka! Now that we have more information and the games are decontaminated, we can finally move on to exterminating the source.");
                     //A new doorway opens up, leading to forbo
                     storeText.Add("I am not sure what will happen here. Whatever it is though, I have faith it can’t hurt you, as long as you do not let it. Good luck, friend");
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
+                    image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
                     image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
                     image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
                     image_queue.Add(Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
@@ -340,7 +343,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//9
                     nextScene = "ShooterWorld";
                     so.inShot1 = true;
-                    so.lastPosition.z += 2;
+                    so.lastPosition.z += 5;
                 }
                 //After shooter horde battle
                 else //CutsceneS4-Final
@@ -354,7 +357,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//6
                     storeText.Add("");//7 //Black Screen
                     /*BLACK SCREEN IS IMG07*/
-                    for (int i = 0; i < 7; i++)
+                    for (int i = 0; i < 8; i++)
                     {
                         image_queue.Insert(6, Resources.Load<Sprite>("CutsceneAssets/Game_Select_Images/BlackScreen"));
                     }
@@ -370,7 +373,6 @@ public class CutsceneManager : MonoBehaviour
                     /*END BLACK SCREEN OF IMG07*/
                     //pixal helps up soldier guy
                     storeText.Add("");//8
-                    storeText.Add("");//9
                     storeText.Add("Thanks for saving my ass Pixal, you not only helped clear the malware, but also defeated that glitch as well. For that, you have my gratitude."); //10
                     storeText.Add("");//11 //Pixal tries giving back gun
                     storeText.Add("No no, that’s yours soldier, you made better use of it than I did.");//11
@@ -446,6 +448,7 @@ public class CutsceneManager : MonoBehaviour
                     storeText.Add("");//8
                     storeText.Add("");//9
                     so.lastPosition.z -= 10;
+                    nextScene = "RPGWorld";
                     so.inRPG2 = true;
                 }
                 else if (!so.inRPG3) //CutsceneR4-Boss
@@ -578,6 +581,8 @@ public class CutsceneManager : MonoBehaviour
         Debug.Log("The end -- " + theEnd);
         if (nextScene.Equals("HubWorld") && theEnd)
         {
+            so.currentGenre = 0;
+            SaveManager.Save(so);
             Debug.Log("THis shouldn't activate");
             nextScene = "CutsceneScene";
         }

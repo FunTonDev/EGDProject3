@@ -161,6 +161,7 @@ public class BattleManager : MonoBehaviour
     private bool active;
     private bool writing;
     private bool ender = false;
+    private bool boss = false;
     
     //Play Sound effects --- 0 = Hit/Damage, 1 = Heal, 2 = Dead
     public void playSound(int num)
@@ -652,6 +653,7 @@ public class BattleManager : MonoBehaviour
             enemyPrefabs[1].transform.localScale.Set(12, 11, 0);
             EnemyMembers[2] = new Slime();
             activeEnemies = 3;
+            boss = true;
         }
         
 
@@ -793,8 +795,7 @@ public class BattleManager : MonoBehaviour
                 int ind = actions[z].getID();
 
                 //Check if player should take damage from a status effect
-                if (sc == "attack" || sc == "ability" || sc == "ability1" || sc == "item" || sc == "swap" || sc == "basic attack"
-                    || sc == "Flee" || sc == "revive")
+                if (sc == "Attack" || sc == "Action" || sc == "Support" || sc == "Defend")
                 {
                     if (PartyMembers[ind].currentHP <= 0)
                     {
@@ -862,8 +863,7 @@ public class BattleManager : MonoBehaviour
                 }
 
                 //Check if the player is stopped by a status
-                if (sc == "attack" || sc == "ability" || sc == "ability1" || sc == "item" || sc == "swap" || sc == "basic attack"
-                    || sc == "Flee" || sc == "revive")
+                if (sc == "Attack" || sc == "Action" || sc == "Support" || sc == "Defend")
                 {
                     if (PartyMembers[ind].statuses[1] != -1)
                     {
@@ -1880,7 +1880,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (state != battleState.LOSE)
         {
-            if (!bossBattle)
+            if (!boss)
                 SceneManager.LoadScene("RPGWorld");
             else
                 SceneManager.LoadScene("CutsceneScene");

@@ -145,7 +145,7 @@ public abstract class Enemy : MonoBehaviour
         return health;
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         if(armor > 0)
         {

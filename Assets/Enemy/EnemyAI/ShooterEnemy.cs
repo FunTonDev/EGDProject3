@@ -335,13 +335,18 @@ public class ShooterEnemy : Enemy
         //Bullet hit enemy, enemy takes damage
         else if(collision.collider.tag == "Bullet")
         {
-            if (boss && this.health - 5 <= 0)
-            {
-                StartCoroutine(StartTransition());
-            }
             base.TakeDamage(5);
             agroMode = true;
             this.transform.LookAt(player.transform.position);
+        }
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (boss && health <= 0)
+        {
+            StartCoroutine(StartTransition());
         }
     }
 
